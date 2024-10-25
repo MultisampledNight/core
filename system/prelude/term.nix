@@ -16,9 +16,8 @@ let
     fg = idx: sgr (30 + idx);
   };
 in {
-  inherit (code) esc csi sgr cha reset fg;
   indent = strings.replicate table.indent.base " ";
-} // (
+} // code // (
   mapAttrs
   (_: cfg: (code.fg cfg.color) + cfg.symbol + code.reset)
   table.messages

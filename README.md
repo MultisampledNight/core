@@ -182,12 +182,60 @@ The exceptions stopping that at the moment are:
   It starts breaking though, maybe I'll get something else soon.
 - Steam (and all applications installed through it): Most games aren't open-source.
 
-### What is "elusive"?
+## Terminology
+
+### elusive
 
 The codename for the system I use for constructing VMs!
 Check the [elusive] README for details.
+
+### zero
+
+Usually the folder `~/zero`.
+Where all of the stuff that is made for me stores stuff for me.
+Imagine it like a "system" folder that contains information for the system
+itself.
+
+I'm not following the XDG spec here
+to avoid having other software pollute my state.
+However, you're free to ask if a mechanism could be made standalone —
+I'm very much interested in keeping software
+which is used by others
+standards-compilant.
+
+#### Why?
+
+`zero` starts with the letter `z`,
+so it's always listed at the bottom
+of descendingly alphabetically sorted lists.
+
+It also serves semantically well for being
+the identity element of addition
+of the real numbers.
+After all, this folder is what makes this system *my* system.
+It is the basis I build my reality on.
+
+(Fun fact: `zero` used to be named `zukunftslosigkeit`,
+German for "lack of future".
+That was both too long and too depressing.)
+
+### core
+
+Usually the folder `~/zero/core`.
+The defining heart of my system.
+It is this very repository you're looking at and
+configures everything in and around my system.
+
+#### Why?
+
+This is an [Undertale] reference.
+I refuse to elaborate further.
+Please do go play Undertale if you haven't yet.
+It is an awesome game.
+It might reveal a lot about you.
 
 
 [NixOS]: https://nixos.org/
 [CUDA]: https://developer.nvidia.com/cuda-zone
 [elusive]: ./system/elusive
+[Undertale]: https://undertale.com/

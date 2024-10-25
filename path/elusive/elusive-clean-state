@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 set -eu
-. _util
+. util
 state=$state_local/elusive
 
 for overlay in $state/*; do

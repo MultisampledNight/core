@@ -33,4 +33,4 @@ extra=$(
     | sed 's/\/:/:/g' \
     | head -c-1
 )
-export PATH="$PATH:$extra"
+export PATH="$PATH:$core/lib/sh:$extra"

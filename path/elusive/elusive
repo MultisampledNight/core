@@ -2,7 +2,7 @@
 #!nix-shell -p OVMF.fd zsh qemu -i zsh
 # vim: ft=zsh
 set -euo pipefail
-. _util
+. util
 
 zparseopts -E -D -nogui=nogui
 

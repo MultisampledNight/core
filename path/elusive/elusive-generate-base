@@ -2,7 +2,7 @@
 #!nix-shell -p zsh qemu -i zsh
 # vim: ft=zsh
 set -euo pipefail
-. _util
+. util
 
 # note that these are symlinks to *directories*
 # the actual images are called base.qcow2 in there

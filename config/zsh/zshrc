@@ -27,7 +27,7 @@ stty start undef
 stty stop undef
 stty lnext undef
 
-. $HOME/zero/path/lib/_initenv
+. $HOME/zero/core/path/lib/_initenv
 
 export NIX_PATH="$NIX_PATH:$shelldefs"
 

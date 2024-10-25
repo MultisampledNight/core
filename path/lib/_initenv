@@ -6,7 +6,7 @@
 
 if [[ -n $zero && -n $core ]]; then
   # initialization already done
-  exit
+  return
 fi
 
 # The root of all system things
@@ -16,7 +16,7 @@ export zero="$(dirname $(dirname $(dirname $(dirname $(realpath $0)))))"
 export core="$zero/core"
 
 # Shell definitions
-export shelldefs="$zero/lib/nix/shell"
+export shelldefs="$core/lib/nix/shell"
 # State that is shared with other machines
 export state_share="$zero/state/share"
 # State that is only ever on this machine

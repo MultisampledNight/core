@@ -1,0 +1,25 @@
+# Common definitions for prompt values and the works.
+# In a TOML file so they can be shared between the Python and Nix usages.
+
+[indent]
+# How many characters of space to use before the prompt.
+base = 7
+# How many spaces to indent each level.
+step = 2
+
+[messages]
+begin = { color = 4, symbol = "-" }
+query = { color = 4, symbol = ">" }
+complete = { color = 2, symbol = "x" }
+
+hint = { color = 6, symbol = "o", level = 1 }
+part = { color = 5, symbol = ">", level = 1 }
+cancel = { color = 5, symbol = "/" }
+
+warn = { color = 3, symbol = "!" }
+error = { color = 1, symbol = "!" }
+
+[codes]
+# just lives here because Nix doesn't appear to have facilities for escaping characters
+esc = "\u001B"
+

@@ -1,22 +1,25 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, core, ... }:
 
-with builtins;
-with lib;
-rec {
-  indent = strings.replicate 7 " ";
+with pkgs.lib;
+let
+  table = fromTOML (readFile (core /lib/terminal.toml));
+  code = rec {
+    # see https://en.wikipedia.org/wiki/ANSI_escape_code
+    # why they are exactly here? good question, had no other place to put them
+    esc = table.codes.esc;
+    csi = params: op: esc + "[" + params + op;
 
-  # see https://en.wikipedia.org/wiki/ANSI_escape_code
-  # why they are exactly here? good question, had no other place to put them
-  # if anyone has an idea on how to escape this in nix, let me know
-  esc = "";
-  csi = params: op: esc + "[" + params + op;
+    sgr = n: csi (toString n) "m";
+    cha = n: csi (toString n) "G";
 
-  sgr = n: csi (toString n) "m";
-  cha = n: csi (toString n) "G";
-  reset = "${esc}(B" + (csi "" "m");
-
-  fg = idx: sgr (30 + idx);
-
-  query = "${fg 4}>${reset}";
-  error = "${fg 1}!${reset}";
-}
+    reset = "${esc}(B" + (csi "" "m");
+    fg = idx: sgr (30 + idx);
+  };
+in {
+  inherit (code) esc csi sgr cha reset fg;
+  indent = strings.replicate table.indent.base " ";
+} // (
+  mapAttrs
+  (_: cfg: (code.fg cfg.color) + cfg.symbol + code.reset)
+  table.messages
+)

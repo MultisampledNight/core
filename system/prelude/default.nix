@@ -14,8 +14,11 @@
 { config, pkgs, lib, ... } @ args:
 
 with lib;
-{
-  term = import ./term.nix args;
+rec {
+  zero = sub: /home/multisn8/zero/${sub};
+  core = sub: zero /core/${sub};
+
+  term = import ./term.nix (args // { inherit core; });
   unstable = pkgs.unstable;
   custom = pkgs.custom;
 

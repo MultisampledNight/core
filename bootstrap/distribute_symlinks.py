@@ -44,28 +44,22 @@ def destinations():
         "pipewire/pipewire.conf.d": "pipewire",
     }
 
-    # "Special" things in ~/zukunftslosigkeit so elusive can find them
-    zukunftslosigkeit = {
-        "scripts": "scripts",
-        "shells": "nix/shells",
-    }
-
     # Configs in ~ that are under $repo/config
     home_config = {
         ".gitignore-global": "git/gitignore-global",
-        ".gitignore": "git/gitconfig",
+        ".gitconfig": "git/gitconfig",
         ".rgignore": "ripgrep/rgignore",
         ".zshrc": "zsh/zshrc",
         ".zlogin": "zsh/zlogin",
     }
     # Anything else that belongs in ~ and is under $repo
     home = {
-        ".background-image": "wallpapers/wallpaper",
+        ".background-image": "gfx/wallpaper/current",
     }
 
     # Anything else
     root = {
-        "/etc/nixos": "nixos",
+        "/etc/nixos": "system",
     }
 
     # merging them all
@@ -79,10 +73,6 @@ def destinations():
         config,
     )
     home |= valuemap(lambda target: Path("config") / target, home_config)
-    home |= keymap(
-        lambda name: Path("zukunftslosigkeit") / name,
-        zukunftslosigkeit,
-    )
 
     all = root
     # note: using Path("~") rather than Path.home()
@@ -109,14 +99,14 @@ def install_one(
 ):
     name = Path(name)
     target = Path(target)
-    repo = Path(__file__).resolve().parent
+    repo = Path(__file__).resolve().parent.parent
 
     if only_user and name.is_absolute():
         if verbose:
             print("Skipping", name)
         return
     name = expanduser(name, root=root, user=user)
-    target = (repo / target).resolve()
+    target = abspath(repo / target)
 
     if verbose:
         print(name, "->", target)

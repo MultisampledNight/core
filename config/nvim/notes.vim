@@ -1,6 +1,6 @@
-let zukunftslosigkeit = "~/notes/zukunftslosigkeit"
-let daily_note = zukunftslosigkeit . "/daily-note"
-let template = zukunftslosigkeit . "/template"
+let zero = "~/notes/zero"
+let daily_note = zero . "/daily-note"
+let template = zero . "/template"
 
 function NotesMode()
   call AutoWrite(v:true)

@@ -392,7 +392,7 @@ endfunction
 
 " godot
 function CloseIfAlreadyOpen()
-  let pidfile = "~/zukunftslosigkeit/state/local/neovim/editing-in-godot"
+  let pidfile = $state_local . "/neovim/editing-in-godot"
   call system("ps -p $(cat " . pidfile . ")")
   if v:shell_error == 0
     " yep, already editing

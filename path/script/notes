@@ -4,5 +4,5 @@ nix-shell '<typst>' \
 	--run ' \
 		neovide -- \
 		--cmd "cd ~/notes" \
-		"$HOME/notes/zukunftslosigkeit/daily-note/$(date --rfc-3339 date).typ"
+		"$HOME/notes/zero/daily-note/$(date --rfc-3339 date).typ"
 	'

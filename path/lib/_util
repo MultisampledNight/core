@@ -51,8 +51,4 @@ complete() {
 }
 
 # common paths i feel like i use all the time
-gcroots="/nix/var/nix/gcroots/per-user/$USER"
-zukunft="$HOME/zukunftslosigkeit"
-config="$zukunft/configs"
-state_local="$zukunft/state/local"
-state_share="$zukunft/state/share"
+. $(dirname $0)/_initenv

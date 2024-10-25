@@ -2,15 +2,11 @@
 
 In here are `default.nix`es intended for `nix-shell`, usually one for each language or common environment. There's a couple things to note though.
 
-## "Definite" access
-
-This directory is symlinked from `~/zukunftslosigkeit/shells`.
-
 ## `~/.zshrc`
 
 It performs a few QoL things worth noting.
 
-- `NIX_PATH` is set to additionally include this directory (actually the symlink).
+- `NIX_PATH` is set to additionally include this directory.
     - This makes it possible to launch any shell here simply by putting the folder name in angle brackets (and escaping them properly for zsh), as in `nix-shell '<typst>'` for a [typst] shell.
     - Of course this also implies that shells shouldn't be named anything funny, like `nixpkgs` or `nixos`. They'll be shadowed by the earlier `NIX_PATH` entries anyway.
 - It shadows the `nix-shell` command to make it launch zsh instead of bash.
@@ -37,4 +33,4 @@ All shells are evaluated once and put into the Nix store on the [elusive] base i
 [Rust]: https://www.rust-lang.org/
 [Python]: https://www.python.org/
 [typst]: https://typst.app/
-[elusive]: ../../nixos/elusive/README.md
+[elusive]: ../../system/elusive/README.md

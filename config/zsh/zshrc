@@ -27,11 +27,9 @@ stty start undef
 stty stop undef
 stty lnext undef
 
-path=("$HOME/zukunftslosigkeit/scripts" $path)
-export PATH
+. $HOME/zero/path/lib/_initenv
 
-export ALL_SHELLDEFS_PATH="$HOME/zukunftslosigkeit/shells"
-export NIX_PATH="$NIX_PATH:$ALL_SHELLDEFS_PATH"
+export NIX_PATH="$NIX_PATH:$shelldefs"
 
 export PAGER='less -R'
 
@@ -137,7 +135,7 @@ shell() {
 		return
 	fi
 
-	if [[ ! -d "$ALL_SHELLDEFS_PATH/$1" ]]; then
+	if [[ ! -d "$shelldefs/$1" ]]; then
 		echo "shell definition path '$1' not found"
 		return
 	fi
@@ -151,7 +149,7 @@ shell() {
 	fi
 
 	before=$(pwd)
-	cd "$ALL_SHELLDEFS_PATH/$1"
+	cd "$shelldefs/$1"
 
 	command nix-shell --command "cd $before; $inner_cmd"
 

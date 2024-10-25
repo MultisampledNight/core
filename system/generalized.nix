@@ -353,8 +353,6 @@ with import ./prelude args;
         ll = "l -a";
         c = "clear";
         help = "man";
-        reb = "sudo nixos-rebuild switch";
-        rebb = "sudo nixos-rebuild boot";
       };
 
       gnome.excludePackages = with pkgs.gnome; [
@@ -387,7 +385,6 @@ with import ./prelude args;
         enable = cfg.wayland;
         package = pkgs.unstable.sway;
         extraSessionCommands = ''
-          export PATH=$HOME/zukunftslosigkeit/scripts:$PATH
           export SDL_VIDEODRIVER=wayland
           export QT_QPA_PLATFORM=wayland-egl
           export QT_WAYLAND_FORCE_DPI=physical

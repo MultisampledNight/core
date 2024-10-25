@@ -1,0 +1,36 @@
+#!/usr/bin/env echo "Not intended to be run manually. Instead, it's to be imported by scripts."
+# vim: ft=zsh ts=2 sw=2 sts=0 et
+#
+# Sets common environment variables so they can be used in scripts
+# without repeating them all over again.
+
+if [[ -n $zero && -n $core ]]; then
+  # initialization already done
+  exit
+fi
+
+# The root of all system things
+# Called "zero" since it's the base everything here builds upon
+export zero="$(dirname $(dirname $(dirname $(dirname $(realpath $0)))))"
+# The git configuration repository
+export core="$zero/core"
+
+# Shell definitions
+export shelldefs="$zero/lib/nix/shell"
+# State that is shared with other machines
+export state_share="$zero/state/share"
+# State that is only ever on this machine
+export state_local="$zero/state/local"
+
+# Other
+export gcroots="/nix/var/nix/gcroots/per-user/$USER"
+
+# All extra things we want to have on PATH
+# They need to be flattened since shells just walk through there sequentially
+extra=$(
+  fd --type=directory --full-path . "$core/path" \
+    | tr '\n' ':' \
+    | sed 's/\/:/:/g' \
+    | head -c-1
+)
+export PATH="$PATH:$extra"

@@ -156,6 +156,10 @@ with import ./prelude args;
       );
 
       tmp.cleanOnBoot = true;
+
+      kernelParams = condList (cfg.videoDriver == "nvidia") [
+        "nvidia-drm.fbdev=1"
+      ];
     };
 
     console.colors = [
@@ -201,6 +205,7 @@ with import ./prelude args;
       nvidia = if cfg.videoDriver == "nvidia"
         then {
           modesetting.enable = true;
+          powerManagement.enable = true;
           open = true;
         }
         else {};
@@ -467,14 +472,6 @@ with import ./prelude args;
           (final: prev: if cfg.profileGuided then {
             linuxZenFast = prev.linuxPackagesFor (prev.linuxKernel.kernels.linux_zen.override {
               stdenv = final.fastStdenv;
-            });
-          } else {})
-          (final: prev: if (cfg.videoDriver == "nvidia" && cfg.wayland) then {
-            # blatantly taken from https://wiki.hyprland.org/hyprland-wiki/pages/Nvidia/
-            wlroots = prev.wlroots.overrideAttrs (finalAttrs: prevAttrs: {
-              postPatch = (prev.postPatch or "") + ''
-                substituteInPlace render/gles2/renderer.c --replace "glFlush();" "glFinish();"
-              '';
             });
           } else {})
           (final: prev: if (cfg.videoDriver == "nvidia") then {

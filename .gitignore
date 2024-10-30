@@ -1,6 +1,6 @@
 **/__pycache__
 config/evcxr/history.txt
 config/pipewire/*
-nixos/configuration.nix
-nixos/hardware-configuration.nix
+system/configuration.nix
+system/hardware-configuration.nix
 result

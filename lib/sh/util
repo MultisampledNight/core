@@ -34,6 +34,10 @@ part() {
   emit 5 "$(indent 2)>" "$*"
 }
 
+ask() {
+  emit 4 '>' "$*"
+}
+
 cancel() {
   emit 8 / "$*"
 }
@@ -51,4 +55,4 @@ complete() {
 }
 
 # common paths i feel like i use all the time
-. $(dirname $0)/_initenv
+. initenv

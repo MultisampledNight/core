@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+. util
+set -euo pipefail
+
+bindkey -v
+prompt="$(ask | head -c-1)"
+
+while vared -cehp $prompt code; do
+	typst-eval "$code" || true
+	code=""
+done

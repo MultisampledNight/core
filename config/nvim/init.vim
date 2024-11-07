@@ -607,7 +607,7 @@ lspconfig.texlab.setup {
     "latex",
   },
 }
-lspconfig.tsserver.setup {}
+lspconfig.ts_ls.setup {}
 -- lspconfig.typst_lsp.setup {}
 
 require("trouble").setup({

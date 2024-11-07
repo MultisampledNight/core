@@ -307,7 +307,7 @@ with import ./prelude args;
         (with pkgs; [
           [true [
             curl rsync rclone magic-wormhole-rs
-            efibootmgr usbutils
+            gptfdisk efibootmgr usbutils
             traceroute
             fd ripgrep
             tree

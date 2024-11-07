@@ -31,6 +31,8 @@ pkgs.mkShell rec {
 
     librealsense-gui opencv
 
+    z3
+
     mdbook mdbook-linkcheck mdbook-pagetoc
 
     python3

@@ -185,6 +185,7 @@ with import ./prelude args;
         blenderIcon = https://docs.blender.org/manual/en/latest/_static/favicon.png;
         steamdbIcon = https://steamdb.info/static/logos/vector_prefers_schema.svg;
         wikipediaIcon = https://en.wikipedia.org/static/favicon/wikipedia.ico;
+        wikidataIcon = https://www.wikidata.org/static/favicon/wikidata.ico;
       in {
         DownloadDirectory = "\${home}/media/downloads";
 
@@ -405,6 +406,13 @@ with import ./prelude args;
               URLTemplate = "https://en.wikipedia.org/wiki/Special:Search?go=Go&search={searchTerms}";
               Method = "GET";
               IconURL = wikipediaIcon;
+            }
+            {
+              Name = "Wikidata";
+              Alias = "@wd";
+              URLTemplate = "https://www.wikidata.org/w/index.php?go=Go&search={searchTerms}";
+              Method = "GET";
+              IconURL = wikidataIcon;
             }
           ];
 

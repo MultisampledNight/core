@@ -316,8 +316,6 @@ with import ./prelude args;
             sqlite-interactive
             btop sysstat
             hexyl
-
-            unstable.helix
           ]]
           [cfg.wireless.wlan [iw]]
           [cfg.xorg [xclip]]
@@ -420,9 +418,62 @@ with import ./prelude args;
       };
     };
 
-    xdg.portal = mkIf cfg.graphical {
-      enable = true;
-      extraPortals = with pkgs; [xdg-desktop-portal-gtk];
+    xdg = {
+      portal = mkIf cfg.graphical {
+        enable = true;
+        extraPortals = with pkgs; [xdg-desktop-portal-gtk];
+      };
+      mime = {
+        enable = true;
+        defaultApplications = let
+          editor = "neovide.desktop";
+          associate = { key, values, target ? editor }:
+            listToAttrs (map (value: {
+              name = "${key}/${value}";
+              value = target;
+            }) values);
+          langs = category: values: associate {
+            key = category;
+            values = values;
+          };
+          nonstandard = map (value: "x-${value}");
+        in {
+          "application/pdf" = "org.gnome.Evince.desktop";
+          "application/json" = "neovide.desktop";
+        } // (
+          langs
+          "application"
+          ([
+            "javascript"
+            "json" "toml" "yaml" "xml"
+            "sql"
+            "zip"
+          ] ++ (nonstandard [
+            "java" "php"
+            "csh" "nuscript"
+            "bat" "powershell"
+            "qml"
+            "tar"
+          ]))
+        ) // (
+          langs
+          "text"
+          ([
+            "julia" "rust"
+            "csv" "csv-schema" "css"
+            "markdown" "org"
+            "plain"
+          ] ++ (nonstandard [
+            "csharp" "erlang" "java" "kotlin"
+            "lua" "python" "sagemath" "vala"
+            "pascal" "nim" "nimscript" "go"
+            "vhdl" "verilog"
+            "sass" "scss"
+            "todo-txt"
+            "readme" "nfo"
+          ]))
+        );
+      };
     };
     qt = {
       enable = true;

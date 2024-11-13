@@ -104,6 +104,9 @@ man() {
   nv -- -c "Man $*" -c only
 }
 
+rg() {
+	command rg --json $@ | delta
+}
 bydir() {
 	dir="$(basename $(pwd))"
 	touch $dir$1

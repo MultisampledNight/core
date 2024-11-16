@@ -46,7 +46,7 @@ function InteractTask(intended)
   if ctx == "task"
     call ToggleTask(a:intended)
   elseif ctx == "list"
-    call CreateTask(ctx.marker_line)
+    call CreateTask(cfg.marker_line)
   else
     call CreateTask()
   endif

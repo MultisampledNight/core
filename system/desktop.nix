@@ -24,7 +24,7 @@ with import ./prelude args;
   services = {
     udisks2.enable = true;
     printing = {
-      enable = true;
+      enable = mkDefault true;
       drivers = with pkgs; [brlaser];
     };
     joycond.enable = true;

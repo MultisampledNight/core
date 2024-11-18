@@ -525,16 +525,6 @@ with import ./prelude args;
               stdenv = final.fastStdenv;
             });
           } else {})
-          (final: prev: {
-            # openvdb changed nanovdb's directory structure in v12 dramatically
-            # but blender still needs the v11 version
-            # TODO: #354095 fixes that — remove this overlay once in unstable
-            blender = (nixpkgsFromCommit {
-              rev = "33e09c6eea89ae1d1145f2f4527f98fd7b87865b";
-              hash = "sha256-XpXSxQEUyxYK9cAtKGo7RdPelwyiVtnXqz1rxSfKarQ=";
-              opts.config.allowUnfree = true;
-            }).blender;
-          })
           (final: prev: if (cfg.videoDriver == "nvidia") then {
             blender = prev.blender.override {
               cudaSupport = true;

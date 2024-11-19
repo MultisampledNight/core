@@ -352,7 +352,7 @@ with import ./prelude args;
       } else {});
 
       shellAliases = {
-        ls = "ls -Npv --time-style --hyperlink=auto '--time-style=+%Y-%m-%d %H:%M:%S'";
+        ls = "ls -Npv --color --hyperlink=auto --time-style=+%Y-%m-%d\\ %H:%M:%S";
         l = "ls -lh --group-directories-first";
         ll = "l -a";
         c = "clear";

@@ -352,7 +352,8 @@ with import ./prelude args;
       } else {});
 
       shellAliases = {
-        l = "ls -lh --group-directories-first --sort ext";
+        ls = "ls -Npv --time-style --hyperlink=auto '--time-style=+%Y-%m-%d %H:%M:%S'";
+        l = "ls -lh --group-directories-first";
         ll = "l -a";
         c = "clear";
         help = "man";
@@ -515,6 +516,13 @@ with import ./prelude args;
         };
 
         overlays = [
+          (final: prev: {
+            # quick hack, fixes linux build
+            neovide = (nixpkgsFromCommit {
+              rev = "pull/356292/head";
+              hash = "sha256-eXMmElCqialGpWMBbqG/5jslbNPG1t4yrQAseVz8itc=";
+            }).neovide;
+          })
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {
               stdenv = final.fastStdenv;

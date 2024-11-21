@@ -2,3 +2,4 @@
 .ide
 neovide_backtraces.log
 *.pdf
+__pycache__

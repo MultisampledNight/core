@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-set -eu
-
-expanded=`realpath -m $1`
-rsync -r "destined:$expanded" .

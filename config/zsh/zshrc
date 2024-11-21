@@ -118,6 +118,24 @@ flash() {
 		bs=4M \
 		oflag=sync
 }
+get() {
+	if [[ -z $2 ]]; then
+		echo "usage: <machine> <remote-source-path> [<local-target-path>]"
+		echo "remote source path will be interpreted as below pwd if not absolute"
+		echo "local target path defaults to the current directory"
+		return 1
+	fi
+
+	machine="$1"
+	source=`realpath --no-symlinks --canonicalize-missing $2`
+	if [[ -z $3 ]]; then
+		target=.
+	else
+		target="$3"
+	fi
+
+	rsync --recursive --links "$machine:$source" "$target"
+}
 
 # evaluates the pattern on the device and then pulls the files over
 adb-pull-pattern() {

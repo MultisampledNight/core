@@ -2,12 +2,4 @@
 set -eu
 
 expanded=`realpath -m $1`
-if [[ "$expanded" == "$1" ]]; then
-	# already absolute
-	target="$1"
-else
-	# relative to current dir, need to expand to absolute
-	target="$expanded"
-fi
-
-rsync -r "destined:$target" .
+rsync -r "destined:$expanded" .

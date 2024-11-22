@@ -8,13 +8,24 @@ with import ./prelude args;
   ];
 
   config = {
-    services.logind = {
-      lidSwitchExternalPower = "ignore";
-      lidSwitch = "suspend";
-      extraConfig = ''
-        HandlePowerKey=ignore
-        HandleSuspendKey=hibernate
-      '';
+    services = {
+      logind = {
+        lidSwitchExternalPower = "ignore";
+        lidSwitch = "suspend";
+        extraConfig = ''
+          HandlePowerKey=ignore
+          HandleSuspendKey=hibernate
+        '';
+      };
+
+      tlp = {
+        enable = true;
+        settings = {
+          START_CHARGE_THRESH_BAT0 = 60;
+          STOP_CHARGE_THRESH_BAT0 = 85;
+          USB_EXCLUDE_PHONE = 1;
+        };
+      };
     };
 
     environment.systemPackages = with pkgs; [

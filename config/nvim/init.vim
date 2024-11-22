@@ -102,7 +102,15 @@ function RenameCurrentFile()
   call mkdir(fnamemodify(full_path, ":h"), "p")
   exe "saveas " . full_path
 
-  exe "silent !rm " . old
+  call delete(old)
+endfunction
+
+function DeleteCurrentFile()
+  if trim(input("Are you sure? ")) !~ 'y\|yes'
+    return
+  endif
+
+  call delete(@%)
 endfunction
 
 nnoremap <Space><Space> <Cmd>Telescope resume<CR>
@@ -131,6 +139,7 @@ nnoremap <Space>w <Cmd>call TelescopeOnToplevel("keymaps")<CR>
 nnoremap <Space>. <Cmd>call TelescopeOnToplevel("git_status")<CR>
 nnoremap <Space>j <Cmd>call CreateNewFile()<CR>
 nnoremap <Space>c <Cmd>call RenameCurrentFile()<CR>
+nnoremap <Space>d <Cmd>call DeleteCurrentFile()<CR>
 
 nnoremap <Space>q <Cmd>update \| call jobstart("cargo fmt")<CR>
 

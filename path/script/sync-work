@@ -38,6 +38,8 @@ fi
 
 for dir in $dirs; do
 	abs="$(realpath $dir)/"
-	rsync --progress --compress --recursive --links --partial --delete --update \
+	echo "$abs"
+	rsync --itemize-changes --human-readable --compress --recursive --partial --delete --update \
+		--times --atimes --perms --owner --group --xattrs --stats --hard-links --links --checksum \
 		"$source$abs" "$target$abs"
 done

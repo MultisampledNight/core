@@ -165,6 +165,22 @@ put() {
 
 	adb push "$source" "$target"
 }
+to() {
+	if [[ -z "$1" ]]; then
+		echo "usage: <machine> [<command-and-args...>]"
+		return 1
+	fi
+
+	if [[ "$1" == "possible" ]]; then
+		adb wait-for-device
+		connector=(adb shell)
+	else
+		connector=(waypipe ssh "$1")
+	fi
+
+	shift 1
+	$connector $@
+}
 
 # evaluates the pattern on the device and then pulls the files over
 adb-pull-pattern() {

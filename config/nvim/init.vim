@@ -102,7 +102,7 @@ function RenameCurrentFile()
   call mkdir(fnamemodify(full_path, ":h"), "p")
   exe "saveas " . full_path
 
-  call delete(old)
+  call delete(@#)
 endfunction
 
 function DeleteCurrentFile()
@@ -110,7 +110,11 @@ function DeleteCurrentFile()
     return
   endif
 
-  call delete(@%)
+  if delete(@%)
+    return
+  endif
+
+  quit
 endfunction
 
 nnoremap <Space><Space> <Cmd>Telescope resume<CR>
@@ -550,7 +554,9 @@ function AutoWrite(target)
 endfunction
 
 function UpdateIfPossible()
-  if &buftype == ""
+  " this does not write if the file doesn't exist yet — this is intentional
+  " to support deleting and renaming
+  if &buftype == "" && filewritable(@%)
     silent update
   endif
 endfunction

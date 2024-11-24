@@ -5,7 +5,7 @@ set -euo pipefail
 bindkey -v
 prompt="$(ask | head -c-1)"
 
+code=""
 while vared -cehp $prompt code; do
 	typst-eval "$code" || true
-	code=""
 done

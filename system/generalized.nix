@@ -517,11 +517,19 @@ with import ./prelude args;
 
         overlays = [
           (final: prev: {
+            # this overlay will be superflous over time — just updating to newer package versions selectively
+
             # quick hack, fixes linux build
             neovide = (nixpkgsFromCommit {
               rev = "pull/356292/head";
               hash = "sha256-eXMmElCqialGpWMBbqG/5jslbNPG1t4yrQAseVz8itc=";
             }).neovide;
+            # adds vulkan support
+            blender = (nixpkgsFromCommit {
+              rev = "pull/358085/head";
+              hash = "sha256-ikux2TDRUihsnjOIUoRksLcTHRYER8KeKp9VO12ivtQ=";
+              opts.config.allowUnfree = true;
+            }).blender;
           })
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {

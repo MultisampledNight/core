@@ -1,6 +1,9 @@
-let zero = "~/notes/zero"
+let notes = "~/notes"
+let zero = notes . "/zero"
 let daily_note = zero . "/daily-note"
 let template = zero . "/template"
+
+let g:date_format = "%Y-%m-%d"
 
 function NotesMode()
   call AutoWrite(v:true)
@@ -17,14 +20,38 @@ function NotesMode()
   inoremap <Enter> <Cmd>call Enter()<CR>
 endfunction
 
-function InsertDailyTemplate()
-  exe "read " . g:template . "/Daily Note.typ"
-  norm gg"_dd2j
+function Associate(pattern, template)
+  exe 'au BufNewFile '.a:pattern.' call Template("'.a:template.'")'
+endfunction
+function RealizeVariables()
+  let vars = #{
+    \ title: expand("%:t:r"),
+    \ today: strftime(g:date_format),
+  \ }
+  
+  for [name, value] in items(vars)
+    exe '%s/\$'.name.'/'.value.'/Ieg'
+  endfor
+
+  noh
+endfunction
+function Template(name)
+  if exists("b:templated")
+    return
+  endif
+  let b:templated = v:true
+  exe "read " . g:template . "/" . a:name
+
+  norm gg"_dd
+  call RealizeVariables()
+  norm G
+  startinsert
+
   silent update
 endfunction
 function OpenToday()
-  let today = strftime("%Y-%m-%d")
-  exe "edit " . g:daily_note . "/" . today . ".typ"
+  let today = strftime(g:date_format)
+  exe "edit ".g:daily_note."/".today.".typ"
 endfunction
 
 " no i can't use treesitter for this,
@@ -191,6 +218,13 @@ function Enter()
   call feedkeys("\<Right>")
 endfunction
 
+functuion Associate()
+endfunction
+
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call NotesMode()
-exe "au BufNewFile " . g:daily_note . "/*.typ call InsertDailyTemplate()"
+
+" Needs to be ordered from most specific to least specific,
+" since the first successful `Template` call inhibits all others
+call Associate(daily_note."/*.typ", "Daily.typ")
+call Associate(notes."/*.typ", "Note.typ")
 

@@ -24,14 +24,33 @@ function Associate(pattern, template)
   exe 'au BufNewFile '.a:pattern.' call Template("'.a:template.'")'
 endfunction
 function RealizeVariables()
+  " substitute cfg values
   let vars = #{
     \ title: expand("%:t:r"),
     \ today: strftime(g:date_format),
   \ }
   
   for [name, value] in items(vars)
-    exe '%s/\$'.name.'/'.value.'/Ieg'
+    exe 'sil! %s/\$'.name.'/'.value.'/Ieg'
   endfor
+
+  noh
+
+  " position the cursor
+  let regex = '\$cursor\(\.\(normal\|insert\)\|\)'
+  let matches = matchbufline(bufnr("%"), regex, 1, "$", #{submatches: v:true})
+  if empty(matches)
+    norm G
+    return
+  endif
+
+  let line = matches[0].lnum
+  let kind = matches[0].submatches[1]
+  exe 'norm /'.regex."\<CR>d//e\<CR>"
+
+  if kind == 'insert'
+    startinsert
+  endif
 
   noh
 endfunction
@@ -44,8 +63,6 @@ function Template(name)
 
   norm gg"_dd
   call RealizeVariables()
-  norm G
-  startinsert
 
   silent update
 endfunction

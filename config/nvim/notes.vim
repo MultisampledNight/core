@@ -46,7 +46,7 @@ function RealizeVariables()
 
   let line = matches[0].lnum
   let kind = matches[0].submatches[1]
-  exe 'norm /'.regex."\<CR>d//e\<CR>"
+  exe 'norm /'.regex."\<CR>"_d//e\<CR>"
 
   if kind == 'insert'
     startinsert

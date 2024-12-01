@@ -189,14 +189,14 @@ with import ./prelude args;
 
       bluetooth.enable = cfg.wireless.bluetooth;
 
-      opengl = {
+      graphics = {
         enable = true;
-        driSupport = true;
-        driSupport32Bit = true; # :clueless:
         extraPackages = with pkgs; {
           intel = [mesa.drivers intel-media-driver intel-compute-runtime];
           nvidia = [config.hardware.nvidia.package];
         }.${cfg.videoDriver} or [];
+
+        enable32Bit = true;
         extraPackages32 = condList
           (cfg.videoDriver == "nvidia")
           [config.hardware.nvidia.package.lib32];
@@ -478,7 +478,7 @@ with import ./prelude args;
     };
     qt = {
       enable = true;
-      platformTheme = "qt5ct";
+      style = "adwaita-dark";
     };
 
     security.sudo.extraConfig = with term; toSudoers {

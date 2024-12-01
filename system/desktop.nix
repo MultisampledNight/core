@@ -5,7 +5,6 @@ with import ./prelude args;
 {
   boot.supportedFilesystems = ["ntfs"];
 
-  sound.enable = true;
   security.rtkit.enable = true;
 
   networking.dhcpcd.wait = "background"; # saves like 5 seconds of startup time
@@ -94,7 +93,6 @@ with import ./prelude args;
           helvum
           mate.eom
           dunst qemu_kvm
-          qt5ct
           gucharmap
           evince
           kdePackages.kruler

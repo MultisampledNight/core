@@ -149,21 +149,39 @@ in {
       ttf_bitstream_vera
       ubuntu_font_family
       source-han-sans
+
+      libertinus
     ];
 
     fontDir.enable = true;
     # this adds a few commonly expected fonts like liberation...
     enableDefaultPackages = true;
 
-    fontconfig = {
+    fontconfig = let
+      # in points
+      size = 14;
+    in {
       hinting.style = "slight";
 
       # ...while this one sets the actually in-place default fonts
       defaultFonts = {
-        serif = ["IBM Plex Serif"];
+        serif = ["Libertinus Serif"];
         sansSerif = ["IBM Plex Sans"];
-        monospace = ["IBM Plex Mono"];
+        monospace = ["JetBrainsMono NL NF Light"];
       };
+
+      # see fonts-conf(5), especially on the <EDIT ...> part
+      localConf = ''
+        <?xml version='1.0'?>
+        <!DOCTYPE fontconfig SYSTEM 'urn:fontconfig:fonts.dtd'>
+        <fontconfig>
+        <match>
+          <edit name="size" binding="strong">
+            <double>${toString size}</double>
+          </edit>
+        </match>
+        </fontconfig>
+      '';
     };
   };
 }

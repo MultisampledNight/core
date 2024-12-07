@@ -7,8 +7,7 @@ let
 in
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    python3Ext black
-    ruff-lsp
+    python3Ext
   ];
 
   shellHook = ''

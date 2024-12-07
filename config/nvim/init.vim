@@ -76,9 +76,10 @@ vnoremap <silent> Y "+y
 
 function Climber(key, fn, extra = [])
   for mode in ["n", "v", "o"] + a:extra
-    let lua_code = 'require("tree-climber").' . a:fn . '({ timeout=1500 })'
-    let cb = '<Cmd>lua ' . lua_code . '<CR>'
-    exe mode . 'noremap ' . a:key . ' ' . cb
+    let opts = '{ timeout = 1000, skip_comments = true }'
+    let lua_code = $'require("tree-climber").{a:fn}({opts})'
+    let cb = $'<Cmd>lua {lua_code}<CR>'
+    exe $'{mode}noremap {a:key} {cb}'
   endfor
 endfunction
 

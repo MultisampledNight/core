@@ -18,12 +18,12 @@ in {
     systemPackages = unite [
       (with pkgs; [
         [true [
-          black delta
+          delta
           inotify-tools geoipWithDatabase
           sshfs
 
-          # languages (for Rust it's probably better to directly use a shell.nix instead)
-          black
+          # languages
+          black 
           llvmPackages_latest.llvm llvmPackages_latest.bintools llvmPackages_latest.lld
           clang sccache
 
@@ -40,6 +40,11 @@ in {
         ]]
       ])
       (with unstable; [
+        [true [
+          typst
+          tinymist
+          typos-lsp
+        ]]
         [cfg.graphical [
           godot_4
           neovide
@@ -115,7 +120,8 @@ in {
               vim nix proto godot_resource
               kdl ini toml yaml json json5
               css html
-              sql dot mermaid latex bibtex markdown
+              sql dot mermaid
+              latex bibtex markdown typst
               diff query vimdoc
               agda
             ]))

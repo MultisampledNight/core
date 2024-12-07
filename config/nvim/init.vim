@@ -623,7 +623,8 @@ lspconfig.texlab.setup {
   },
 }
 lspconfig.ts_ls.setup {}
--- lspconfig.typst_lsp.setup {}
+lspconfig.typos_lsp.setup {}
+lspconfig.tinymist.setup {}
 
 require("trouble").setup({
   open_no_results = true,

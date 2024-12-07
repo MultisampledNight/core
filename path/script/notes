@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 cd ~/notes
-nix-shell '<typst>' \
-	--run ' \
-		neovide -- \
-		--cmd "cd ~/notes" \
-		"$HOME/notes/zero/daily-note/$(date --rfc-3339 date).typ"
-	'
+neovide -- \
+	--cmd "cd ~/notes" \
+	"$HOME/notes/zero/daily-note/$(date --rfc-3339 date).typ"

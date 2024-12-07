@@ -578,15 +578,6 @@ command AutoWriteDisable call AutoWrite(v:false)
 autocmd FocusGained * checktime
 
 
-" some hi magic since base16's vim theme isn't quite there and I'm too lazy to
-" change that
-for level in ["Error", "Warn", "Info", "Hint"]
-  for part in ["", "VirtualText", "Floating", "Sign"]
-    exe "hi! Diagnostic" . part . level . " guifg=#001E1B"
-  endfor
-  exe "hi! DiagnosticUnderline" . level . " guisp=#003833 guibg=#003833"
-endfor
-
 lua <<EOF
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -634,7 +625,11 @@ lspconfig.texlab.setup {
 }
 lspconfig.ts_ls.setup {}
 lspconfig.typos_lsp.setup {}
-lspconfig.tinymist.setup {}
+lspconfig.tinymist.setup {
+  -- fails with index out of bounds otherwise (UTF-16/UTF-8 miscomms)
+  -- https://github.com/neovim/neovim/issues/30675#issuecomment-2395272151
+  offset_encoding = "utf-8",
+}
 
 require("trouble").setup({
   open_no_results = true,

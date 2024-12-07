@@ -235,9 +235,6 @@ function Enter()
   call feedkeys("\<Right>")
 endfunction
 
-functuion Associate()
-endfunction
-
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call NotesMode()
 
 " Needs to be ordered from most specific to least specific,

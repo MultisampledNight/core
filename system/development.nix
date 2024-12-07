@@ -110,6 +110,7 @@ in {
             nvim-lspconfig trouble-nvim plenary-nvim
             telescope-nvim telescope-ui-select-nvim
             nvim-dap nvim-dap-ui
+
             (nvim-treesitter.withPlugins (parsers: with parsers; [
               arduino c cpp c_sharp elixir gdscript javascript julia haskell
               ocaml objc lua python r rust swift typescript
@@ -118,7 +119,7 @@ in {
               bash
               gitignore gitcommit git_rebase git_config gitattributes
               vim nix proto godot_resource
-              kdl ini toml yaml json json5
+              kdl ini toml yaml json json5 xml
               css html
               sql dot mermaid
               latex bibtex markdown typst
@@ -126,6 +127,10 @@ in {
               agda
             ]))
             nvim-treesitter-context
+            nvim-ts-autotag
+            tree-climber-nvim
+            rainbow-delimiters-nvim
+
             vim-polyglot vim-signify
           ];
           opt = [];

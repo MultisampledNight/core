@@ -1,4 +1,4 @@
-colorscheme base16-white-on-black
+colorscheme semi-duality
 
 set winblend=10
 set pumblend=10
@@ -20,7 +20,6 @@ set notimeout
 set nottimeout
 set noequalalways
 
-set clipboard+=unnamedplus
 set completeopt=menu,menuone,preview,noselect
 set mouse=a
 set mousemodel=extend
@@ -65,11 +64,32 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 nnoremap gn n<Cmd>noh<CR>
 nnoremap gN N<Cmd>noh<CR>
+nnoremap <silent> P "+p
+nnoremap <silent> Y "+y
 
-vnoremap j gj
-vnoremap k gk
+vnoremap <silent> j gj
+vnoremap <silent> k gk
 vnoremap gn n<Cmd>noh<CR>
 vnoremap gN N<Cmd>noh<CR>
+vnoremap <silent> P "+p
+vnoremap <silent> Y "+y
+
+function Climber(key, fn, extra = [])
+  for mode in ["n", "v", "o"] + a:extra
+    let lua_code = 'require("tree-climber").' . a:fn . '({ timeout=1500 })'
+    let cb = '<Cmd>lua ' . lua_code . '<CR>'
+    exe mode . 'noremap ' . a:key . ' ' . cb
+  endfor
+endfunction
+
+call Climber("K", "goto_prev")
+call Climber("J", "goto_next")
+call Climber("H", "goto_parent")
+call Climber("L", "goto_child")
+call Climber("<Space><Enter>", "select_node")
+call Climber("<M-h>", "swap_prev", ["i"])
+call Climber("<M-l>", "swap_next", ["i"])
+call Climber("<C-h>", "highlight_node", ["i"])
 
 function TelescopeOnToplevel(command)
   silent update
@@ -135,9 +155,7 @@ nnoremap <Space>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
 vnoremap <Space>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
 nnoremap <Space>g <Cmd>call TelescopeOnToplevel("lsp_workspace_symbols")<CR>
 
-nnoremap <Space>s <Cmd>call TelescopeOnToplevel("lsp_document_symbols")<CR>
-nnoremap <Space>l <Cmd>call TelescopeOnToplevel("treesitter")<CR>
-nnoremap <Space>m <Cmd>call TelescopeOnToplevel("man_pages")<CR>
+nnoremap <Space>s <Cmd>call TelescopeOnToplevel("treesitter")<CR>
 nnoremap <Space>w <Cmd>call TelescopeOnToplevel("keymaps")<CR>
 
 nnoremap <Space>. <Cmd>call TelescopeOnToplevel("git_status")<CR>
@@ -146,14 +164,6 @@ nnoremap <Space>c <Cmd>call RenameCurrentFile()<CR>
 nnoremap <Space>d <Cmd>call DeleteCurrentFile()<CR>
 
 nnoremap <Space>q <Cmd>update \| call jobstart("cargo fmt")<CR>
-
-nnoremap <Space>z <Cmd>lua require("dap").toggle_breakpoint()<CR>
-nnoremap <Space>v <Cmd>lua require("dap").step_over()<CR>
-nnoremap <Space>ü <Cmd>lua require("dap").step_into()<CR>
-nnoremap <Space>ä <Cmd>lua require("dap").step_out()<CR>
-nnoremap <Space>ö <Cmd>lua require("dap").continue()<CR>
-nnoremap <Space>y <Cmd>lua require("dap").terminate()<CR>
-nnoremap <Space>k <Cmd>lua require("dapui").toggle()<CR>
 
 nnoremap <F1> <NOP>
 inoremap <F1> <NOP>
@@ -640,10 +650,23 @@ require("nvim-treesitter.configs").setup {
   highlight = {
     enable = true,
   },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<Space>m",
+      scope_incremental = "<Space>u",
+      node_incremental = "<Space>t",
+      node_decremental = "<Space>v",
+    },
+  },
 }
 
 require("treesitter-context").setup {
   max_lines = 4,
+}
+require("nvim-ts-autotag").setup {}
+require("rainbow-delimiters.setup").setup {
+  highlight = vim.g.rainbow_hl,
 }
 
 local feedkey = function(key, mode)

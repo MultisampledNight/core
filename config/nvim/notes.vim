@@ -5,8 +5,7 @@ let template = zero . "/template"
 
 let g:date_format = "%Y-%m-%d"
 
-function NotesMode()
-  call AutoWrite(v:true)
+function Notes()
   set tw=80 sw=2 ts=2 sts=0 et
 
   noremap <Space><Enter> <Cmd>call OpenToday()<CR>
@@ -235,7 +234,7 @@ function Enter()
   call feedkeys("\<Right>")
 endfunction
 
-autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call NotesMode()
+autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call Notes()
 
 " Needs to be ordered from most specific to least specific,
 " since the first successful `Template` call inhibits all others

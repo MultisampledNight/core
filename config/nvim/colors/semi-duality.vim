@@ -21,7 +21,7 @@ let hint = "#4f3a31"
 
 
 exe $'hi Visual guibg={a.violet} guifg={p.black}'
-exe $'hi! TelescopeSelection guifg={p.violet}'
+exe $'hi! TelescopeSelection guifg={a.violet}'
 
 let g:rainbow_hl = []
 for [name, value] in items(a)

@@ -14,6 +14,7 @@ function ProjectToplevel()
   " nope, fall back to the cwd
   return getcwd()
 endfunction
+let g:toplevel = ProjectToplevel()
 
 " hacky and bound to interfere with the latex or typst machinery, but it works
 function CdProjectToplevel(_timer_id)

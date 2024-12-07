@@ -94,7 +94,7 @@ call Climber("<C-h>", "highlight_node", ["i"])
 
 function TelescopeOnToplevel(command)
   silent update
-  exe "Telescope " . a:command . " cwd=" . ProjectToplevel()
+  exe $'Telescope {a:command} cwd={g:toplevel}'
 endfunction
 
 function CreateNewFile()
@@ -480,20 +480,8 @@ autocmd VimLeavePre *.tex
 " typst
 autocmd BufNewFile,BufRead *.typ
   \ set filetype=typst sw=2 ts=2 sts=0 et
-  \|call LaunchProgram("typst" . bufnr(), [
-    \ "typst",
-    \ "watch",
-    \ "--input", "dev=true",
-    \ "--input", "filename=" . expand("%:t"),
-    \ "--root", ProjectToplevel(),
-    \ expand("%:p"),
-    \ CurrentPdfPath(),
-  \ ])
   \|noremap <buffer> <Leader>2 <Cmd>call ViewCurrentPdf()<CR>
-autocmd BufLeave *.typ
-  \ call StopProgram("typst" . bufnr())
 autocmd VimLeavePre *.typ
-  \ call StopProgram("typst" . bufnr())
   \|call StopProgram("evince")
 
 " both latex and typst, and anything that would require a pdf
@@ -501,7 +489,7 @@ autocmd BufEnter *.tex,*.typ call ViewCurrentPdf()
 let g:tracked_programs = {}
 
 function CurrentPdfPath()
-  return expand("%:p:h") . "/view.pdf"
+  return $'{g:toplevel}/target/view.pdf'
 endfunction
 
 function ViewCurrentPdf()
@@ -626,6 +614,16 @@ lspconfig.texlab.setup {
 lspconfig.ts_ls.setup {}
 lspconfig.typos_lsp.setup {}
 lspconfig.tinymist.setup {
+  settings = {
+    formatterPrintWidth = 80,
+    completion = {
+      postfix = true,
+    },
+
+    rootPath = vim.g.toplevel,
+    exportPdf = "onType",
+    outputPath = "$root/target/view.pdf",
+  },
   -- fails with index out of bounds otherwise (UTF-16/UTF-8 miscomms)
   -- https://github.com/neovim/neovim/issues/30675#issuecomment-2395272151
   offset_encoding = "utf-8",

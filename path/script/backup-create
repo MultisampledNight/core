@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+set -euo pipefail
+. util
+
+of=`hostname`
+now=`date --rfc-3339=seconds`
+
+# default, then selective override
+subjects=`echo $HOME/{notes,studio,media} "$state" "$core"`
+subjects=${@:-$subjects}
+
+maintenance
+
+begin archiving to "$archive"
+hint ' source size:' `adu $subjects`
+tar --zstd --sort name --create --file "$archive" $subjects
+hint 'archive size:' `adu "$archive"`
+

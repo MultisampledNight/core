@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+set -euo pipefail
+. util
+
+permadisk="shots" # partition label
+
+block="/dev/disk/by-label/$permadisk"
+mount="/run/media/$(whoami)/$permadisk"
+final="$mount/$(basename "$archive")"
+
+begin transferring to disk labelled "$permadisk"
+
+if mountpoint -q "$mount"; then
+	warn "$permadisk" already mounted
+else
+	part mounting "$permadisk"
+	udisksctl mount -b "$block"
+fi
+
+part copying archive over
+pv "$archive" > "$final"
+
+part flushing filesystem caches
+sync "$final"
+
+part unmounting disk
+udisksctl unmount -b "$block"
+
+complete transfer finished!
+

@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+import shutil
+import sys
+from multisn8 import sh, friendly_size
+
+
+def du(path: str) -> int:
+    # not exactly clean but it works
+    output = sh("du", "-sb", path)
+    return int(output.split("\t")[0])
+
+
+def acc_disk_usage(paths: list[str]) -> str:
+    """Returns the total disk usage of all given paths combined."""
+    total = sum(map(du, paths))
+    return friendly_size(total)
+
+
+if __name__ == "__main__":
+    print(acc_disk_usage(sys.argv[1:]))

@@ -8,6 +8,6 @@ begin cleaning and compressing
 clean >/dev/null &
 
 # reduce size of the system config .git
-git -C "$core" maintenance-all
+git -C "$core" maintenance run --auto
 
 wait

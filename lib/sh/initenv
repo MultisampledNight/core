@@ -36,4 +36,6 @@ extra=$(
     | sed 's/\/:/:/g' \
     | head -c-1
 )
-export PATH="$PATH:$core/lib/sh:$extra"
+lib="$core/lib"
+export PATH="$PATH:$lib/sh:$extra"
+export PYTHONPATH="$lib/py"

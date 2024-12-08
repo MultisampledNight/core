@@ -2,18 +2,8 @@
 set -euo pipefail
 . util
 
-of=`hostname`
-now=`date --rfc-3339=seconds`
+export archive="$HOME/_archive/$now $of-full.tar.zst"
 
-# default, then selective override
-subjects=`echo $HOME/{notes,studio,media} "$state" "$core"`
-subjects=${@:-$subjects}
-
-target="$HOME/_archive/full-$of $now.tar.zst"
-
-maintenance
-
-begin archiving each subject to "$target"
-tar --zstd --sort name --create --file "$target" $subjects
-
+backup-create
+backup-transfer
 complete all backed up!

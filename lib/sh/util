@@ -2,7 +2,7 @@
 # vim: ft=zsh
 
 indent() {
-  repeat ${1:-7}; do
+  for _ in `seq ${1:-7}`; do
     echo -n ' '
   done
 }

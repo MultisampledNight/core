@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+set -euo pipefail
+. util
+
+begin cleaning pdfs from a past typst setup
+hint compiled pdfs are stored in target folders on the project root nowadays
+
+for f in `fd '\.typ$'`; do
+	for p in "${f%.*}.pdf" "${f%/*}/view.pdf"; do
+		if [[ -f "$p" ]]; then
+			part "$p"
+			rm "$p"
+		fi
+	done
+done
+
+complete all cleaned!

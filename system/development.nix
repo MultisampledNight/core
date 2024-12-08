@@ -11,6 +11,7 @@ let
 in {
   documentation = {
     enable = true;
+    dev.enable = true;
     man.generateCaches = true;
   };
 
@@ -42,8 +43,10 @@ in {
       (with unstable; [
         [true [
           typst
+
           tinymist
           typos-lsp
+          nil
         ]]
         [cfg.graphical [
           godot_4

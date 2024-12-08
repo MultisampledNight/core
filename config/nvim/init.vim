@@ -628,6 +628,7 @@ lspconfig.tinymist.setup {
   -- https://github.com/neovim/neovim/issues/30675#issuecomment-2395272151
   offset_encoding = "utf-8",
 }
+lspconfig.nil_ls.setup {}
 
 require("trouble").setup({
   open_no_results = true,

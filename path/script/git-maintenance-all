@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+set -euo pipefail
+
+git maintenance run \
+	--task gc \
+	--task commit-graph \
+	--task prefetch \
+	--task loose-objects \
+	--task incremental-repack

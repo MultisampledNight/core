@@ -4,7 +4,7 @@
 # Sets common environment variables so they can be used in scripts
 # without repeating them all over again.
 
-if [[ -n $zero && -n $core ]]; then
+if [[ -n "$zero" && -n "$core" && -n "$state" ]]; then
   # initialization already done
   return
 fi
@@ -17,10 +17,13 @@ export core="$zero/core"
 
 # Shell definitions
 export shelldefs="$core/lib/nix/shell"
+
+# All state — prefer to use either local or shared though
+export state="$zero/state"
 # State that is shared with other machines
-export state_share="$zero/state/share"
+export state_share="$state/share"
 # State that is only ever on this machine
-export state_local="$zero/state/local"
+export state_local="$state/local"
 
 # Other
 export gcroots="/nix/var/nix/gcroots/per-user/$USER"

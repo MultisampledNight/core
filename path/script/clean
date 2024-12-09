@@ -7,7 +7,7 @@ from pathlib import Path
 
 SUBJECTS = {
     "studio": {
-        "rust/*": [
+        "**": [
             "target/",
             "*/target/",
         ],

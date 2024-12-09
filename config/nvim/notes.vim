@@ -8,7 +8,7 @@ let g:date_format = "%Y-%m-%d"
 function Notes()
   set tw=80 sw=2 ts=2 sts=0 et
 
-  noremap <Space><Enter> <Cmd>call OpenToday()<CR>
+  noremap <Space>m <Cmd>call OpenToday()<CR>
   noremap <Space>p <Cmd>call InteractTask(">")<CR>
   noremap <Space>h <Cmd>call InteractTask("/")<CR>
   noremap <Space>l <Cmd>call InteractTask("x")<CR>

@@ -241,7 +241,7 @@ with import ./prelude args;
       users.multisn8 = {
         isNormalUser = true;
         extraGroups =
-          ["wheel" "plugdev" "antisuns" "kvm" "scanner" "lp"]
+          ["wheel" "plugdev" "antisuns" "kvm" "scanner" "lp" "dialout"]
           ++ (condList cfg.graphical ["input" "video" "audio"])
           ++ (condList config.programs.adb.enable ["adbusers"]);
         shell = pkgs.zsh;

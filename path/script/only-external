@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+set -euo pipefail
+layaway 'dp2 + edp'
+swaymsg output eDP-1 disable

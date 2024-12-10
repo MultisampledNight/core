@@ -76,6 +76,7 @@ bindsym $mod+a exec firefox -p github
 bindsym $mod+x exec thunderbird
 bindsym $mod+p exec firefox -p zulip
 bindsym $mod+adiaeresis exec fractal
+bindsym $mod+c exec lighting
 
 bindsym $mod+t exec notes
 bindsym $mod+i exec xournalpp

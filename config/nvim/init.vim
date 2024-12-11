@@ -611,7 +611,17 @@ lspconfig.texlab.setup {
   },
 }
 lspconfig.ts_ls.setup {}
-lspconfig.typos_lsp.setup {}
+lspconfig.typos_lsp.setup {
+  -- notably not typst and latex
+  -- since typos doesn't have support for languages other than english yet
+  filetypes = {
+    "rust",
+    "python",
+    "julia",
+    "c",
+    "cpp",
+  },
+}
 lspconfig.tinymist.setup {
   settings = {
     formatterPrintWidth = 80,

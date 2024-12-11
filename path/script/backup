@@ -2,8 +2,11 @@
 set -euo pipefail
 . util
 
-export archive="$HOME/_archive/$now $of-full.tar.zst"
+of=`hostname`
+now=`date --rfc-3339=seconds`
+
+export archive="$HOME/_archive/$now $of-slim.tar.zst"
 
 backup-create
-backup-transfer
+backup-transfer-physical
 complete all backed up!

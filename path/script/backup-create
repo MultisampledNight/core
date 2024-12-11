@@ -2,11 +2,8 @@
 set -euo pipefail
 . util
 
-of=`hostname`
-now=`date --rfc-3339=seconds`
-
 # default, then selective override
-subjects=`echo $HOME/{notes,studio,media} "$state" "$core"`
+subjects=`echo $HOME/{notes,studio,media} "$core"`
 subjects=${@:-$subjects}
 
 maintenance

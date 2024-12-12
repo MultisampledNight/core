@@ -163,6 +163,7 @@ nnoremap <Space>j <Cmd>call CreateNewFile()<CR>
 nnoremap <Space>c <Cmd>call RenameCurrentFile()<CR>
 nnoremap <Space>d <Cmd>call DeleteCurrentFile()<CR>
 
+nnoremap <Esc> <Cmd>update<CR>
 nnoremap <Space>q <Cmd>update \| call jobstart("cargo fmt")<CR>
 
 nnoremap <F1> <NOP>
@@ -620,7 +621,7 @@ lspconfig.tinymist.setup {
     },
 
     rootPath = vim.g.toplevel,
-    exportPdf = "onType",
+    exportPdf = "onSave",
     outputPath = "$root/target/view.pdf",
   },
   -- fails with index out of bounds otherwise (UTF-16/UTF-8 miscomms)

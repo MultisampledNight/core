@@ -128,6 +128,7 @@ in {
               latex bibtex markdown typst
               diff query vimdoc
               agda
+              vhdl
             ]))
             nvim-treesitter-context
             nvim-ts-autotag

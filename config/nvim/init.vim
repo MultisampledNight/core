@@ -612,7 +612,6 @@ lspconfig.texlab.setup {
   },
 }
 lspconfig.ts_ls.setup {}
-lspconfig.typos_lsp.setup {}
 lspconfig.tinymist.setup {
   settings = {
     formatterPrintWidth = 80,

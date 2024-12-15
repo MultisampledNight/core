@@ -5,4 +5,8 @@ pkgs.mkShell rec {
     ghdl
     gtkwave
   ];
+
+  shellHook = ''
+    export SHELL_NAME="''${SHELL_NAME:+$SHELL_NAME/}<hardware>"
+  '';
 }

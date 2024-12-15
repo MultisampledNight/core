@@ -16,7 +16,7 @@ def main():
         with open(path) as fh:
             parsed = json.load(fh)
             target = parsed["target-date"]
-            precision = parsed["precision"]
+            precision = parsed.get("precision")
     except FileNotFoundError:
         return None
 
@@ -24,7 +24,10 @@ def main():
     if diff is None:
         sys.exit(1)
 
-    diff = format_delta(diff, precision)
+    if precision is None:
+        diff = format_delta(diff)
+    else:
+        diff = format_delta(diff, precision)
     print(diff)
 
 
@@ -35,7 +38,7 @@ def time_left(target) -> timedelta:
     return diff
 
 
-def format_delta(delta, precision = {"d": 1*24, "w": 7*24, "m": 30*24, "y": 365*24}) -> str:
+def format_delta(delta, precision = {"d": 1*24, "w": 7*24, "m": 30*24}) -> str:
     # want to go from coarse to fine, to make sure large sieves cover everything
     precision = sorted(
         precision.items(),

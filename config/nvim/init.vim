@@ -714,9 +714,6 @@ cmp.setup({
     },
     documentation = cmp.config.disable,
   },
-  experimental = {
-    ghost_text = true,
-  },
 })
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),

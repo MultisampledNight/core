@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+set -eu
+qemu-img convert -pc -o compression_type=zstd -O qcow2 $1 $2

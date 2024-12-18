@@ -57,6 +57,7 @@ alias wh='wormhole-rs'
 alias sqlite='sqlite3 -box'
 alias rsync='rsync --progress --update --partial --compress'
 alias curl='curl -LC -'
+alias lsblk='lsblk -f'
 
 alias cr='cargo run'
 alias crr='cargo run --release'
@@ -236,3 +237,5 @@ fi
 RPROMPT+='${TIME_LEFT:+ >${TIME_LEFT}}${SHELL_NAME:+ %2F\$${SHELL_NAME}%f}'
 
 eval "$(direnv hook zsh)"
+
+. ~/.privaterc || true

@@ -42,6 +42,8 @@ in {
       ])
       (with unstable; [
         [true [
+          websocat
+
           typst
 
           tinymist
@@ -134,6 +136,7 @@ in {
             nvim-ts-autotag
             tree-climber-nvim
             rainbow-delimiters-nvim
+            typst-preview-nvim
 
             vim-polyglot vim-signify
           ];

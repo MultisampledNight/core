@@ -799,6 +799,10 @@ dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
 end
 
+require("typst-preview").setup {
+  open_cmd = "firefox -p _app %s",
+}
+
 EOF
 
 " uncomment if debugging "interesting" behavior with spaces and the works

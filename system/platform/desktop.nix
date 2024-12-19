@@ -454,6 +454,13 @@ with import ../prelude args;
           "uBlock0@raymondhill.net" = addon "ublock-origin";
           "langpack-de@firefox.mozilla.org" = addon "deutsch-de-language-pack";
         };
+
+        Preferences = {
+          "extensions.activeThemeID" = {
+            Value = "firefox-compact-dark@mozilla.org";
+            Status = "default";
+          };
+        };
       };
 
       preferences = concatMapAttrs (prefix:
@@ -465,7 +472,6 @@ with import ../prelude args;
       ) {
         "" = {
           "browser.translations.automaticallyPopup" = false;
-          "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
         };
         "browser.search.suggest" = {
           "enabled" = false;

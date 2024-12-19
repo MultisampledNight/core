@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... } @ args:
 
 with lib;
-with import ./prelude args;
+with import ../prelude args;
 {
   boot.supportedFilesystems = ["ntfs"];
 

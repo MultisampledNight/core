@@ -238,4 +238,4 @@ RPROMPT+='${TIME_LEFT:+ >${TIME_LEFT}}${SHELL_NAME:+ %2F\$${SHELL_NAME}%f}'
 
 eval "$(direnv hook zsh)"
 
-. ~/.privaterc || true
+source ~/.privaterc 2>/dev/null || true

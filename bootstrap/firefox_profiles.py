@@ -76,16 +76,20 @@ class Manager:
 
     @classmethod
     def default(cls) -> Self:
-        allow_login = lambda domains: {
+        allow_login = lambda urls: {
             "privacy.clearOnShutdown_v2.cookies": False,
             "privacy.clearOnShutdown_v2.siteSettings": False,
         }
+        homepage = lambda url: {
+            "browser.startup.homepage": url,
+        }
+        only = lambda url: (allow_login([only]) | homepage(url))
 
         all = dict(
-            fedi=allow_login(["https://mastodon.catgirl.cloud"]),
-            discord=allow_login(["https://github.com"]),
+            fedi=only("https://mastodon.catgirl.cloud"),
+            discord=only("https://discord.com"),
             git=allow_login(["https://github.com", "https://gitlab.com"]),
-            spotify=allow_login(["https://open.spotify.com"]),
+            spotify=only("https://open.spotify.com"),
             zulip={},
             # used by e.g. typst-preview or wled
             _app={},

@@ -137,34 +137,34 @@ function DeleteCurrentFile()
   quit
 endfunction
 
-nnoremap <Space><Space> <Cmd>Telescope resume<CR>
-nnoremap <Space>f <Cmd>call TelescopeOnToplevel("find_files follow=true")<CR>
-nnoremap <Space>/ <Cmd>call TelescopeOnToplevel("live_grep")<CR> 
+nnoremap <Leader><Leader> <Cmd>Telescope resume<CR>
+nnoremap <Leader>f <Cmd>call TelescopeOnToplevel("find_files follow=true")<CR>
+nnoremap <Leader>/ <Cmd>call TelescopeOnToplevel("live_grep")<CR> 
 nnoremap gd <Cmd>call TelescopeOnToplevel("lsp_definitions")<CR>
 nnoremap gu <Cmd>call TelescopeOnToplevel("lsp_references")<CR>
-nnoremap <Space>i <Cmd>call TelescopeOnToplevel("lsp_implementations")<CR>
+nnoremap <Leader>i <Cmd>call TelescopeOnToplevel("lsp_implementations")<CR>
 
-nnoremap <Space>o <Cmd>Trouble diagnostics toggle filter.severity = vim.diagnostic.severity.ERROR<CR>
-nnoremap <Space>x <Cmd>Trouble diagnostics toggle filter.severity.min = vim.diagnostic.severity.WARN<CR>
-nnoremap <Space>b <Cmd>update \| Trouble diagnostics<CR>
+nnoremap <Leader>o <Cmd>Trouble diagnostics toggle filter.severity = vim.diagnostic.severity.ERROR<CR>
+nnoremap <Leader>x <Cmd>Trouble diagnostics toggle filter.severity.min = vim.diagnostic.severity.WARN<CR>
+nnoremap <Leader>b <Cmd>update \| Trouble diagnostics<CR>
 
-nnoremap <Space>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>
-vnoremap <Space>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>
-nnoremap <Space>r <Cmd>update \| lua vim.lsp.buf.rename()<CR>
-nnoremap <Space>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
-vnoremap <Space>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
-nnoremap <Space>g <Cmd>call TelescopeOnToplevel("lsp_workspace_symbols")<CR>
+nnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>
+vnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>
+nnoremap <Leader>r <Cmd>update \| lua vim.lsp.buf.rename()<CR>
+nnoremap <Leader>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
+vnoremap <Leader>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
+nnoremap <Leader>g <Cmd>call TelescopeOnToplevel("lsp_workspace_symbols")<CR>
 
-nnoremap <Space>s <Cmd>call TelescopeOnToplevel("treesitter")<CR>
-nnoremap <Space>w <Cmd>call TelescopeOnToplevel("keymaps")<CR>
+nnoremap <Leader>s <Cmd>call TelescopeOnToplevel("treesitter")<CR>
+nnoremap <Leader>w <Cmd>call TelescopeOnToplevel("keymaps")<CR>
 
-nnoremap <Space>. <Cmd>call TelescopeOnToplevel("git_status")<CR>
-nnoremap <Space>j <Cmd>call CreateNewFile()<CR>
-nnoremap <Space>c <Cmd>call RenameCurrentFile()<CR>
-nnoremap <Space>d <Cmd>call DeleteCurrentFile()<CR>
+nnoremap <Leader>. <Cmd>call TelescopeOnToplevel("git_status")<CR>
+nnoremap <Leader>j <Cmd>call CreateNewFile()<CR>
+nnoremap <Leader>c <Cmd>call RenameCurrentFile()<CR>
+nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<CR>
 
 nnoremap <Esc> <Cmd>update<CR>
-nnoremap <Space>q <Cmd>update \| call jobstart("cargo fmt")<CR>
+nnoremap <Leader>q <Cmd>update \| call jobstart("cargo fmt")<CR>
 
 nnoremap <F1> <NOP>
 inoremap <F1> <NOP>
@@ -306,10 +306,10 @@ require("nvim-treesitter.configs").setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "<Space><Enter>",
-      scope_incremental = "<Space>u",
-      node_incremental = "<Space>t",
-      node_decremental = "<Space>v",
+      init_selection = "<Leader><Enter>",
+      scope_incremental = "<Leader>u",
+      node_incremental = "<Leader>t",
+      node_decremental = "<Leader>v",
     },
   },
 }

@@ -188,232 +188,6 @@ runtime env.vim
 runtime notes.vim
 runtime output/mod.vim
 
-" abbreviations for typst and markdown
-function SetupAbbrevs()
-  let abbrevs = {
-    \ "=>":  "⇒",
-    \ "<=":  "⇐",
-    \ "==>": "⟹",
-    \ "<=>": "⇔",
-    \ "->":  "→",
-    \ "<-":  "⟵",
-    \ "<->": "⟷",
-    \ "|->": "⟼",
-    \ "<-|": "⟻",
-    \ "|=>": "⟾",
-    \ "<=|": "⟽",
-    \
-    \ "lra": "⟶",
-    \ "sea": "↘",
-    \ "swa": "↙",
-    \ "nwa": "↖",
-    \ "nea": "↗",
-    \
-    \ "rra": "→",
-    \ "dda": "↓",
-    \ "lla": "←",
-    \ "uua": "↑",
-    \
-    \ "cbl": "```<CR>```<Esc>kA",
-    \ "mk": "$$<Esc>i",
-    \ "dm": "$<CR><CR>$<Esc>ki",
-    \
-    \ "--": "–",
-    \ "---": "—",
-    \
-    \ "@a": "α ",
-    \ "@b": "β ",
-    \ "@c": "χ ",
-    \ "@d": "δ ",
-    \ ":d": "∂ ",
-    \ "@D": "Δ ",
-    \ "@e": "ϵ ",
-    \ ":e": "ε ",
-    \ "@g": "γ ",
-    \ "@k": "κ ",
-    \ "@l": "λ ",
-    \ "@L": "Λ ",
-    \ "@m": "μ ",
-    \ "@o": "ω ",
-    \ "@O": "Ω ",
-    \ "@r": "ρ ",
-    \ "@s": "σ ",
-    \ "@S": "Σ ",
-    \ "@t": "θ ",
-    \ "@T": "Θ ",
-    \ "@u": "τ ",
-    \ "@z": "ζ ",
-    \
-    \ "NN": "bb(N)",
-    \ "QQ": "bb(Q)",
-    \ "RR": "bb(R)",
-    \ "CC": "bb(C)",
-    \
-    \ "lor": "∨",
-    \ "land": "∧",
-    \ "lxor": "⊻",
-    \ "neg ": "¬",
-    \
-    \ "o+": "⊕",
-    \ "o×": "⊗",
-    \
-    \ "andd": "∩",
-    \ "orr": "∪",
-    \ "sus": "⊂",
-    \ "nsus": "⊂",
-    \ "inn": "∈",
-    \ "nin": "∉",
-    \
-    \ "sim": "~",
-    \ "deg": "°",
-    \
-    \ "ooo": "∞",
-    \
-    \ "faal": "∀",
-    \ "exs": "∃",
-    \
-    \ "pm": "plus.minus",
-    \
-    \ "prl": "∥",
-    \ "nprl": "∦",
-    \ "btt": "⊥",
-    \
-    \ "~~~": "≈",
-    \ "=~": "≈",
-    \ "===": "≡",
-    \ "!=": "≠",
-    \
-    \ "timm": "·",
-    \ "xx": "×",
-    \
-    \ "teq": "≜",
-    \ "Tri": "△",
-    \ "Ci": "○",
-    \ "Sq": "□",
-    \
-    \ "//": Frac("()", "()"),
-    \ "tfr": Frac('""', '""'),
-    \ "efr": Frac("^(", ")"),
-    \
-    \ "prt": Frac("partial ", "partial "),
-    \ "pr2": Frac("partial^2 ", "partial^2 "),
-    \ "pr3": Frac("partial^3 ", "partial^3 "),
-    \
-    \ "itg": "integral ~d x<Esc>F~i",
-    \
-    \ "acc": Fn("accent"),
-    \ "ora": "accent(, arrow)<Esc>f,i",
-    \
-    \ "hatt": "accent(, hat)<Esc>f,i",
-    \ "dott": "accent(, dot)<Esc>f,i",
-    \ "ddot": "accent(, dot.double)<Esc>f,i",
-    \ "dddot": "accent(, dot.triple)<Esc>f,i",
-    \ "ddddot": "accent(, dot.quad)<Esc>f,i",
-    \
-    \ "d1ot": "accent(, dot)<Esc>f,i",
-    \ "d2ot": "accent(, dot.double)<Esc>f,i",
-    \ "d3ot": "accent(, dot.triple)<Esc>f,i",
-    \ "d4ot": "accent(, dot.quad)<Esc>f,i",
-    \
-    \ "invs": "^(-1)",
-    \ "sr": "^2",
-    \ "cb": "^3",
-    \ "tsa": "^4",
-    \ "rd": "^()<Esc>i",
-    \
-    \ "sts": "_\"\"<Esc>i",
-    \ "idd": "_()<Esc>i",
-  \ }
-
-  " normal, un-pre-filled functions
-  let simple_funcs = #{
-    \ vc: "vec",
-    \
-    \ cnc: "cancel",
-    \ acc: "accent",
-    \
-    \ abs: "abs",
-    \ nrm: "norm",
-    \ eil: "ceil",
-    \ flr: "floor",
-    \ rnd: "round",
-    \
-    \ bb: "bb",
-    \ cal: "cal",
-    \
-    \ sqr: "sqrt",
-    \ esq: "root",
-  \ }
-  " ones that need to be duplicated for under/over variants
-  let overunder = #{
-    \ vl: "line",
-    \ vk: "bracket",
-    \ be: "brace",
-  \ }
-  call map(overunder, {short, long -> extend(
-    \ simple_funcs,
-    \ {
-      \ "o" . short: "over" . long,
-      \ "u" . short: "under" . long,
-    \ },
-  \ )})
-  " matrices
-  let matrices = #{
-    \ p: v:null,
-    \ k: "[",
-    \ b: "{",
-    \ v: "|",
-    \ d: "||",
-  \ }
-  let MaybeArg = {
-    \ ch -> ch != v:null
-    \ ? '<CR>  delim: "' . ch . '",'
-    \ : ""
-  \ }
-  call map(matrices, {short, delim -> extend(
-    \ abbrevs,
-    \ { short . "mat": $"mat({MaybeArg(delim)}<CR><CR>)<Esc>kS  " },
-  \ )})
-
-  " merge them all
-  call extend(abbrevs, map(simple_funcs, {_, long -> Fn(long)}))
-
-
-  for [short, long] in items(abbrevs)
-    exe "inoremap <silent> <buffer> "
-      \. Literalize(short, "aggressive")
-      \. " "
-      \. Literalize(long, "calm")
-  endfor
-endfunction
-
-function Literalize(seq, mode)
-  " this is terrible but i could not think of anything better
-  let Aggressive = {_, ch -> get({
-    \ "<": "<lt>",
-    \ "\\": "<Bslash>",
-    \ "|": "<Bar>",
-    \ " ": "<Space>",
-  \ }, ch, ch)}
-  let Calm = {_, ch -> get({
-    \ "|": "<Bar>",
-    \ " ": "<Space>",
-  \ }, ch, ch)}
-
-  if a:mode == "aggressive"
-    return map(a:seq, Aggressive)
-  else
-    return map(a:seq, Calm)
-  endif
-endfunction
-
-function Fn(name)
-  return $"{a:name}()<Esc>i"
-endfunction
-function Frac(a, b)
-  return $"{a:a}/{a:b}<Esc>{len(a:b) + 1}hi"
-endfunction
-
 " godot
 function CloseIfAlreadyOpen()
   let pidfile = $state_local . "/neovim/editing-in-godot"
@@ -434,8 +208,10 @@ autocmd BufNewFile,BufRead *.gd
   \|set updatetime=500
 
 " rust
-autocmd BufNewFile,BufRead *.rs set equalprg=rustfmt formatprg=rustfmt
-autocmd BufNewFile,BufRead *.rs lua require("dap.ext.vscode").load_launchjs(".ide/launch.json")
+autocmd BufNewFile,BufRead *.rs
+  \ set equalprg=rustfmt formatprg=rustfmt
+  \|lua require("dap.ext.vscode").load_launchjs(".ide/launch.json")
+  \|nnoremap <Space>q <Cmd>update \| call jobstart("cargo fmt")<CR>
 function RustProjectExecutable()
   let metadata = trim(system("cargo metadata --format-version=1 --offline --no-deps 2>/dev/null"))
   if metadata == ""
@@ -455,7 +231,8 @@ autocmd BufNewFile,BufRead *.md set tw=80 sw=2 ts=2 sts=0 et
 autocmd BufNewFile,BufRead *.agda set ft=agda
 
 " python
-autocmd BufWritePost *.py,*.pyw call jobstart(["black", expand("%")], { "detach": v:false })
+autocmd BufNewFile,BufRead *.py,*.pyw
+  \ nnoremap <Space>q <Cmd>update \| call jobstart(["black", expand("%")], { "detach": v:false })<CR>
 
 " sql
 autocmd BufNewFile,BufRead *.sql set sw=4 ts=4 sts=0 et
@@ -472,20 +249,19 @@ autocmd BufNewFile,BufRead *.html set ts=2 sw=2 noet
 " latex
 autocmd BufNewFile,BufRead *.tex
   \ set filetype=latex sw=2 ts=2 sts=0 et
-  \|noremap <buffer> <Leader>1 <Cmd>call ExecAtFile(["pdflatex", "-halt-on-error", "-jobname=view", expand("%")])<CR>
-  \|noremap <buffer> <Leader>2 <Cmd>call ViewCurrentPdf()<CR>
+  \|noremap <buffer> <Leader>1 <Cmd>call ViewCurrentPdf()<CR>
+  \|noremap <buffer> <Leader>2 <Cmd>call ExecAtFile(["pdflatex", "-halt-on-error", "-jobname=view", expand("%")])<CR>
 autocmd VimLeavePre *.tex
   \ call StopProgram("evince")
 
 " typst
 autocmd BufNewFile,BufRead *.typ
   \ set filetype=typst sw=2 ts=2 sts=0 et
-  \|noremap <buffer> <Leader>2 <Cmd>call ViewCurrentPdf()<CR>
-autocmd VimLeavePre *.typ
-  \|call StopProgram("evince")
+  \|noremap <buffer> <Leader>1 <Cmd>TypstPreviewToggle<CR>
+  \|noremap <buffer> <Leader>0 <Cmd>TypstPreviewFollowCursorToggle<CR>
 
 " both latex and typst, and anything that would require a pdf
-autocmd BufEnter *.tex,*.typ call ViewCurrentPdf()
+autocmd BufEnter *.tex call ViewCurrentPdf()
 let g:tracked_programs = {}
 
 function CurrentPdfPath()
@@ -799,8 +575,22 @@ dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
 end
 
+local bin = "/run/current-system/sw/bin"
+
 require("typst-preview").setup {
-  open_cmd = "firefox -p _app %s",
+  open_cmd = "webapp %s",
+  dependencies_bin = {
+    ["tinymist"] = bin .. "/tinymist",
+    ["websocat"] = bin .. "/websocat",
+  },
+  get_root = function(_)
+    return vim.g.toplevel
+  end,
+
+  invert_colors = "never",
+  extra_args = {
+    "--input=dev=true",
+  },
 }
 
 EOF

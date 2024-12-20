@@ -30,13 +30,13 @@ endfunction
 " Returns options for soft tabs aka spaces for indenting,
 " using the given amount of spaces for one indent.
 function s:soft(spaces)
-  return #{sw: a:spaces, ts: a:spaces, sts: 0, et: "yes"}
+  return #{sw: a:spaces, ts: a:spaces, sts: 0, et: v:true}
 endfunction
 
 " Returns options for hard tabs, to be displayed as the given amount of
 " spaces each.
 function s:hard(display)
-  return s:merge(s:soft(a:display), #{et: "no"})
+  return s:merge(s:soft(a:display), #{et: v:false})
 endfunction
 
 let cfg = #{
@@ -58,10 +58,12 @@ function s:serialize(opts)
 
   for [key, value] in items(a:opts)
     let conv .= " "
-    if value == "yes"
+
+    if type(value) == v:t_bool
+      if !value
+        let conv .= "no"
+      endif
       let conv .= key
-    elseif value == "no"
-      let conv .= $"no{key}"
     else
       let conv .= key . "=" . value
     endif

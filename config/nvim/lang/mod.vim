@@ -1,0 +1,11 @@
+runtime lang/godot.vim
+runtime lang/rust.vim
+runtime lang/markdown.vim
+runtime lang/agda.vim
+runtime lang/python.vim
+runtime lang/sql.vim
+runtime lang/kdl.vim
+runtime lang/scm.vim
+runtime lang/html.vim
+runtime lang/latex.vim
+runtime lang/typst.vim

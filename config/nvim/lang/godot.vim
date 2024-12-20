@@ -12,6 +12,3 @@ function CloseIfAlreadyOpen()
 endfunction
 autocmd VimEnter *.gd
   \ call CloseIfAlreadyOpen()
-autocmd BufNewFile,BufRead *.gd
-  \ set filetype=gdscript
-  \|set updatetime=500

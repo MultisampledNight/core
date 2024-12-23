@@ -271,6 +271,7 @@ lspconfig.texlab.setup {
   },
 }
 lspconfig.ts_ls.setup {}
+lspconfig.typos_lsp.setup {}
 lspconfig.tinymist.setup {
   settings = {
     formatterPrintWidth = 80,
@@ -282,11 +283,9 @@ lspconfig.tinymist.setup {
     exportPdf = "onSave",
     outputPath = "$root/target/view.pdf",
   },
-  -- fails with index out of bounds otherwise (UTF-16/UTF-8 miscomms)
-  -- https://github.com/neovim/neovim/issues/30675#issuecomment-2395272151
-  offset_encoding = "utf-8",
 }
 lspconfig.nil_ls.setup {}
+vim.lsp.set_log_level("error")
 
 require("trouble").setup({
   open_no_results = true,

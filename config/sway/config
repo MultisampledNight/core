@@ -71,7 +71,7 @@ bindsym $mod+Tab exec fuzzel
 bindsym $mod+j exec firefox -p fedi
 bindsym $mod+d exec firefox
 bindsym $mod+Shift+d exec tor-browser
-bindsym $mod+u exec discord
+bindsym $mod+u exec firefox -p ccc
 bindsym $mod+a exec firefox -p git
 bindsym $mod+x exec thunderbird
 bindsym $mod+p exec firefox -p zulip

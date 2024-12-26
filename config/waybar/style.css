@@ -17,7 +17,7 @@ window#waybar {
 
 #workspaces button {
     background: transparent;
-    min-width: 46px;
+    min-width: 16px;
 }
 
 #workspaces button:hover {
@@ -29,19 +29,17 @@ window#waybar {
 }
 
 
-#clock, #battery, #cpu, #memory, #temperature, #backlight, #pulseaudio, #mode {
+* {
     padding: 0 8px;
 }
 
 #mode {
     color: #00C7F7;
-    margin-left: 20px;
+    margin-right: 2px;
 }
 
 #clock {
-    box-shadow: inset 0 0.5px #B6B3B4;
     padding-left: 10px;
-    padding-right: 10px;
 }
 
 #clock, #battery, #cpu, #memory, #temperature, #pulseaudio {

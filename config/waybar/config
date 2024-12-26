@@ -1,3 +1,4 @@
+// vim: ft=json5
 {
     "layer": "top",
     "position": "top",
@@ -5,9 +6,9 @@
     "height": 32,
     "spacing": 2,
     "margin": 0,
-    "modules-left": ["sway/workspaces", "sway/mode", "custom/next-stop"],
-    "modules-center": ["clock"],
-    "modules-right": ["custom/train", "battery", "tray"],
+    "modules-left": ["battery"],
+    "modules-center": ["custom/train", "custom/next-stop"],
+    "modules-right": ["sway/mode", "sway/workspaces", "tray", "clock"],
     "clock": {
         "interval": 1,
         "format": "{:%Y-%m-%d  %H:%M:%S}",
@@ -46,7 +47,7 @@
     },
     "custom/train": {
         "format": "TRAIN {}",
-        "interval": 30,
+        "interval": 10,
         "exec": "train vehicle",
         "exec-if": "[[ $(ssid) == WIFIonICE ]]",
     },

@@ -1,5 +1,73 @@
-#!/usr/bin/env sh
-set -euo pipefail
+#!/usr/bin/env python3
+# Fetches trip info from the DB ICE API and prints it nicely.
+# Idea mostly taken from: https://git.catgirl.cloud/999eagle/dotfiles-nix
+import sys
+from dataclasses import dataclass
+from datetime import datetime, date
+from enum import Enum
 
-ssid
+import requests
+from multisn8 import sh
 
+
+SSID = "WIFIonICE"
+API_ENDPOINT = "https://iceportal.de/api1/rs/tripInfo/trip"
+
+
+def format_timestamp(stamp: int) -> str | None:
+    # timestamps from the db api seem to be
+    # always in microsecond precision
+    # ...but they're always multiples of 1000 * 60
+    # ...so the precision is in minutes anyway
+    if stamp is None:
+        return None
+    stamp /= 1000
+    point = datetime.fromtimestamp(stamp)
+
+    format = "%H:%M"
+
+    if point.date() != date.today():
+        # render a long form, today might not be clear
+        format = "%Y-%m-%d " + format
+
+    return point.strftime(format)
+
+
+def format_stop(stop: dict) -> str:
+    name = stop["station"]["name"]
+    track = stop["track"]["actual"]
+    arrival, departure = map(
+        lambda key: format_timestamp(stop["timetable"][key]),
+        ["actualArrivalTime", "actualDepartureTime"],
+    )
+
+    out = f"{name} @{track} "
+
+    if arrival is None:
+        out += f"<{departure}"
+    else:
+        out += f">{arrival}"
+
+    return out
+
+
+def main() -> int:
+    if sh("ssid").strip() != SSID:
+        return 1
+    trip = requests.get(API_ENDPOINT).json()["trip"]
+
+    train = " ".join(map(lambda key: trip[key], ["trainType", "vzn"]))
+
+    final_stop = trip["stops"][-1]
+    next_stop = next(
+        stop for stop in trip["stops"] if stop["info"]["positionStatus"] == "future"
+    )
+
+    print(f"{train} to {format_stop(final_stop)}")
+    print(f"Next: {format_stop(next_stop)}")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

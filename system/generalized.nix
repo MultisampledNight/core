@@ -4,7 +4,11 @@
 
 with lib;
 with import ./prelude args;
-{
+let
+  py = pkgs.python3.withPackages (ps: with ps; [
+    requests
+  ]);
+in {
   options.generalized = {
     boot = mkOption {
       type = types.nullOr (types.enum ["uefi" "bios"]);
@@ -330,7 +334,7 @@ with import ./prelude args;
           ]]
         ])
         (with unstable; [
-          [true [python3]]
+          [true [py]]
           [cfg.wayland [
             fuzzel waybar grim slurp swappy hyprpicker fnott
             swaybg swaylock wl-clipboard

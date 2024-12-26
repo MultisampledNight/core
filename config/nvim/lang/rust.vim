@@ -1,6 +1,6 @@
 autocmd BufNewFile,BufRead *.rs
-  \ lua require("dap.ext.vscode").load_launchjs(".ide/launch.json")
-  \|nnoremap <Leader>q <Cmd>update \| call jobstart("cargo fmt")<CR>
+  \ nnoremap <Leader>q <Cmd>update \| call jobstart("cargo fmt")<CR>
+  \|lua require("dap.ext.vscode").load_launchjs(".ide/launch.json")
 function RustProjectExecutable()
   let metadata = trim(system("cargo metadata --format-version=1 --offline --no-deps 2>/dev/null"))
   if metadata == ""

@@ -1,0 +1,58 @@
+#!/usr/bin/env echo "Not intended to be run manually. Instead, it's to be imported by scripts."
+# vim: ft=zsh
+#
+# Utilities for interacting with DBus.
+# Depends on: busctl
+
+call() {
+	bus="$1"
+	object="$2"
+	interface="$3"
+	method="$4"
+	shift 4
+	busctl --json=short \
+		call "$bus" "$object" "$interface" "$method" \
+		| jq $@
+}
+
+get() {
+	bus="$1"
+	object="$2"
+	interface="$3"
+	property="$4"
+	shift 4
+	busctl --json=short \
+		get-property "$bus" "$object" "$interface" "$property" \
+	| jq -r '.data'
+}
+
+introspect() {
+	bus="$1"
+	object="$2"
+	filter="$3"
+	call \
+		"$bus" \
+		"$object" \
+		org.freedesktop.DBus.Introspectable \
+		Introspect \
+		-r '.data[0]' \
+	| xq -r --xml-force-list 'node' \
+		"$filter"
+}
+
+children() {
+	bus="$1"
+	object="$2"
+	introspect "$bus" "$object" \
+		"\"$object/\" + (.node[].node[].\"@name\")"
+}
+
+filter-interface() {
+    bus="$1"
+    objects="$2"
+    searched="$3"
+    for obj in $objects; do
+        impls=`introspect "$bus" "$obj" '.node[].interface[]."@name"'`
+        if [[ "$impls" =~ ".*$searched.*" ]]; echo "$obj"
+    done
+}

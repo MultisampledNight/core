@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Echoes all SSIDs separated by newlines.
+# (This isn't fully attack-proof. SSIDs can contain newlines, after all.)
+#set -euo pipefail
+. deepbus
+
+bus="net.connman.iwd"
+iface() {
+	echo "net.connman.iwd.$1"
+}
+if_station=`iface Station`
+if_net=`iface Network`
+
+objects=`children $bus /net/connman/iwd/0`
+stations=`filter-interface "$bus" "$objects" "$if_station"`
+for st in $stations; do
+	network=`get "$bus" "$st" "$if_station" ConnectedNetwork`
+	get "$bus" "$network" "$if_net" Name
+done
+

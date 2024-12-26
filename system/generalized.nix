@@ -313,7 +313,7 @@ with import ./prelude args;
             fd ripgrep
             tree
             file pv
-            ffmpeg mpv jq unzip zip
+            ffmpeg mpv jq yq unzip zip
             sqlite-interactive
             btop sysstat
             hexyl

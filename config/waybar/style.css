@@ -29,7 +29,7 @@ window#waybar {
 }
 
 
-#clock, #battery, #cpu, #memory, #temperature, #backlight, #pulseaudio, #mode, #custom-int-kb {
+#clock, #battery, #cpu, #memory, #temperature, #backlight, #pulseaudio, #mode {
     padding: 0 8px;
 }
 
@@ -47,3 +47,4 @@ window#waybar {
 #clock, #battery, #cpu, #memory, #temperature, #pulseaudio {
      color: #B6B3B4;
 }
+

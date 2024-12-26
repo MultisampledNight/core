@@ -2,74 +2,137 @@
 # Fetches trip info from the DB ICE API and prints it nicely.
 # Idea mostly taken from: https://git.catgirl.cloud/999eagle/dotfiles-nix
 import sys
+from argparse import ArgumentParser
 from dataclasses import dataclass
-from datetime import datetime, date
+from datetime import datetime
 from enum import Enum
 
 import requests
-from multisn8 import sh
+from multisn8 import fmt_datetime
 
 
-SSID = "WIFIonICE"
-API_ENDPOINT = "https://iceportal.de/api1/rs/tripInfo/trip"
+ENDPOINT = "https://iceportal.de/api1/rs/"
 
 
-def format_timestamp(stamp: int) -> str | None:
+def ms_timestamp(stamp: int | None) -> datetime | None:
+    if stamp is None:
+        return None
+    return datetime.fromtimestamp(stamp / 1000)
+
+
+@dataclass
+class Stop:
+    data: dict
+
+    @property
+    def name(self) -> str:
+        return self.data["station"]["name"]
+
+    @property
+    def track(self) -> str:
+        """Note that tracks aren't always numerical."""
+        return self.data["track"]["actual"]
+
     # timestamps from the db api seem to be
     # always in microsecond precision
     # ...but they're always multiples of 1000 * 60
     # ...so the precision is in minutes anyway
-    if stamp is None:
-        return None
-    stamp /= 1000
-    point = datetime.fromtimestamp(stamp)
+    @property
+    def arrival(self) -> datetime | None:
+        return ms_timestamp(self.data["timetable"]["actualArrivalTime"])
 
-    format = "%H:%M"
+    @property
+    def departure(self) -> datetime | None:
+        return ms_timestamp(self.data["timetable"]["actualDepartureTime"])
 
-    if point.date() != date.today():
-        # render a long form, today might not be clear
-        format = "%Y-%m-%d " + format
+    def __str__(self) -> str:
+        out = f"{self.name} #{self.track} "
 
-    return point.strftime(format)
+        if self.arrival is None:
+            sign = "<"
+            time = self.departure
+        else:
+            sign = ">"
+            time = self.arrival
 
-
-def format_stop(stop: dict) -> str:
-    name = stop["station"]["name"]
-    track = stop["track"]["actual"]
-    arrival, departure = map(
-        lambda key: format_timestamp(stop["timetable"][key]),
-        ["actualArrivalTime", "actualDepartureTime"],
-    )
-
-    out = f"{name} @{track} "
-
-    if arrival is None:
-        out += f"<{departure}"
-    else:
-        out += f">{arrival}"
-
-    return out
+        out += f"{sign}{fmt_datetime(time)}"
+        return out
 
 
-def main() -> int:
-    if sh("ssid").strip() != SSID:
-        return 1
-    trip = requests.get(API_ENDPOINT).json()["trip"]
+class Train:
+    """Fetches and formats information about the current train nicely."""
 
-    train = " ".join(map(lambda key: trip[key], ["trainType", "vzn"]))
+    def __init__(self, endpoint=ENDPOINT):
+        self.status = requests.get(endpoint + "status").json()
+        self.trip = requests.get(endpoint + "tripInfo/trip").json()["trip"]
 
-    final_stop = trip["stops"][-1]
-    next_stop = next(
-        stop for stop in trip["stops"] if stop["info"]["positionStatus"] == "future"
-    )
+    @property
+    def speed(self) -> int:
+        """Speed in km/h."""
+        return int(self.status["speed"])
 
+    @property
+    def train_type(self) -> str:
+        return self.status["trainType"]
+
+    @property
+    def series(self) -> str:
+        return self.status["series"]
+
+    @property
+    def traffic_id(self) -> str:
+        """Traff"""
+        return self.trip["vzn"]
+
+    @property
+    def stop_final(self) -> Stop:
+        return Stop(self.trip["stops"][-1])
+
+    @property
+    def stop_next(self) -> str:
+        selected = next(
+            stop
+            for stop in self.trip["stops"]
+            if stop["info"]["positionStatus"] == "future"
+        )
+        return Stop(selected)
+
+    def vehicle(self) -> str:
+        """Textual description of the vehicle's state."""
+        return " ".join([self.train_type, self.series, f"@{self.speed} km/h"])
+
+    def total(self) -> str:
+        """What the trip very coarsely does."""
+        return f"{self.traffic_id} to {self.stop_final}"
+
+
+def all():
+    train = Train()
     print(
-        f"{train} to {format_stop(final_stop)}, "
-        f"next: {format_stop(next_stop)}"
+        train.vehicle(),
+        train.total(),
+        f"next: {train.stop_next}",
+        sep="\n",
     )
 
-    return 0
+
+def main():
+    parser = ArgumentParser(description="chooo choooo", epilog="only works in ICEs")
+    parser.set_defaults(func=all)
+
+    sub = parser.add_subparsers()
+
+    callbacks = {
+        "vehicle": lambda: print(Train().vehicle()),
+        "total": lambda: print(Train().total()),
+        "next": lambda: print(Train().stop_next),
+    }
+    for name, func in callbacks.items():
+        cmd = sub.add_parser(name)
+        cmd.set_defaults(func=func)
+
+    parser.parse_args().func()
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

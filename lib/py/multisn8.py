@@ -2,6 +2,7 @@
 import os
 import shlex
 import subprocess
+from datetime import datetime, date
 from itertools import accumulate
 from math import log10
 from pathlib import Path
@@ -48,3 +49,17 @@ def friendly_size(
 
     display = str(round(size, ndigits=2))
     return display + chosen
+
+
+def fmt_datetime(point: datetime) -> str:
+    """
+    Formats in short if the datetime is today,
+    otherwise uses the long form.
+    """
+    format = "%H:%M:%S"
+
+    if point.date() != date.today():
+        # render a long form, today might not be clear
+        format = "%Y-%m-%d " + format
+
+    return point.strftime(format)

@@ -63,8 +63,10 @@ def main() -> int:
         stop for stop in trip["stops"] if stop["info"]["positionStatus"] == "future"
     )
 
-    print(f"{train} to {format_stop(final_stop)}")
-    print(f"Next: {format_stop(next_stop)}")
+    print(
+        f"{train} to {format_stop(final_stop)}, "
+        f"next: {format_stop(next_stop)}"
+    )
 
     return 0
 

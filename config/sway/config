@@ -84,6 +84,7 @@ bindsym $mod+i exec xournalpp
 bindsym $mod+f exec blender
 bindsym $mod+v exec inkscape
 bindsym $mod+udiaeresis exec godot4
+bindsym $mod+Escape sticky toggle
 
 bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+q kill

@@ -96,6 +96,7 @@ with import ../prelude args;
           gucharmap
           evince
           kdePackages.kruler
+          gnome-clocks
         ]]
         [cfg.xorg [
           xorg.xauth rofi flameshot

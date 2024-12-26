@@ -11,7 +11,7 @@
 	
 	"clock": {
 		"interval": 1,
-		"format": "{:%Y-%m-%d  %H %M}",
+		"format": "{:%Y-%m-%d  %H:%M:%S}",
 		"tooltip": false,
 	},
 	"cpu": {

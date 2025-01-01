@@ -301,6 +301,9 @@ in {
 
         KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", MODE:="0777", GROUP:="plugdev", RUN+="${lib.getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p'"
         DRIVER=="hid_sensor*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", RUN+="${lib.getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p && chmod 0777 /dev/%k'"
+
+        # FT232 DMX <-> USB interface
+        SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", MODE="0666", GROUP="plugdev"
       '';
 
       system76-scheduler.enable = true;

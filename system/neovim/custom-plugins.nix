@@ -16,15 +16,4 @@ in final: prev: {
     };
     meta.homepage = "https://github.com/MultisampledNight/colorschemes";
   };
-  tree-climber-nvim = build {
-    name = "tree-climber-nvim";
-    version = "2022-10-14";
-    src = pkgs.fetchFromGitHub {
-      owner = "drybalka";
-      repo = "tree-climber.nvim";
-      rev = "9b0c8c8358f575f924008945c74fd4f40d814cd7";
-      hash = "sha256-iivP8g8aSeEnS/dBcb0sg583ijzhWFA7w430xWPmjF0=";
-    };
-    meta.homepage = "https://github.com/drybalka/tree-climber.nvim";
-  };
 }

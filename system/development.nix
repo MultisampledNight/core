@@ -134,7 +134,6 @@ in {
             ]))
             nvim-treesitter-context
             nvim-ts-autotag
-            tree-climber-nvim
             rainbow-delimiters-nvim
             typst-preview-nvim
 

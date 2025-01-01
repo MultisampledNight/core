@@ -74,23 +74,6 @@ vnoremap gN N<Cmd>noh<CR>
 vnoremap <silent> P "+p
 vnoremap <silent> Y "+y
 
-function Climber(key, fn, extra = "")
-  for mode in "no" . a:extra
-    let opts = '{ timeout = 1000, skip_comments = true }'
-    let lua_code = $'require("tree-climber").{a:fn}({opts})'
-    let cb = $'<Cmd>lua {lua_code}<CR>'
-    exe $'{mode}noremap {a:key} {cb}'
-  endfor
-endfunction
-
-call Climber("K", "goto_prev")
-call Climber("J", "goto_next")
-call Climber("H", "goto_parent", "v")
-call Climber("L", "goto_child", "v")
-call Climber("<M-h>", "swap_prev", "iv")
-call Climber("<M-l>", "swap_next", "iv")
-call Climber("<C-h>", "highlight_node", "iv")
-
 function TelescopeOnToplevel(command)
   silent update
   exe $'Telescope {a:command} cwd={g:toplevel}'

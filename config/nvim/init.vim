@@ -266,6 +266,7 @@ lspconfig.tinymist.setup {
     exportPdf = "onSave",
     outputPath = "$root/target/view.pdf",
   },
+  offset_encoding = "utf-8",
 }
 lspconfig.nil_ls.setup {}
 vim.lsp.set_log_level("error")

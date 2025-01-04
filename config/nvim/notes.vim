@@ -6,7 +6,7 @@ let template = zero . "/template"
 let g:date_format = "%Y-%m-%d"
 
 function Notes()
-  set tw=80 sw=2 ts=2 sts=0 et
+  set tw=60 sw=2 ts=2 sts=0 et
 
   noremap <Leader>m <Cmd>call OpenToday()<CR>
   noremap <Leader>p <Cmd>call InteractTask(">")<CR>

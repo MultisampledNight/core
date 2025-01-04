@@ -511,8 +511,6 @@ in {
             (builtins.elem (lib.getName pkg) [
               "nvidia-x11"
               "nvidia-settings"
-              "vimplugin-treesitter-grammar-cuda_merged"
-              "blender"
               # those below are all just for CUDA it's so joever
               "libnpp"
             ]) || (
@@ -525,7 +523,7 @@ in {
 
         overlays = [
           (final: prev: {
-            # this overlay will be superflous over time — just updating to newer package versions selectively
+            # this overlay will be superfluous over time — just updating to newer package versions selectively
 
             neovim-unwrapped = (nixpkgsFromCommit {
               rev = "pull/367183/head";
@@ -541,11 +539,6 @@ in {
             linuxZenFast = prev.linuxPackagesFor (prev.linuxKernel.kernels.linux_zen.override {
               stdenv = final.fastStdenv;
             });
-          } else {})
-          (final: prev: if (cfg.videoDriver == "nvidia") then {
-            blender = prev.blender.override {
-              cudaSupport = true;
-            };
           } else {})
         ];
       };

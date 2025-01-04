@@ -87,6 +87,7 @@ class Manager:
 
         all = dict(
             fedi=only("https://mastodon.catgirl.cloud"),
+            fedi2={},
             discord=only("https://discord.com"),
             git=allow_login(["https://github.com", "https://gitlab.com"]),
             spotify=only("https://open.spotify.com"),

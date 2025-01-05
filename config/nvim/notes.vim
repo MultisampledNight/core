@@ -4,6 +4,7 @@ let daily_note = zero . "/daily-note"
 let template = zero . "/template"
 
 let g:date_format = "%Y-%m-%d"
+let g:datetime_format = g:date_format . " %H:%M:%S"
 
 function Notes()
   set tw=60 sw=2 ts=2 sts=0 et
@@ -26,7 +27,7 @@ function RealizeVariables()
   " substitute cfg values
   let vars = #{
     \ title: expand("%:t:r"),
-    \ today: strftime(g:date_format),
+    \ today: strftime(g:datetime_format),
   \ }
   
   for [name, value] in items(vars)

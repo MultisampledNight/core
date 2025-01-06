@@ -154,6 +154,7 @@ put() {
 
 	machine="$1"
 	source="$2"
+	target="${3:-$default_target}"
 
 	if [[ "$1" == "possible" ]]; then
 		shell=(adb shell)
@@ -168,10 +169,8 @@ put() {
 		transfer=(rsync --recursive)
 		default_target="$state_share/recv"
 
-		source="$machine:$source"
+		target="$machine:$target"
 	fi
-
-	target="${3:-$default_target}"
 
 	$shell mkdir -p "$target"
 	$transfer "$source" "$target"

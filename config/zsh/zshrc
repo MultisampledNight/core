@@ -124,7 +124,6 @@ flash() {
 }
 android_zero="/sdcard/zero"
 android_state_share="$android_zero/state/share"
-android_recv="$android_state_share/recv"
 get() {
 	if [[ -z "$2" ]]; then
 		echo "usage: <machine> <remote-source-path> [<local-target-path>]"
@@ -133,42 +132,51 @@ get() {
 		return 1
 	fi
 
-	# TODO: make this check on possible and if so, use adb instead
 	machine="$1"
 	source=`realpath --no-symlinks --canonicalize-missing $2`
-	if [[ -z "$3" ]]; then
-		target=.
+	target="${3:-.}"
+
+	if [[ "$1" == "possible" ]]; then
+		transfer=(adb pull)
 	else
-		target="$3"
+		transfer=(rsync --recursive --links)
+		source="$machine:$source"
 	fi
 
-	rsync --recursive --links "$machine:$source" "$target"
+	$transfer "$source" "$target"
 }
 put() {
-	# TODO: if not possible, use rsync
 	if [[ -z "$2" ]]; then
 		echo "usage: <machine> <local-source-path> [<remote-target-path>]"
 		echo "remote target path defaults the zero recv dir"
 		return 1
 	fi
 
-	if [[ "$1" != "possible" ]]; then
-		echo "sorry, not implemented yet"
-		return 101
-	fi
-
-	adb wait-for-device
-
+	machine="$1"
 	source="$2"
-	if [[ -z "$3" ]]; then
-		target="$android_recv"
-		adb shell mkdir -p "$target"
+
+	if [[ "$1" == "possible" ]]; then
+		shell=(adb shell)
+		transfer=(adb push)
+		default_target="$android_state_share/recv"
+
+		# this allows using the same cable for the keyboard as for the device!
+		# just run `put ...`, unplug from the keyboard, plug into the phone, and it's transferred!
+		adb wait-for-device
 	else
-		target="$3"
+		shell=(ssh "$machine")
+		transfer=(rsync --recursive)
+		default_target="$state_share/recv"
+
+		source="$machine:$source"
 	fi
 
-	adb push "$source" "$target"
+	target="${3:-$default_target}"
+
+	$shell mkdir -p "$target"
+	$transfer "$source" "$target"
 }
+
 to() {
 	if [[ -z "$1" ]]; then
 		echo "usage: <machine> [<command-and-args...>]"

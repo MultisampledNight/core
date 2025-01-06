@@ -166,7 +166,6 @@ put() {
 	else
 		shell=(ssh "$machine")
 		transfer=(rsync --recursive)
-		default_target=""
 		target="$machine:${3:-$state_share/recv}"
 	fi
 

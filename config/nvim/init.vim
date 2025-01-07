@@ -127,6 +127,9 @@ nnoremap gd <Cmd>call TelescopeOnToplevel("lsp_definitions")<CR>
 nnoremap gu <Cmd>call TelescopeOnToplevel("lsp_references")<CR>
 nnoremap <Leader>i <Cmd>call TelescopeOnToplevel("lsp_implementations")<CR>
 
+nmap <X1Mouse> <LeftMouse>gd
+nmap <X2Mouse> <LeftMouse><C-o>
+
 nnoremap <Leader>o <Cmd>Trouble diagnostics toggle filter.severity = vim.diagnostic.severity.ERROR<CR>
 nnoremap <Leader>x <Cmd>Trouble diagnostics toggle filter.severity.min = vim.diagnostic.severity.WARN<CR>
 nnoremap <Leader>b <Cmd>update \| Trouble diagnostics<CR>

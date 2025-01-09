@@ -13,7 +13,7 @@ with import ../prelude args;
     mkIf cfg.gaming {
       nichthemeron = {
         isNormalUser = true;
-        extraGroups = condList cfg.graphical ["input"];
+        extraGroups = optionals cfg.graphical ["input"];
         shell = pkgs.zsh;
       };
     };
@@ -60,7 +60,7 @@ with import ../prelude args;
           })
       );
 
-      videoDrivers = [cfg.videoDriver];
+      videoDrivers = allVideoDrivers;
 
       desktopManager.wallpaper = {
         mode = "fill";

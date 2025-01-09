@@ -142,7 +142,7 @@ Example `configuration.nix`:
     wayland = true;
     audio = true;
     profileGuided = true;
-    videoDriver = "nvidia";
+    video.driver = "nvidia";
   };
 
   # Before changing this value read the documentation for this option

@@ -25,12 +25,6 @@ rec {
   # Shorthand for generalized's configuration, usually done by the end-user.
   cfg = config.generalized;
 
-  # Returns the given `value` if `cond`, otherwise an empty list.
-  condList = cond: value:
-    if cond
-    then value
-    else [];
-
   # Flattens the given list twice.
   # 1. The first level is flattened unconditionally.
   #    It is thought for `with ...;` statements.
@@ -63,6 +57,14 @@ rec {
   mapKey = keyOp: mapKv keyOp (v: v);
   mapValue = valueOp: mapKv (k: k) valueOp;
 
+  # Is `single` in the given list?
+  contains = single: any (item: item == single);
+
+  # Take value `lookup` for each key in `keys`,
+  # joining the results in a list.
+  # If a key is not in `lookup`, it'll have no effect on the joined list.
+  select = lookup: keys: concatMap (key: lookup.${key} or []) keys;
+
   nixpkgsFromCommit = { rev, hash, opts ? {} }:
     let
       tree = pkgs.fetchzip {
@@ -84,4 +86,25 @@ rec {
     ))
     dense
   );
+
+  # List of all used video drivers.
+  allVideoDrivers = let
+    unsorted =
+      if cfg.video.driver == null
+        then []
+      else if (isAttrs cfg.video.driver)
+        then (attrValues cfg.video.driver)
+      else singleton cfg.video.driver;
+
+    pref = cfg.video.prefer;
+  in
+    if pref == null
+      then unsorted
+    else [pref] ++ (remove pref unsorted);
+
+  # Is there at least one Nvidia GPU on this system?
+  hasNv = contains "nvidia" allVideoDrivers;
+
+  # Shorthand for `select ... allVideoDrivers`.
+  selectForDrivers = lookup: select lookup allVideoDrivers;
 }

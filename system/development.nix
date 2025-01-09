@@ -35,7 +35,7 @@ in {
           jetbrains.idea-community
           jetbrains.pycharm-community
         ]]
-        [(cfg.videoDriver == "nvidia") [
+        [hasNv [
           cudatk
           nvidia
         ]]
@@ -58,16 +58,21 @@ in {
     ];
 
     sessionVariables = {
-      VK_ICD_FILENAMES =
-        # hacky but who cares, it's semi-ensured to be there through hardware.opengl.extraPackages anyway
-        condList (cfg.videoDriver != null)
-          [
-            "/run/opengl-driver/share/vulkan/icd.d/${cfg.videoDriver}_icd.x86_64.json"
-            "/run/opengl-driver-32/share/vulkan/icd.d/${cfg.videoDriver}_icd.i686.json"
-          ];
+      VK_LOADER_DRIVERS = let
+        manifest = driver: is64bit: let
+          suffix = optionalString (!is64bit) "-32";
+          # TODO: figure out how to handle ARM and RISC-V archs
+          arch = if is64bit then "x86_64" else "i686";
+        in
+          "/run/opengl-driver${suffix}/share/vulkan/icd.d/${driver}_icd.${arch}.json";
+      in
+        concatMap
+          (driver: map (manifest driver) [true false])
+          # that var already took care of putting the preferred one first (if any)
+          allVideoDrivers;
       NEOVIDE_FORK = "1";
     }
-    // (if cfg.videoDriver == "nvidia" then {
+    // (if hasNv then {
       # both required for blender
       CUDA_PATH = "${cudatk}";
       CYCLES_CUDA_EXTRA_CFLAGS = concatStringsSep " " [
@@ -80,10 +85,10 @@ in {
       WLR_NO_HARDWARE_CURSORS = "1";
     } else {});
 
-    extraInit = (if cfg.videoDriver == "nvidia" && cfg.xorg then ''
+    extraInit = (optionalString (hasNv && cfg.xorg) ''
       export LD_LIBRARY_PATH="${config.hardware.nvidia.package}/lib:$LD_LIBRARY_PATH"
-    '' else "")
-    + (if cfg.xorg then ''
+    '')
+    + (optionalString cfg.xorg ''
       # is X even running yet?
       if [[ -n $DISPLAY ]]; then
         # key repeat delay + rate
@@ -91,7 +96,7 @@ in {
         # turn off the bell sound
         xset b off
       fi
-    '' else "");
+    '');
   };
 
   programs = {

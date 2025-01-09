@@ -14,7 +14,7 @@ in {
       type = types.nullOr (types.enum ["uefi" "bios"]);
       default = "uefi";
       description = ''
-        How the interface talks to the firmware. Advice:
+        How the firmware boots. Advice:
 
         - Most likely you want `"uefi"`.
         - If that doesn't work, only then use `"bios"`.
@@ -48,7 +48,8 @@ in {
       default = true;
       description = ''
         If this machine runs directly on real hardware.
-        If that is the case, firmware update and other hardware maintenance helpers are installed.
+        If `true`, firmware update and
+        other hardware maintenance helpers are installed.
       '';
     };
 
@@ -72,7 +73,7 @@ in {
     ssd = mkOption {
       type = types.bool;
       default = false;
-      description = "If to enable services like fstrim for automatic SSD maintenace.";
+      description = "If to enable services like fstrim for automatic SSD maintenance.";
     };
 
     ssh = mkOption {
@@ -108,19 +109,63 @@ in {
     audio = mkOption {
       type = types.bool;
       default = false;
-      description = "If this system should have PipeWire with compatability plugins installed and running.";
+      description = "If this system should have PipeWire with compatibility plugins installed and running.";
+    };
+
+    video.driver = mkOption {
+      type = (with types; nullOr (oneOf [str (attrsOf str)]));
+      default = null;
+      example = {
+        "0000:0000" = "i915";
+        "0000:0001" = "nouveau";
+      };
+      description = ''
+        Video driver selection and preferences.
+
+        If set to a string, that's the only driver installed.
+        Usually the driver is smart enough to figure out
+        what the installed cards are and
+        which ones should be initialized.
+        This is the most common setup.
+
+        If set to an attribute set,
+        the keys determine
+        which (case-insensitive) PCI IDs use
+        which driver,
+        done via an override mechanism.
+        Multiple PCI devices can use the same driver
+        (but not the other way around).
+
+        You can find the PCI ID for your card
+        by running `lspci -nn | grep -i vga`,
+        it's the last square brackets and
+        in the form of `vendor:device`,
+        where `vendor` and `device` are both 4 hexadecimal digits.
+
+        (This is specifically useful for using older NVIDIA cards
+        together with newer ones,
+        since by default the proprietary one will bind first
+        to all cards,
+        leaving the nouveau one puzzled (simplified).)
+      '';
+    };
+
+    video.prefer = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = ''
+        Which video driver to use by default for e.g. Vulkan.
+
+        You can change this at runtime for Vulkan and a program run
+        e.g. by using the `VK_LOADER_DRIVERS_SELECT` environment variable,
+        see https://vulkan.lunarg.com/doc/view/1.3.243.0/linux/LoaderDriverInterface.html#user-content-driver-select-filtering.
+      '';
     };
 
     profileGuided = mkOption {
       type = types.bool;
       default = false;
-      description = "If to compile a few packages locally and adjusted to this CPU for better perfomance. Note that this will inherently make this configuration irreproducable on a platform that is only slightly different.";
-    };
-
-    videoDriver = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      description = "What video driver to use for Xorg. Only in effect on development setups.";
+      description = "If to compile a few packages locally and adjusted to this CPU for better performance. Note that this will inherently make this configuration irreproducible on a platform that is only slightly different.";
     };
 
     gaming = mkOption {
@@ -139,6 +184,14 @@ in {
   imports = [./development.nix];
 
   config = {
+    assertions = [
+      {
+        assertion = !(isAttrs cfg.video.prefer) ||
+          (contains cfg.video.prefer (attrValues cfg.video.driver));
+        message = "The preferred video driver has to be one of the used ones";
+      }
+    ];
+
     boot = {
       loader = if cfg.boot == "uefi" then {
         systemd-boot = {
@@ -161,7 +214,7 @@ in {
 
       tmp.cleanOnBoot = true;
 
-      kernelParams = condList (cfg.videoDriver == "nvidia") [
+      kernelParams = optionals hasNv [
         "nvidia-drm.fbdev=1"
       ];
     };
@@ -195,24 +248,23 @@ in {
 
       graphics = {
         enable = true;
-        extraPackages = with pkgs; {
-          intel = [mesa.drivers intel-media-driver intel-compute-runtime];
-          nvidia = [config.hardware.nvidia.package];
-        }.${cfg.videoDriver} or [];
+        extraPackages = with pkgs; selectForDrivers {
+          i915 = [mesa.drivers intel-media-driver intel-compute-runtime.drivers];
+          nouveau = [mesa.drivers];
+        };
 
         enable32Bit = true;
-        extraPackages32 = condList
-          (cfg.videoDriver == "nvidia")
-          [config.hardware.nvidia.package.lib32];
+        extraPackages32 = with pkgs.pkgsi686Linux; selectForDrivers {
+          i915 = [mesa.drivers intel-media-driver intel-compute-runtime.drivers];
+          nouveau = [mesa.drivers];
+        };
       };
 
-      nvidia = if cfg.videoDriver == "nvidia"
-        then {
-          modesetting.enable = true;
-          powerManagement.enable = true;
-          open = true;
-        }
-        else {};
+      nvidia = mkIf hasNv {
+        modesetting.enable = true;
+        powerManagement.enable = true;
+        open = true;
+      };
     };
 
     networking = {
@@ -246,8 +298,8 @@ in {
         isNormalUser = true;
         extraGroups =
           ["wheel" "plugdev" "antisuns" "kvm" "scanner" "lp" "dialout"]
-          ++ (condList cfg.graphical ["input" "video" "audio"])
-          ++ (condList config.programs.adb.enable ["adbusers"]);
+          ++ (optionals cfg.graphical ["input" "video" "audio"])
+          ++ (optionals config.programs.adb.enable ["adbusers"]);
         shell = pkgs.zsh;
       };
 
@@ -286,7 +338,30 @@ in {
         alsa.support32Bit = true;
       };
 
-      udev.extraRules = ''
+      # see udev(7)
+      udev.extraRules = let
+        # only need to apply udev overrides
+        # if there's an override mapping by the user
+        # otherwise just rely on default behavior, it'll be fine
+        videoDrivers =
+          optionalString
+            (isAttrs cfg.video.driver)
+            (toString (mapAttrsToList (id: driver: let
+              parts = splitString ":" (toLower id);
+              vendor = elemAt parts 0;
+              device = elemAt parts 1;
+
+              runExtra = {
+                nouveau = "${getBin pkgs.kmod}/bin/modprobe nouveau";
+              }.${driver} or null;
+              run = optionalString (runExtra != null) '', RUN+="${runExtra}"'';
+
+              condition = ''SUBSYSTEM=="pci", ATTRS{vendor}=="0x${vendor}", ATTRS{device}=="0x${device}"'';
+              action = ''ATTR{driver_override}="${driver}"'' + run;
+            in ''
+              ${condition}, ${action}
+            '') cfg.video.driver));
+      in ''
         # Quest 1
         SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE="0666", GROUP="plugdev"
 
@@ -299,11 +374,13 @@ in {
         SUBSYSTEMS=="usb", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0adc", MODE:="0666", GROUP:="plugdev"
         SUBSYSTEMS=="usb", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b55", MODE:="0666", GROUP:="plugdev"
 
-        KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", MODE:="0777", GROUP:="plugdev", RUN+="${lib.getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p'"
-        DRIVER=="hid_sensor*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", RUN+="${lib.getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p && chmod 0777 /dev/%k'"
+        KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", MODE:="0777", GROUP:="plugdev", RUN+="${getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p'"
+        DRIVER=="hid_sensor*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", RUN+="${getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p && chmod 0777 /dev/%k'"
 
         # FT232 DMX <-> USB interface
         SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", MODE="0666", GROUP="plugdev"
+
+        ${videoDrivers}
       '';
 
       system76-scheduler.enable = true;
@@ -399,15 +476,12 @@ in {
         extraSessionCommands = ''
           export SDL_VIDEODRIVER=wayland
           export QT_QPA_PLATFORM=wayland-egl
-          export QT_WAYLAND_FORCE_DPI=physical
           export ECORE_EVAS_ENGINE=wayland_egl
           export ELM_ENGINE=wayland_egl
           export _JAVA_AWT_WM_NONREPARENTING=1
         '';
 
-        extraOptions = if cfg.videoDriver == "nvidia"
-          then ["--unsupported-gpu"]
-          else [];
+        extraOptions = optional hasNv "--unsupported-gpu";
 
         wrapperFeatures.gtk = true;
       };

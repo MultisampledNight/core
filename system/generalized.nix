@@ -255,7 +255,7 @@ in {
 
         enable32Bit = true;
         extraPackages32 = with pkgs.pkgsi686Linux; selectForDrivers {
-          i915 = [mesa.drivers intel-media-driver intel-compute-runtime.drivers];
+          i915 = [mesa.drivers];
           nouveau = [mesa.drivers];
         };
       };

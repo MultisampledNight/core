@@ -88,7 +88,7 @@ rec {
   );
 
   # List of all used video drivers.
-  allVideoDrivers = let
+  allVideoDrivers = unique (let
     unsorted =
       if cfg.video.driver == null
         then []
@@ -100,7 +100,7 @@ rec {
   in
     if pref == null
       then unsorted
-    else [pref] ++ (remove pref unsorted);
+    else [pref] ++ (remove pref unsorted));
 
   # Is there at least one Nvidia GPU on this system?
   hasNv = contains "nvidia" allVideoDrivers;

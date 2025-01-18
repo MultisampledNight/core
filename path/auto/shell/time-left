@@ -15,7 +15,7 @@ def main():
         path = Path(TARGET_DATE_PATH).expanduser()
         with open(path) as fh:
             parsed = json.load(fh)
-            target = parsed["target-date"]
+            target = parsed["target"]
             precision = parsed.get("precision")
     except FileNotFoundError:
         return None

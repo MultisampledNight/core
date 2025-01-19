@@ -171,7 +171,7 @@ in {
 
         If disabled (the default),
         the `uvcvideo` kernel module
-        is replaced with a placeholder.
+        is not loaded by default.
       '';
     };
 

@@ -162,6 +162,19 @@ in {
       '';
     };
 
+    camera = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        If to configure webcams and
+        the works.
+
+        If disabled (the default),
+        the `uvcvideo` kernel module
+        is replaced with a placeholder.
+      '';
+    };
+
     profileGuided = mkOption {
       type = types.bool;
       default = false;
@@ -216,6 +229,9 @@ in {
 
       kernelParams = optionals hasNv [
         "nvidia-drm.fbdev=1"
+      ];
+      blacklistedKernelModules = optionals (!cfg.camera) [
+        "uvcvideo"
       ];
     };
 
@@ -340,30 +356,30 @@ in {
 
       # see udev(7)
       udev.extraRules = let
+        sh = getBin pkgs.bash;
         # only need to apply udev overrides
         # if there's an override mapping by the user
         # otherwise just rely on default behavior, it'll be fine
-        videoDrivers =
-          optionalString
-            (isAttrs cfg.video.driver)
-            (toString (mapAttrsToList (id: driver: let
-              parts = splitString ":" (toLower id);
-              vendor = elemAt parts 0;
-              device = elemAt parts 1;
+        videoDrivers = optionalString
+          (isAttrs cfg.video.driver)
+          (toString (mapAttrsToList (id: driver: let
+            parts = splitString ":" (toLower id);
+            vendor = elemAt parts 0;
+            device = elemAt parts 1;
 
-              runExtra = {
-                nouveau = "${getBin pkgs.kmod}/bin/modprobe nouveau";
-              }.${driver} or null;
-              run = optionalString (runExtra != null) '', RUN+="${runExtra}"'';
+            runExtra = {
+              nouveau = "${getBin pkgs.kmod}/bin/modprobe nouveau";
+            }.${driver} or null;
+            run = optionalString (runExtra != null) '', RUN+="${runExtra}"'';
 
-              condition = ''SUBSYSTEM=="pci", ATTRS{vendor}=="0x${vendor}", ATTRS{device}=="0x${device}"'';
-              action = ''ATTR{driver_override}="${driver}"'' + run;
-            in ''
-              ${condition}, ${action}
-            '') cfg.video.driver));
+            condition = ''SUBSYSTEM=="pci", ATTRS{vendor}=="0x${vendor}", ATTRS{device}=="0x${device}"'';
+            action = ''ATTR{driver_override}="${driver}"'' + run;
+          in ''
+            ${condition}, ${action}
+          '') cfg.video.driver));
       in ''
         # Quest 1
-        SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE="0666", GROUP="plugdev"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE:="0666", GROUP:="plugdev"
 
         # Device rules for Intel RealSense devices (D405)
         SUBSYSTEMS=="usb", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", MODE:="0666", GROUP:="plugdev"
@@ -374,8 +390,8 @@ in {
         SUBSYSTEMS=="usb", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0adc", MODE:="0666", GROUP:="plugdev"
         SUBSYSTEMS=="usb", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b55", MODE:="0666", GROUP:="plugdev"
 
-        KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", MODE:="0777", GROUP:="plugdev", RUN+="${getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p'"
-        DRIVER=="hid_sensor*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", RUN+="${getBin pkgs.bash} -c 'chmod -R 0777 /sys/%p && chmod 0777 /dev/%k'"
+        KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", MODE:="0777", GROUP:="plugdev", RUN+="${sh} -c 'chmod -R 0777 /sys/%p'"
+        DRIVER=="hid_sensor*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b5b", RUN+="${sh} -c 'chmod -R 0777 /sys/%p && chmod 0777 /dev/%k'"
 
         # FT232 DMX <-> USB interface
         SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", MODE="0666", GROUP="plugdev"

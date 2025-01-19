@@ -3,7 +3,7 @@ set -euo pipefail
 . util
 
 # default, then selective override
-subjects=`echo $HOME/{notes,studio,media} "$core"`
+subjects=`echo $HOME/{notes,studio,media} "$core" "$state_share"`
 subjects=${@:-$subjects}
 
 maintenance

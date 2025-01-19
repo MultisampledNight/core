@@ -7,6 +7,6 @@ now=`date --rfc-3339=seconds`
 
 export archive="$HOME/_archive/$now $of-slim.tar.zst"
 
-backup-create
+backup-create $@
 backup-transfer-physical
 complete all backed up!

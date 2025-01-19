@@ -1,4 +1,9 @@
 function s:Determine()
+  " is this a typst project?
+  if $TYPST_ROOT != "" 
+    return $TYPST_ROOT
+  endif
+
   " is this a git repo?
   let toplevel = trim(system("git rev-parse --show-toplevel"))
   if v:shell_error == 0
@@ -9,11 +14,6 @@ function s:Determine()
   let toplevel = trim(system("cargo metadata --format-version=1 --offline --no-deps 2>/dev/null"))
   if v:shell_error == 0
     return json_decode(toplevel)["workspace_root"]
-  endif
-
-  " is this a typst project?
-  if $TYPST_ROOT != "" 
-    return $TYPST_ROOT
   endif
 
   " fall back to the cwd

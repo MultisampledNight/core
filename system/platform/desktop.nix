@@ -166,25 +166,26 @@ with import ../prelude args;
       package = pkgs.firefox-esr;
       # https://mozilla.github.io/policy-templates/
       policies = let
-        librsIcon = https://lib.rs/logo.svg;
-        cratesIcon = https://crates.io/favicon.ico;
-        pypiIcon = https://pypi.org/static/images/favicon.35549fe8.ico;
+        librsIcon = "https://lib.rs/logo.svg";
+        cratesIcon = "https://crates.io/favicon.ico";
+        pypiIcon = "https://pypi.org/static/images/favicon.35549fe8.ico";
 
-        pythonIcon = https://docs.python.org/3/_static/py.svg;
-        rustIcon = https://doc.rust-lang.org/static.files/favicon-32x32-422f7d1d52889060.png;
+        pythonIcon = "https://docs.python.org/3/_static/py.svg";
+        rustIcon = "https://doc.rust-lang.org/static.files/favicon-32x32-422f7d1d52889060.png";
 
-        docsrsIcon = https://docs.rs/-/static/favicon.ico;
+        docsrsIcon = "https://docs.rs/-/static/favicon.ico";
 
-        archIcon = https://archlinux.org/static/favicon.51c13517c44c.png;
-        nixIcon = https://nixos.org/_astro/flake-blue.Bf2X2kC4_Z1yqDoT.svg;
+        archIcon = "https://archlinux.org/static/favicon.51c13517c44c.png";
+        nixIcon = "https://nixos.org/_astro/flake-blue.Bf2X2kC4_Z1yqDoT.svg";
 
-        ytIcon = https://www.youtube.com/s/desktop/a258f8cf/img/favicon_32x32.png;
-        typstIcon = https://typst.app/assets/favicon-32x32.png;
+        ytIcon = "https://www.youtube.com/s/desktop/a258f8cf/img/favicon_32x32.png";
+        typstIcon = "https://typst.app/assets/favicon-32x32.png";
 
-        blenderIcon = https://docs.blender.org/manual/en/latest/_static/favicon.png;
-        steamdbIcon = https://steamdb.info/static/logos/vector_prefers_schema.svg;
-        wikipediaIcon = https://en.wikipedia.org/static/favicon/wikipedia.ico;
-        wikidataIcon = https://www.wikidata.org/static/favicon/wikidata.ico;
+        blenderIcon = "https://docs.blender.org/manual/en/latest/_static/favicon.png";
+        steamdbIcon = "https://steamdb.info/static/logos/vector_prefers_schema.svg";
+        wikipediaIcon = "https://en.wikipedia.org/static/favicon/wikipedia.ico";
+        wikidataIcon = "https://www.wikidata.org/static/favicon/wikidata.ico";
+        osmIcon = "https://www.openstreetmap.org/assets/osm_logo-4b074077c29e100f40ee64f5177886e36b570d4cc3ab10c7b263003d09642e3f.svg";
       in {
         DownloadDirectory = "\${home}/media/downloads";
 
@@ -195,11 +196,11 @@ with import ../prelude args;
           # surprisingly many websites just... don't work without third-party cookies
           # so yeah, here we allow them. unfortunately.
           Allow = [
-            https://www.zdf.de/
-            https://docs.python.org/
-            https://doc.rust-lang.org/
-            https://www.openstreetmap.org/
-            https://tile.openstreetmap.org/
+            "https://www.zdf.de/"
+            "https://docs.python.org/"
+            "https://doc.rust-lang.org/"
+            "https://www.openstreetmap.org/"
+            "https://tile.openstreetmap.org/"
           ];
         };
         SanitizeOnShutdown = {
@@ -242,21 +243,21 @@ with import ../prelude args;
             else if hasPrefix "Rust" name then rustIcon
             else "";
         }) {
-          "NixOS manual" = https://nixos.org/manual/nixos/stable/;
-          "Nixpkgs manual" = https://nixos.org/manual/nixpkgs/stable/;
-          "Nix manual" = https://nix.dev/manual/nix/rolling/;
-          "Typst documentation" = https://typst.app/docs;
-          "oklch" = https://oklch.com/;
+          "NixOS manual" = "https://nixos.org/manual/nixos/stable/";
+          "Nixpkgs manual" = "https://nixos.org/manual/nixpkgs/stable/";
+          "Nix manual" = "https://nix.dev/manual/nix/rolling/";
+          "Typst documentation" = "https://typst.app/docs";
+          "oklch" = "https://oklch.com/";
 
-          "Rust nomicon" = https://doc.rust-lang.org/nomicon/;
-          "Rust reference" = https://doc.rust-lang.org/reference/;
-          "Rust API guidelines" = https://rust-lang.github.io/api-guidelines/checklist.html;
-          "Rust edition guide" = https://doc.rust-lang.org/edition-guide/;
-          "Rust Cargo book" = https://doc.rust-lang.org/cargo/;
-          "Rust rustc book" = https://doc.rust-lang.org/rustc/;
-          "Rust rustdoc book" = https://doc.rust-lang.org/rustdoc/;
-          "Rust unstable book" = https://doc.rust-lang.org/nightly/unstable-book/;
-          "Rust rustup book" = https://rust-lang.github.io/rustup/index.html;
+          "Rust nomicon" = "https://doc.rust-lang.org/nomicon/";
+          "Rust reference" = "https://doc.rust-lang.org/reference/";
+          "Rust API guidelines" = "https://rust-lang.github.io/api-guidelines/checklist.html";
+          "Rust edition guide" = "https://doc.rust-lang.org/edition-guide/";
+          "Rust Cargo book" = "https://doc.rust-lang.org/cargo/";
+          "Rust rustc book" = "https://doc.rust-lang.org/rustc/";
+          "Rust rustdoc book" = "https://doc.rust-lang.org/rustdoc/";
+          "Rust unstable book" = "https://doc.rust-lang.org/nightly/unstable-book/";
+          "Rust rustup book" = "https://rust-lang.github.io/rustup/index.html";
         };
 
         DontCheckDefaultBrowser = true;
@@ -412,6 +413,13 @@ with import ../prelude args;
               URLTemplate = "https://www.wikidata.org/w/index.php?go=Go&search={searchTerms}";
               Method = "GET";
               IconURL = wikidataIcon;
+            }
+            {
+              Name = "OpenStreetMap";
+              Alias = "@osm";
+              URLTemplate = "https://www.openstreetmap.org/search?query={searchTerms}";
+              Method = "GET";
+              IconURL = osmIcon;
             }
           ];
 

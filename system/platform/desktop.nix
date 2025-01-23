@@ -258,6 +258,9 @@ with import ../prelude args;
           "Rust rustdoc book" = "https://doc.rust-lang.org/rustdoc/";
           "Rust unstable book" = "https://doc.rust-lang.org/nightly/unstable-book/";
           "Rust rustup book" = "https://rust-lang.github.io/rustup/index.html";
+
+          "Julia docs" = "https://docs.julialang.org/en/v1/";
+          "Julia LinearAlgebra" = "https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/";
         };
 
         DontCheckDefaultBrowser = true;

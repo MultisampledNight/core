@@ -47,6 +47,7 @@ let cfg = #{
   \ html: s:hard(2),
   \ tex: s:merge(s:soft(2), #{ft: "latex"}),
   \ typ: s:merge(s:soft(2), #{ft: "typst"}),
+  \ tmTheme: s:merge(s:soft(2), #{ft: "xml"}),
 \ }
 let just_ft = ["agda", "kdl", "scm"]
 for name in just_ft

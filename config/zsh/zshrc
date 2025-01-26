@@ -58,6 +58,8 @@ alias sqlite='sqlite3 -box'
 alias rsync='rsync --progress --update --partial --compress'
 alias curl='curl -LC -'
 alias lsblk='lsblk -f'
+alias datetime='date "+%Y-%m-%d %H-%M-%S"'
+alias today='date +%Y-%m-%d'
 alias cal='cal -m'
 alias year='cal `date +%Y`'
 

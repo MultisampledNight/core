@@ -186,7 +186,11 @@ to() {
 		adb wait-for-device
 		connector=(adb shell)
 	else
-		connector=(waypipe ssh "$1")
+		if ssh "$1" waypipe --version >/dev/null; then
+			connector=(waypipe ssh "$1")
+		else
+			connector=(ssh "$1")
+		fi
 	fi
 
 	shift 1

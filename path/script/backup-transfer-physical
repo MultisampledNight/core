@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# Transfers $archive to a hardcoded disk
 set -euo pipefail
 . util
 
@@ -8,7 +9,12 @@ block="/dev/disk/by-label/$permadisk"
 mount="/run/media/$(whoami)/$permadisk"
 final="$mount/$(basename "$archive")"
 
-begin transferring to disk labelled "$permadisk"
+if [[ ! -e "block" ]]; then
+	error disk "$permadisk" is not plugged in, not transferring there
+	exit 1
+fi
+
+begin transferring to disk "$permadisk"
 
 if mountpoint -q "$mount"; then
 	warn "$permadisk" already mounted

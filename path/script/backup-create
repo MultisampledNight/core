@@ -3,13 +3,18 @@ set -euo pipefail
 . util
 
 # default, then selective override
-subjects=`echo $HOME/{notes,studio,media} "$core" "$state_share"`
-subjects=${@:-$subjects}
+if [[ ${#@} -gt 0 ]]; then
+	source=$@
+else
+	source=($HOME/{notes,studio,media} "$core" "$state_share")
+fi
 
 maintenance
 
 begin archiving to "$archive"
-hint ' source size:' `adu $subjects`
-tar --zstd --sort name --create --file "$archive" $subjects
+hint ' source size:' `adu $source`
+tar --zstd --sort name --create --file "$archive" $source
 hint 'archive size:' `adu "$archive"`
+
+complete creation finished!
 

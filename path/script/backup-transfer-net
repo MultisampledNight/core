@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Transfers $archive to a hardcoded machine via rsync/SSH
+set -euo pipefail
+. util
+
+target="traveled"
+storage="$state_local/backup/"
+
+if not ping -c1 -w1 "$target" 2>&1 >/dev/null; then
+	error machine "$target" not reachable, not transferring there
+	exit 1
+fi
+
+begin transferring to machine "$target"
+
+# TODO: encryption
+
+part copying
+ssh "$target" mkdir -p "$storage"
+rsy "$archive" "$target:$storage"
+
+complete transfer finished!
+

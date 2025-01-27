@@ -436,11 +436,10 @@ in {
           ]]
         ])
         (with unstable; [
-          [true [py]]
+          [true [py waypipe]]
           [cfg.wayland [
             fuzzel waybar grim slurp swappy hyprpicker fnott
             swaybg swaylock wl-clipboard
-            waypipe
           ]]
           [cfg.graphical [
             alacritty

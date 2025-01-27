@@ -18,6 +18,12 @@ in {
 
         - Most likely you want `"uefi"`.
         - If that doesn't work, only then use `"bios"`.
+          - Make sure to set `boot.loader.grub.device`
+            to the *disk* (not the partition!)
+            you want GRUB to install to then.
+          - Also, if that disk is partitioned using GPT,
+            create a BIOS boot partition of a megabyte or so anywhere
+            so GRUB can throw its code in it.
         - If you really want to handle booting yourself,
           e.g. for VM images, only then use `null`.
       '';

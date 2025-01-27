@@ -54,8 +54,8 @@ alias evcxr='evcxr --edit-mode vi'
 alias nv='neovide'
 alias zt='zathura --fork'
 alias wh='wormhole-rs'
+alias rsync='rsy'
 alias sqlite='sqlite3 -box'
-alias rsync='rsync --progress --update --partial --compress'
 alias waypipe='waypipe --video av1 --compress zstd=4'
 alias curl='curl -LC -'
 alias lsblk='lsblk -f'
@@ -124,77 +124,6 @@ flash() {
 		status=progress \
 		bs=4M \
 		oflag=sync
-}
-android_zero="/sdcard/zero"
-android_state_share="$android_zero/state/share"
-get() {
-	if [[ -z "$2" ]]; then
-		echo "usage: <machine> <remote-source-path> [<local-target-path>]"
-		echo "remote source path will be interpreted as below pwd if not absolute"
-		echo "local target path defaults to the current directory"
-		return 1
-	fi
-
-	machine="$1"
-	source=`realpath --no-symlinks --canonicalize-missing $2`
-	target="${3:-.}"
-
-	if [[ "$1" == "possible" ]]; then
-		transfer=(adb pull)
-	else
-		transfer=(rsync --recursive --links)
-		source="$machine:$source"
-	fi
-
-	$transfer "$source" "$target"
-}
-put() {
-	if [[ -z "$2" ]]; then
-		echo "usage: <machine> <local-source-path> [<remote-target-path>]"
-		echo "remote target path defaults the zero recv dir"
-		return 1
-	fi
-
-	machine="$1"
-	source="$2"
-
-	if [[ "$1" == "possible" ]]; then
-		shell=(adb shell)
-		transfer=(adb push)
-		target="${3:-$android_state_share/recv}"
-
-		# this allows using the same cable for the keyboard as for the device!
-		# just run `put ...`, unplug from the keyboard, plug into the phone, and it's transferred!
-		adb wait-for-device
-	else
-		shell=(ssh "$machine")
-		transfer=(rsync --recursive)
-		target="$machine:${3:-$state_share/recv}"
-	fi
-
-	$shell mkdir -p "$target"
-	$transfer "$source" "$target"
-}
-
-to() {
-	if [[ -z "$1" ]]; then
-		echo "usage: <machine> [<command-and-args...>]"
-		return 1
-	fi
-
-	if [[ "$1" == "possible" ]]; then
-		adb wait-for-device
-		connector=(adb shell)
-	else
-		if ssh "$1" waypipe --version >/dev/null; then
-			connector=(waypipe ssh "$1")
-		else
-			connector=(ssh "$1")
-		fi
-	fi
-
-	shift 1
-	$connector $@
 }
 
 # evaluates the pattern on the device and then pulls the files over

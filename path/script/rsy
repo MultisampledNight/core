@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# rsync with a few common args
+set -euo pipefail
+
+rsync \
+	--recursive \
+	--progress \
+	--update \
+	--partial \
+	--compress \
+	"$@"

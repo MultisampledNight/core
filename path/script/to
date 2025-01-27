@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+. util
+
+if [[ ${#@} -lt 1 ]]; then
+	echo "usage: <machine> [<command-and-args...>]"
+	return 1
+fi
+
+if [[ "$1" == "possible" ]]; then
+	adb wait-for-device
+	connector=(adb shell)
+else
+	if ssh "$1" waypipe --version >/dev/null; then
+		connector=(waypipe ssh "$1")
+	else
+		connector=(ssh "$1")
+	fi
+fi
+
+shift 1
+$connector "$@"
+

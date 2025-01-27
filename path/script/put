@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+. util
+
+if [[ ${#@} -lt 2 ]]; then
+	error "usage: <machine> <local-source-path> [<remote-target-path>]"
+	error "remote target path defaults the zero recv dir"
+	return 1
+fi
+
+machine="$1"
+source="$2"
+android_zero="/sdcard/zero"
+android_state_share="$android_zero/state/share"
+
+if [[ "$1" = "possible" ]]; then
+	shell=(adb shell)
+	transfer=(adb push)
+	target="${3:-$android_state_share/recv}"
+
+	# this allows using the same cable for the keyboard as for the device!
+	# just run `put ...`, unplug from the keyboard, plug into the phone, and it's transferred!
+	adb wait-for-device
+else
+	shell=(ssh "$machine")
+	transfer=(rsy)
+	target="$machine:${3:-$state_share/recv}"
+fi
+
+$shell mkdir -p "$target"
+$transfer "$source" "$target"

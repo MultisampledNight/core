@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+. util
+
+if [[ ${#@} -lt 2 ]]; then
+	echo "usage: <machine> <remote-source-path> [<local-target-path>]"
+	echo "remote source path will be interpreted as below pwd if not absolute"
+	echo "local target path defaults to the current directory"
+	return 1
+fi
+
+machine="$1"
+source=`realpath --no-symlinks --canonicalize-missing $2`
+target="${3:-.}"
+
+if [[ "$1" == "possible" ]]; then
+	transfer=(adb pull)
+else
+	transfer=(rsy --links)
+	source="$machine:$source"
+fi
+
+$transfer "$source" "$target"

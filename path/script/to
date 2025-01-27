@@ -3,7 +3,7 @@ set -euo pipefail
 . util
 
 if [[ ${#@} -lt 1 ]]; then
-	echo "usage: <machine> [<command-and-args...>]"
+	error "usage: <machine> [<command-and-args...>]"
 	return 1
 fi
 

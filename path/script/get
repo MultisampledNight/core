@@ -3,9 +3,9 @@ set -euo pipefail
 . util
 
 if [[ ${#@} -lt 2 ]]; then
-	echo "usage: <machine> <remote-source-path> [<local-target-path>]"
-	echo "remote source path will be interpreted as below pwd if not absolute"
-	echo "local target path defaults to the current directory"
+	error "usage: <machine> <remote-source-path> [<local-target-path>]"
+	error "remote source path will be interpreted as below pwd if not absolute"
+	error "local target path defaults to the current directory"
 	return 1
 fi
 

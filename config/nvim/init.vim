@@ -18,7 +18,6 @@ set undofile
 set shortmess+=W
 set notimeout
 set nottimeout
-set noequalalways
 
 set completeopt=menu,menuone,preview,noselect
 set mouse=a

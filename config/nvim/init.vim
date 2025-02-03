@@ -95,7 +95,7 @@ function RenameCurrentFile()
   let sub_path = trim(input("Rename to: ", old))
   if sub_path == ""
     return
-  elseif sub_path == old
+  elseif sub_path ==# old
     echo "Already named that way"
     return
   endif

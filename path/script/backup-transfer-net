@@ -6,7 +6,7 @@ set -euo pipefail
 target="traveled"
 storage="$state_local/backup/"
 
-if not ping -c1 -w1 "$target" 2>&1 >/dev/null; then
+if not reachable "$target"; then
 	error machine "$target" not reachable, not transferring there
 	exit 1
 fi

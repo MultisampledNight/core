@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Returns 0 (true) if the machine given by $1 is reachable,
+# 1 (false) otherwise.
+set -euo pipefail
+
+ping -c1 -w1 "$1" 2>&1 >/dev/null
+

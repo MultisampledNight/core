@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+for machine in `cat "$state_share/connected-machines"`; do
+	if not reachable "$machine"; continue
+	ssh "$machine" "$@" || true
+done
+

@@ -617,14 +617,6 @@ in {
         };
 
         overlays = [
-          (final: prev: {
-            # this overlay will be superfluous over time — just updating to newer package versions selectively
-
-            neovim-unwrapped = (nixpkgsFromCommit {
-              rev = "pull/367183/head";
-              hash = "sha256-bnRoy8qKhncfDpU7aDx6v+5k/HnPHqwXsiUmn1AyBdc=";
-            }).neovim-unwrapped;
-          })
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {
               stdenv = final.fastStdenv;

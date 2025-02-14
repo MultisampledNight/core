@@ -5,25 +5,14 @@
 	name = MultisampledNight
 
 [core]
+	pager = cat
 	excludesfile = ~/.gitignore-global
-	# far nicer diff and show output
-	pager = delta
-
-[interactive]
-	diffFilter = delta --color-only
-
-[delta]
-	features = zebra-dark
-	navigate = true
-	side-by-side = true
-	line-numbers = true
-	hyperlinks = true
 
 [merge]
 	conflictstyle = zdiff3
 
 [diff]
-	colorMoved = default
+	external = difft
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
@@ -32,5 +21,4 @@
 	required = true
 [pull]
 	rebase = true
-[safe]
-	directory = /home/multisn8/studio/games/antisuns
+

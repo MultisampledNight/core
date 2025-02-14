@@ -477,10 +477,7 @@ in {
         config = {
           init.defaultBranch = "main";
           commit.gpgsign = true;
-          core = {
-            pager = "nvim -R";
-            editor = "nvim";
-          };
+          core.editor = "nvim";
           color.pager = "off";
         };
       };

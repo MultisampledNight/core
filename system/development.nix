@@ -19,7 +19,7 @@ in {
     systemPackages = unite [
       (with pkgs; [
         [true [
-          delta
+          difftastic
           inotify-tools geoipWithDatabase
           sshfs
 

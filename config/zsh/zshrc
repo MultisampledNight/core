@@ -81,26 +81,29 @@ alias ca='cargo apk'
 alias cfg='CARGO_PROFILE_RELEASE_DEBUG=true cargo flamegraph'
 
 alias gst='git status'
-alias gl='git log'
-alias glo='git log --oneline'
+alias gla='git log --reverse --ext-diff'
+alias gl='gla --since 2weeks'
+alias glo='gl --oneline'
+alias glp='gl --patch'
 alias grl='git reflog'
 alias gd='git diff'
-alias gdt='git diff --stat --color=always'
-alias gds='git diff --staged'
+alias gdt='gd --stat --color=always'
+alias gds='gds --staged'
+alias gs='git show --ext-diff'
 alias gsw='git switch'
-alias gsc='git switch --create'
+alias gsc='gsw --create'
 alias gb='git branch'
 alias ga='git add'
-alias ga.='git add .'
+alias ga.='ga .'
 alias gco='git commit'
-alias gca='git commit --amend'
+alias gca='gco --amend'
 alias gr='git rebase'
-alias gri='git rebase --interactive'
-alias grc='git rebase --continue'
-alias gra='git rebase --abort'
+alias gri='gr --interactive'
+alias grc='gr --continue'
+alias gra='gr --abort'
 alias gp='git pull'
 alias gps='git push'
-alias gpsf='git push --force-with-lease'
+alias gpsf='gps --force-with-lease'
 
 
 man() {
@@ -112,9 +115,6 @@ man() {
   nv -- -c "Man $*" -c only
 }
 
-rg() {
-	command rg --json $@ | delta
-}
 bydir() {
 	dir="$(basename $(pwd))"
 	touch $dir$1

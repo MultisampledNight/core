@@ -19,7 +19,6 @@ in {
     systemPackages = unite [
       (with pkgs; [
         [true [
-          difftastic
           inotify-tools geoipWithDatabase
           sshfs
 
@@ -42,6 +41,7 @@ in {
       ])
       (with unstable; [
         [true [
+          difftastic mergiraf
           websocat
 
           typst

@@ -46,6 +46,7 @@ def destinations():
 
     # Configs in ~ that are under $repo/config
     home_config = {
+        ".gitattributes": "git/gitattributes",
         ".gitignore-global": "git/gitignore-global",
         ".gitconfig": "git/gitconfig",
         ".rgignore": "ripgrep/rgignore",

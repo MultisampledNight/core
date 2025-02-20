@@ -332,7 +332,15 @@ in {
 
     services = {
       fstrim.enable = cfg.ssd;
-      fwupd.enable = cfg.baremetal;
+      fwupd = {
+        enable = cfg.baremetal;
+        # see fwupd.conf(5)
+        daemonSettings = {
+          # do not fallback to unsafe http (which it does by default)
+          UriSchemes = ["https" "ipfs"];
+          ShowDevicePrivate = false;
+        };
+      };
       thermald.enable = cfg.baremetal;
 
       displayManager.enable = lib.mkForce false;

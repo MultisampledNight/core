@@ -591,10 +591,7 @@ in {
       authfail_message = " ${error} %d time(s) incorrect";
     };
 
-    virtualisation = {
-      libvirtd.enable = true;
-      kvmgt.enable = true;
-    };
+    virtualisation.kvmgt.enable = true;
 
     nixpkgs.overlays = let
       unstablePkgs = import <nixos-unstable> {

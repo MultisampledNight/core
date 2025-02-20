@@ -13,6 +13,9 @@ function Notes()
   noremap <Leader>p <Cmd>call InteractTask(">")<CR>
   noremap <Leader>h <Cmd>call InteractTask("/")<CR>
   noremap <Leader>l <Cmd>call InteractTask("x")<CR>
+  noremap <Leader>: <Cmd>call InteractTask(":")<CR>
+  noremap <Leader>? <Cmd>call InteractTask("?")<CR>
+  noremap <Leader>! <Cmd>call InteractTask("!")<CR>
   noremap <LeftRelease> <Cmd>call ToggleIfCheckbox("x")<CR>
   noremap <2-LeftMouse> <Cmd>call ToggleIfCheckbox(">")<CR>
   noremap <RightRelease> <Cmd>call ToggleIfCheckbox("/")<CR>

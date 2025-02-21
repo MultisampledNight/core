@@ -119,6 +119,13 @@ function DeleteCurrentFile()
   quit
 endfunction
 
+" Opens a terminal emulator in an external window.
+function Terminal(cwd = ".")
+  let cmd = ["alacritty"]
+  let opts = #{detach: v:true, stdin: "null", cwd: a:cwd}
+  call jobstart(cmd, opts)
+endfunction
+
 nnoremap <Leader><Leader> <Cmd>Telescope resume<CR>
 nnoremap <Leader>f <Cmd>call TelescopeOnToplevel("find_files follow=true")<CR>
 nnoremap <Leader>/ <Cmd>call TelescopeOnToplevel("live_grep")<CR> 
@@ -129,8 +136,12 @@ nnoremap <Leader>i <Cmd>call TelescopeOnToplevel("lsp_implementations")<CR>
 nmap <X1Mouse> <LeftMouse>gd
 nmap <X2Mouse> <LeftMouse><C-o>
 
+" open a terminal in the project root
+noremap <Leader>x <Cmd>call Terminal()<CR>
+" open a terminal in the current file's folder
+noremap <Leader>e <Cmd>call Terminal(expand("%:p:h"))<CR>
+
 nnoremap <Leader>o <Cmd>Trouble diagnostics toggle filter.severity = vim.diagnostic.severity.ERROR<CR>
-nnoremap <Leader>x <Cmd>Trouble diagnostics toggle filter.severity.min = vim.diagnostic.severity.WARN<CR>
 nnoremap <Leader>b <Cmd>update \| Trouble diagnostics<CR>
 
 nnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>

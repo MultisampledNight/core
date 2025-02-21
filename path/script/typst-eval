@@ -2,6 +2,6 @@
 . util
 set -euo pipefail
 
-echo "#metadata(\n$1\n)" \
+echo "#metadata({\n$1\n})" \
 	| typst query - 'metadata' \
 		--one --field value

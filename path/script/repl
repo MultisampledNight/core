@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+. util
+set -euo pipefail
+
+bindkey -v
+prompt=`ask | head -c-1`
+handler="$1"
+
+code=""
+while vared -cehp $prompt code; do
+	$handler "$code" || true
+done

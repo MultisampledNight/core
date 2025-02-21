@@ -427,7 +427,9 @@ in {
             fd ripgrep
             tree
             file pv
-            ffmpeg mpv jq yq unzip zip
+            ffmpeg mpv
+            jq yq
+            unzip zip
             sqlite-interactive
             btop sysstat
             hexyl
@@ -619,12 +621,16 @@ in {
         };
 
         overlays = [
+          (final: prev: {
+            typst = (nixpkgsFromCommit {
+              rev = "pull/383433/head";
+              hash = "sha256-jWqnH3bljQBGC8HNXkiw5t04er7kCQU9Qz7YjI0Vbvs=";
+            }).typst;
+          })
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {
               stdenv = final.fastStdenv;
             };
-          } else {})
-          (final: prev: if cfg.profileGuided then {
             linuxZenFast = prev.linuxPackagesFor (prev.linuxKernel.kernels.linux_zen.override {
               stdenv = final.fastStdenv;
             });

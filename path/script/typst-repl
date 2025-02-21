@@ -2,10 +2,4 @@
 . util
 set -eu
 
-bindkey -v
-prompt="$(ask | head -c-1)"
-
-code=""
-while vared -cehp $prompt code; do
-	typst-eval "$code" | jq || true
-done
+repl typst-json-eval

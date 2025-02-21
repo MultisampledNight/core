@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+. util
+set -euo pipefail
+
+echo "$1" \
+	| typst compile - /dev/stdout \
+		--features html \
+		--format html

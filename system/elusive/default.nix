@@ -1,5 +1,7 @@
 let
-  pkgs = import <nixpkgs> {};
+  pkgs = import <nixos> { overlays = [(final: prev: {
+    unstable = import <nixos-unstable> {};
+  })]; };
   name = "elusive";
 
   realize = configuration: (pkgs.nixos [configuration]).image;

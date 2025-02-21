@@ -223,7 +223,9 @@ in {
         efi.canTouchEfiVariables = true;
       } else if cfg.boot == "bios" then {
         grub.enable = true;
-      } else {};
+      } else {
+        grub.enable = mkDefault false;
+      };
 
       kernelPackages = mkDefault (
         if cfg.profileGuided

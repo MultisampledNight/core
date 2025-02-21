@@ -23,7 +23,7 @@ hint compression makes the final base image small and cute
 nix-build \
   --option allowed-uris https://static.rust-lang.org/dist/ \
   --out-link "$new" \
-  "$config/nixos/elusive" \
+  "$core/system/elusive" \
   $@
 
 # step 2

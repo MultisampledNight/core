@@ -107,7 +107,7 @@ def install_one(
             print("Skipping", name)
         return
     name = expanduser(name, root=root, user=user)
-    target = abspath(repo / target)
+    target = Path(abspath(repo / target))
 
     if verbose:
         print(name, "->", target)

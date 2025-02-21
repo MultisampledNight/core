@@ -6,9 +6,10 @@ let
   efiArch = pkgs.stdenv.hostPlatform.efiArch;
   system = config.system;
 
+  core = ../..;
   shells = map
-    (shell: pkgs.callPackage
-      ../../nix/shells/${shell}/default.nix
+    (shell: pkgs.unstable.callPackage
+      (core + /lib/nix/shell/${shell}/default.nix)
       {}
     )
     [
@@ -17,30 +18,19 @@ let
       "python"
       "rust"
       "sdl"
-      "typst"
     ];
 
   # set up common things and symlinks for my workflow when actually working
   rootTemplate = pkgs.runCommand
     "root-template"
     rec {
+      inherit core;
       configPatch = ./config.patch;
-      configRepo = ../..;
       buildInputs = with pkgs; [ python3 ];
       toolchain = pkgs.stdenv.hostPlatform.config;
 
-      nixos = pkgs.fetchzip {
-        # nixos-24.05 on 2024-10-06
-        name = "nixos-elusive";
-        url = "https://github.com/nixos/nixpkgs/archive/ecbc1ca8ffd6aea8372ad16be9ebbb39889e55b6.tar.gz";
-        hash = "sha256-PbDWAIjKJdlVg+qQRhzdSor04bAPApDqIv2DofTyynk=";
-      };
-      nixosUnstable = pkgs.fetchzip {
-        # nixos-unstable on 2024-10-05
-        name = "nixos-unstable-elusive";
-        url = "https://github.com/nixos/nixpkgs/archive/bc947f541ae55e999ffdb4013441347d83b00feb.tar.gz";
-        hash = "sha256-NOiTvBbRLIOe5F6RbHaAh6++BNjsb149fGZd1T4+KBg=";
-      };
+      nixos = <nixos>;
+      nixosUnstable = <nixos-unstable>;
 
       rustChannel = "stable";
       rustInstall = ~/.rustup/toolchains/${rustChannel}-${toolchain};
@@ -53,9 +43,12 @@ let
 
       # despite its name (TODO: change that sometime) it can also take care of copying configs, shells, the works
       python \
-        $configRepo/distribute_symlinks.py \
-        --exclude-nixos --actually-install \
+        $core/bootstrap/distribute_symlinks.py \
+        --only-user --actually-install \
         --root $out --user $user
+
+      mkdir -p $home/zero
+      cp -r $core $home/zero/core
 
       # adjust some things to fit to a VM
       chmod -R 777 $out

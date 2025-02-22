@@ -40,7 +40,7 @@ base=(
   -name "elusive-$project"
   -machine q35
   -cpu host
-  -smp cpus=8,cores=4,threads=2
+  -smp cpus=16
   -m size=8G
   -accel kvm
   -nic user,restrict=off,hostfwd=tcp::50022-:22

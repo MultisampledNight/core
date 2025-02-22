@@ -7,18 +7,6 @@ let
   system = config.system;
 
   core = ../..;
-  shells = map
-    (shell: pkgs.unstable.callPackage
-      (core + /lib/nix/shell/${shell}/default.nix)
-      {}
-    )
-    [
-      "elixir"
-      "julia"
-      "python"
-      "rust"
-      "sdl"
-    ];
 
   # set up common things and symlinks for my workflow when actually working
   rootTemplate = pkgs.runCommand
@@ -162,12 +150,6 @@ in {
   };
 
   security.sudo.enable = false;
-
-  # pretty much just a stub so the shell deps are included in the image
-  # and aren't cloned in each instance
-  environment.shellInit = ''
-    # ${toString shells}
-  '';
 
   system.stateVersion = "24.05";
 }

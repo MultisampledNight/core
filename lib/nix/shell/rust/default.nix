@@ -13,6 +13,7 @@ pkgs.mkShell rec {
     clang llvmPackages.libclang
     libgcc.lib
     mold 
+    elfkickers
     openssl pkg-config cmake
     wasm-pack evcxr tokei
     libxkbcommon

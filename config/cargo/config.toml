@@ -1,18 +1,52 @@
-[registries.crates-io]
-protocol = "sparse"
-
 [target.x86_64-unknown-linux-gnu]
 rustflags = ["-C", "link-arg=-fuse-ld=mold", "-Z", "threads=8"]
 
+
+# Quick compilation times over everything.
 [profile.dev]
 codegen-backend = "cranelift"
 lto = "off"
 
+# Fast and shippable, with panics being useful but no other debuginfo.
 [profile.release]
 codegen-units = 1
 lto = "fat"
+debug = "line-tables-only"
+
+
+# Compromise between compilation times and performance.
+# Thought for graphical applications.
+[profile.gfx]
+inherits = "dev"
+opt-level = 1
+lto = "thin"
+
+# Release with debuginfo.
+[profile.huge]
+inherits = "release"
+debug = "full"
+debug-assertions = true
+
+# Small.
+[profile.min]
+inherits = "release"
+opt-level = "z"
+debug = "none"
+panic = "abort"
+strip = "symbols"
+incremental = true
+
+
+[registries.crates-io]
+protocol = "sparse"
+
+[http]
+ssl-version = "tlsv1.3"
+
+[net]
+retry = 2
+
 
 [unstable]
 gc = true
 codegen-backend = true
-

@@ -57,7 +57,7 @@ pkgs.mkShell rec {
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${builtins.toString (pkgs.lib.makeLibraryPath buildInputs)}";
 
     rustup default $RUSTC_VERSION
-    rustup install nightly
-    rustup component add rustfmt clippy rust-src rust-analyzer
+    rustup install stable
+    rustup component add rustfmt clippy rust-src rust-analyzer rustc-codegen-cranelift
   '';
 }

@@ -2,8 +2,17 @@
 protocol = "sparse"
 
 [target.x86_64-unknown-linux-gnu]
-#rustflags = ["-C", "link-arg=-fuse-ld=mold", "-Z", "threads=8"]
-rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+rustflags = ["-C", "link-arg=-fuse-ld=mold", "-Z", "threads=8"]
+
+[profile.dev]
+codegen-backend = "cranelift"
+lto = "off"
+
+[profile.release]
+codegen-units = 1
+lto = "fat"
 
 [unstable]
 gc = true
+codegen-backend = true
+

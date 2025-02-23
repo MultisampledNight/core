@@ -66,6 +66,10 @@ rec {
   listToNames = list: listToAttrs
     (map (ele: { name = ele; value = null; }) list);
 
+  # Takes a list of strings and an attribute set,
+  # filters the attribute set for all keys that are in the list.
+  narrow = list: set: intersectAttrs (listToNames list) set;
+
   # Take value `lookup` for each key in `keys`,
   # joining the results in a list.
   # If a key is not in `lookup`, it'll have no effect on the joined list.
@@ -90,8 +94,7 @@ rec {
   #
   # `packages` has to be a list of strings.
   takeFromPr = { pr, hash, packages }:
-    (_: _: intersectAttrs
-      (listToNames packages)
+    (_: _: narrow packages
       (nixpkgsFromCommit {
         rev = "pull/${toString pr}/head";
         inherit hash;

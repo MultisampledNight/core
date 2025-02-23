@@ -626,7 +626,7 @@ in {
           (takeFromPr {
             pr = 384501;
             hash = "sha256-c4eoVFvZfIviJQP3vt/Lusl764+UdNP8wt4QFW9FqrQ=";
-            packages = ["tinymist"];
+            packages = ["tinymist" "typst"];
           })
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {

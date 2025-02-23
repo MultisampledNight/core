@@ -23,7 +23,6 @@ def destinations():
     # Named the same under ~/.config as well as $repo/config
     literal = [
         "alacritty",
-        "cargo/config.toml",
         "evcxr",
         "godot",
         "helix",
@@ -46,6 +45,7 @@ def destinations():
 
     # Configs in ~ that are under $repo/config
     home_config = {
+        ".cargo/config.toml": "cargo/config.toml",
         ".gitattributes": "git/gitattributes",
         ".gitignore-global": "git/gitignore-global",
         ".gitconfig": "git/gitconfig",

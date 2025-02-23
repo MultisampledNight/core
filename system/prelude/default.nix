@@ -14,6 +14,7 @@
 { config, pkgs, lib, ... } @ args:
 
 with lib;
+with builtins;
 rec {
   zero = sub: /home/multisn8/zero/${sub};
   core = sub: zero /core/${sub};
@@ -60,11 +61,18 @@ rec {
   # Is `single` in the given list?
   contains = single: any (item: item == single);
 
+  # Converts a list to an attribute set
+  # with every value being set to `null`.
+  listToNames = list: listToAttrs
+    (map (ele: { name = ele; value = null; }) list);
+
   # Take value `lookup` for each key in `keys`,
   # joining the results in a list.
   # If a key is not in `lookup`, it'll have no effect on the joined list.
   select = lookup: keys: concatMap (key: lookup.${key} or []) keys;
 
+  # Fetches the given nixpkgs revision and returns its import.
+  # You can directly access the values to get a package!
   nixpkgsFromCommit = { rev, hash, opts ? {} }:
     let
       tree = pkgs.fetchzip {
@@ -74,6 +82,21 @@ rec {
       };
     in
       import tree opts;
+
+  # Fetches the nixpkgs PR with the given number and
+  # returns an overlay
+  # which overrides the given package names,
+  # taking them from the PR instead.
+  #
+  # `packages` has to be a list of strings.
+  takeFromPr = { pr, hash, packages }:
+    (_: _: intersectAttrs
+      (listToNames packages)
+      (nixpkgsFromCommit {
+        rev = "pull/${toString pr}/head";
+        inherit hash;
+      })
+    );
 
   toSudoers = dense: concatStringsSep "\n" (
     mapAttrsToList (name: value: "Defaults " + (

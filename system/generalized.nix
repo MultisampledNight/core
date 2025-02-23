@@ -623,11 +623,10 @@ in {
         };
 
         overlays = [
-          (final: prev: {
-            typst = (nixpkgsFromCommit {
-              rev = "pull/383433/head";
-              hash = "sha256-jWqnH3bljQBGC8HNXkiw5t04er7kCQU9Qz7YjI0Vbvs=";
-            }).typst;
+          (takeFromPr {
+            pr = 384501;
+            hash = "sha256-c4eoVFvZfIviJQP3vt/Lusl764+UdNP8wt4QFW9FqrQ=";
+            packages = ["tinymist"];
           })
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {

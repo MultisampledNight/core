@@ -262,13 +262,21 @@ function TaskOverview()
   " that can effectively convert from string to list/dict
 
   " see how often each state is used
-  let counts = {}
-  for ch in s:fills
-    let counts[ch] = TaskCount(ch)
-  endfor
+  " using a list rather than a dict since we want to preserve the order
+  " (see top of the file, s:fills definition)
+  let counts = []
 
-  " remove unused states
-  call filter(counts, {_, times -> times != 0})
+  for ch in s:fills
+    let times = TaskCount(ch)
+
+    if times == 0
+      " displaying nonexistent states would be noisy
+      " so we don't!
+      continue
+    endif
+
+    call add(counts, $"{times} × [{ch}]")
+  endfor
 
   " print them nicely
   let total = TaskCount()
@@ -285,13 +293,7 @@ function TaskOverview()
   endif
 
   " alright, let's break it down then
-  echon " ("
-
-  let counts = mapnew(counts, {ch, times -> $"{times} × [{ch}]"})
-  let counts = join(values(counts), ", ")
-  echon counts
-  
-  echon ")"
+  echon " (" . join(counts, ", ") . ")"
 endfunction
 
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call Notes()

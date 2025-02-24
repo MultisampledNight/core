@@ -4,7 +4,7 @@ set winblend=10
 set pumblend=10
 
 set termguicolors
-set guifont=JetBrainsMonoNL_NF_Light:h14
+set guifont=JetBrainsMonoNL_NF_Light:h11
 set linespace=4
 set number
 set noshowmode

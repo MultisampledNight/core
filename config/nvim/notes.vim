@@ -6,6 +6,14 @@ let template = zero . "/template"
 let g:date_format = "%Y-%m-%d"
 let g:datetime_format = g:date_format . " %H:%M:%S"
 
+" no i can't use treesitter for this,
+" as e.g. [/] is not parsed by it (it's a cancelled checkbox)
+let s:marker = '^\s*[-+/] '
+let s:checkbox = '\[.\]'
+let s:task = s:marker . s:checkbox
+" roughly sorted by priority
+let s:fills = "! >:o-?/x"
+
 function Notes()
   set tw=60 sw=2 ts=2 sts=0 et
 
@@ -74,12 +82,6 @@ function OpenToday()
   exe "edit ".g:daily_note."/".today.".typ"
 endfunction
 
-" no i can't use treesitter for this,
-" as e.g. [/] is not parsed by it (it's a cancelled checkbox)
-let s:marker = '^\s*[-+/] '
-let s:checkbox = '\[.\]'
-let s:task = s:marker . s:checkbox
-
 function InteractTask(intended)
   if mode() == "v"
     norm v
@@ -97,6 +99,8 @@ function InteractTask(intended)
   else
     call CreateTask()
   endif
+
+  call TaskOverview()
 endfunction
 
 " Returns in which context the user is currently typing in.
@@ -238,10 +242,65 @@ function Enter()
   call feedkeys("\<Right>")
 endfunction
 
+" Counts and returns how many tasks there are
+" with the given fill character
+" in this file.
+" The fill character is a regex — use "." for any fill.
+function TaskCount(fill = ".")
+  " note that the . is escaped — otherwise the first character in the regex
+  " would be replaced
+  let expr = substitute(s:task, '\.', a:fill, "")
+  return searchcount(#{pattern: expr}).total
+endfunction
+
+" Echoes a short overview over how many tasks there are in this file
+" and a breakdown of their states.
+" Useful for getting an idea of how much progress has been made.
+function TaskOverview()
+  " would like to express this more functionally
+  " but it seems like there's no map-ish construction
+  " that can effectively convert from string to list/dict
+
+  " see how often each state is used
+  let counts = {}
+  for ch in s:fills
+    let counts[ch] = TaskCount(ch)
+  endfor
+
+  " remove unused states
+  call filter(counts, {_, times -> times != 0})
+
+  " print them nicely
+  let total = TaskCount()
+  if total == 0
+    echo "No tasks"
+    return
+  endif
+
+  echon total." tasks"
+
+  if empty(counts)
+    echo
+    return
+  endif
+
+  " alright, let's break it down then
+  echon " ("
+
+  let counts = mapnew(counts, {ch, times -> $"{times} × [{ch}]"})
+  let counts = join(values(counts), ", ")
+  echon counts
+  
+  echon ")"
+endfunction
+
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call Notes()
 
 " Needs to be ordered from most specific to least specific,
 " since the first successful `Template` call inhibits all others
 call Associate(daily_note."/*.typ", "Daily.typ")
 call Associate(notes."/*.typ", "Note.typ")
+
+command RVar call RealizeVariables()
+command Tasks call TaskOverview()
 

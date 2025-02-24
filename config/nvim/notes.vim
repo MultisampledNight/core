@@ -41,7 +41,7 @@ function RealizeVariables()
   " substitute cfg values
   let vars = #{
     \ title: expand("%:t:r"),
-    \ today: strftime(g:datetime_format),
+    \ now: strftime(g:datetime_format),
   \ }
   
   for [name, value] in items(vars)

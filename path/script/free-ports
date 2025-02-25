@@ -6,7 +6,7 @@ from typing import Iterator
 
 # fetch yours from
 # https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
-PORT_NUMBERS = Path.home() / "media" / "tables" / "service-names-port-numbers.csv"
+PORT_NUMBERS = Path.home() / "media/pub/data/service-names-port-numbers.csv"
 
 
 def main():

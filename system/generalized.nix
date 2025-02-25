@@ -345,6 +345,11 @@ in {
       };
       thermald.enable = cfg.baremetal;
 
+      gpm = {
+        enable = true;
+        protocol = "evdev";
+      };
+
       displayManager.enable = lib.mkForce false;
       xserver.displayManager.lightdm.enable = lib.mkForce false;
 

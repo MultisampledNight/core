@@ -77,11 +77,11 @@ rec {
 
   # Fetches the given nixpkgs revision and returns its import.
   # You can directly access the values to get a package!
-  nixpkgsFromCommit = { rev, hash, opts ? {} }:
+  nixpkgsFromCommit = { rev, hash, opts ? {}, owner ? "nixos" }:
     let
       tree = pkgs.fetchzip {
         name = "nixpkgs-${rev}";
-        url = "https://github.com/nixos/nixpkgs/archive/${rev}.tar.gz";
+        url = "https://github.com/${owner}/nixpkgs/archive/${rev}.tar.gz";
         hash = hash;
       };
     in

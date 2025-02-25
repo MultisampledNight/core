@@ -628,11 +628,11 @@ in {
         };
 
         overlays = [
-          (takeFromPr {
-            pr = 384501;
-            hash = "sha256-c4eoVFvZfIviJQP3vt/Lusl764+UdNP8wt4QFW9FqrQ=";
-            packages = ["tinymist" "typst"];
-          })
+          (final: prev: narrow ["tinymist" "typst"] (nixpkgsFromCommit {
+            owner = "MultisampledNight";
+            rev = "tinymist-0.13.0-nightly";
+            hash = "sha256-Hboq5wGThnsmdTvMRUOnDY3eCgWLK48Z7p/jAQjQW6k=";
+          }))
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {
               stdenv = final.fastStdenv;

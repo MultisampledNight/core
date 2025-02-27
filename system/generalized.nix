@@ -630,8 +630,8 @@ in {
         overlays = [
           (final: prev: narrow ["tinymist" "typst"] (nixpkgsFromCommit {
             owner = "MultisampledNight";
-            rev = "tinymist-0.13.0-nightly";
-            hash = "sha256-Hboq5wGThnsmdTvMRUOnDY3eCgWLK48Z7p/jAQjQW6k=";
+            rev = "tinymist-0.13.2-rc1";
+            hash = "sha256-NatnH8b+erLE4MgrNzDWjXSVtfOtfAlP7QdR/TLSnXw=";
           }))
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {

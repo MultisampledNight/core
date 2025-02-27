@@ -6,6 +6,7 @@ from argparse import ArgumentParser
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
+from typing import Iterable
 
 import requests
 from multisn8 import fmt_datetime
@@ -85,48 +86,55 @@ class Train:
         return self.trip["vzn"]
 
     @property
-    def stop_final(self) -> Stop:
-        return Stop(self.trip["stops"][-1])
-
-    @property
-    def stop_next(self) -> str:
-        selected = next(
-            stop
-            for stop in self.trip["stops"]
-            if stop["info"]["positionStatus"] == "future"
+    def stops(self) -> Iterable[Stop]:
+        """All unvisited stops."""
+        return map(
+            Stop,
+            (
+                stop
+                for stop in self.trip["stops"]
+                if stop["info"]["positionStatus"] == "future"
+            ),
         )
-        return Stop(selected)
 
     def vehicle(self) -> str:
         """Textual description of the vehicle's state."""
         return " ".join([self.train_type, self.series, f"@{self.speed} km/h"])
 
-    def total(self) -> str:
+    def final(self) -> str:
         """What the trip very coarsely does."""
-        return f"{self.traffic_id} to {self.stop_final}"
+        return f"{self.traffic_id} to {self.stops[-1]}"
 
 
-def all():
+def general():
     train = Train()
     print(
         train.vehicle(),
-        train.total(),
-        f"next: {train.stop_next}",
+        train.final(),
+        f"next: {next(train.stops)}",
         sep="\n",
     )
 
 
+def all():
+    train = Train()
+    print(*train.stops, sep="\n")
+
+
 def main():
     parser = ArgumentParser(description="chooo choooo", epilog="only works in ICEs")
-    parser.set_defaults(func=all)
+    parser.set_defaults(func=general)
 
     sub = parser.add_subparsers()
 
     callbacks = {
+        "general": general,
         "vehicle": lambda: print(Train().vehicle()),
-        "total": lambda: print(Train().total()),
-        "next": lambda: print(Train().stop_next),
+        "final": lambda: print(Train().final()),
+        "next": lambda: print(next(Train().stops)),
+        "all": all,
     }
+
     for name, func in callbacks.items():
         cmd = sub.add_parser(name)
         cmd.set_defaults(func=func)

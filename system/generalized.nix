@@ -345,10 +345,7 @@ in {
       };
       thermald.enable = cfg.baremetal;
 
-      gpm = {
-        enable = true;
-        protocol = "evdev";
-      };
+      gpm.enable = true;
 
       displayManager.enable = lib.mkForce false;
       xserver.displayManager.lightdm.enable = lib.mkForce false;
@@ -628,11 +625,11 @@ in {
         };
 
         overlays = [
-          (final: prev: narrow ["tinymist" "typst"] (nixpkgsFromCommit {
-            owner = "MultisampledNight";
-            rev = "tinymist-0.13.2-rc1";
-            hash = "sha256-NatnH8b+erLE4MgrNzDWjXSVtfOtfAlP7QdR/TLSnXw=";
-          }))
+          (takeFromPr {
+            pr = 385529;
+            hash = "sha256-/iQ4AJKfL5TNrPjHVLG/RTHSdemVPUv28CgmtqcTqio=";
+            packages = ["tinymist"];
+          })
           (final: prev: if cfg.profileGuided then {
             godot_4 = prev.godot_4.override {
               stdenv = final.fastStdenv;

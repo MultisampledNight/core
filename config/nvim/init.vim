@@ -159,7 +159,7 @@ nnoremap <Leader>j <Cmd>call CreateNewFile()<CR>
 nnoremap <Leader>c <Cmd>call RenameCurrentFile()<CR>
 nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<CR>
 
-nnoremap <Esc> <Cmd>update \| nohlsearch<CR>
+nnoremap <Esc> <Cmd>update \| mode<CR>
 nnoremap <Leader>q <Cmd>update \| call jobstart("cargo fmt")<CR>
 
 nnoremap <F1> <NOP>

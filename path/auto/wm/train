@@ -103,7 +103,7 @@ class Train:
 
     def final(self) -> str:
         """What the trip very coarsely does."""
-        return f"{self.traffic_id} to {self.stops[-1]}"
+        return f"{self.traffic_id} to {list(self.stops)[-1]}"
 
 
 def general():

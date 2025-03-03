@@ -184,6 +184,7 @@ runtime env.vim
 runtime notes.vim
 runtime output/mod.vim
 runtime lang/mod.vim
+runtime data.vim
 
 " optional helper commands, if sensible for the current buffer
 let s:autowrite = v:false

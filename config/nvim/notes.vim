@@ -3,18 +3,21 @@ let zero = notes . "/zero"
 let daily_note = zero . "/daily-note"
 let template = zero . "/template"
 
-let g:date_format = "%Y-%m-%d"
-let g:datetime_format = g:date_format . " %H:%M:%S"
-
-" no i can't use treesitter for this,
-" as e.g. [/] is not parsed by it (it's a cancelled checkbox)
-let s:marker = '^\s*[-+/] '
-let s:checkbox = '\[.\]'
-let s:task = s:marker . s:checkbox
-" roughly sorted by priority
-let s:fills = "! >:o-?x/"
-
 function Notes()
+  let data = "~/studio/typst/packages/flow/asset/data.toml"
+  let data = data->expand()->readfile()->TomlDecode()
+
+  let g:date_format = data.date.short
+  let g:datetime_format = data.date.long
+
+  let s:list = data.regex.list
+  " other regex engines use the parens to denote groups
+  " but the vim one doesn't!
+  let s:checkbox = data.regex.checkbox->filter('v:val !~ "[()]"')
+  let s:fills = data.task.fills
+
+  let s:task = s:list . s:checkbox
+
   " Remember: The shortcut must be prefixed with the leader in use.
   let shortcuts = items(#{p: ">", h: "/", l: "x"})
   call extend(shortcuts, map(split(": ? ! -"), {_, ch -> [ch, ch]}))
@@ -130,7 +133,9 @@ function Context(move_cursor = v:false)
   norm $
 
   " let's look at what we actually want to do
-  let entry = search(s:marker, "cbWn", limit)
+  " no i can't use treesitter for this,
+  " as e.g. [/] is not parsed by it (it's a cancelled checkbox)
+  let entry = search(s:list, "cbWn", limit)
   let flags = a:move_cursor ? "cbWe" : "cbWn"
   let task = search(s:task, flags, limit)
 
@@ -178,8 +183,8 @@ function CreateTask(start_line = line("."))
 
   " does the line contain a list marker already? if so, move to its end
   norm ^
-  if search(s:marker, "cWe", line("."))
-    " reuse the marker then
+  if search(s:list, "cWe", line("."))
+    " reuse the list marker then
     let action = 'a[ ] '
   else
     " nope, no marker qwq

@@ -35,6 +35,23 @@ function Notes()
   noremap <RightRelease> <Cmd>call ToggleIfCheckbox("/")<CR>
 
   inoremap <Enter> <Cmd>call Enter()<CR>
+
+  " always have a pane on the right that shows headings
+lua <<EOF
+  require("trouble").open({
+    mode = "symbols",
+    filter = {
+      buf = 0,
+    },
+    win = {
+      position = "left",
+      wo = {
+        -- otherwise the heading name is shown twice
+        winhighlight = "Comment:Hide",
+      },
+    }
+  })
+EOF
 endfunction
 
 function Associate(pattern, template)

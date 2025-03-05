@@ -19,9 +19,7 @@ let a = #{
 " oklch 50% lightness - 0.15 chroma
 let hint = "#4f3a31"
 
-
-exe $'hi Visual guibg={a.violet} guifg={p.black}'
-exe $'hi! TelescopeSelection guifg={a.violet}'
+exe $'hi Hide guibg={p.black} guifg={p.black}'
 
 let g:rainbow_hl = []
 for [name, value] in items(a)
@@ -29,6 +27,10 @@ for [name, value] in items(a)
   exe $'hi {group} guifg={value}'
   let g:rainbow_hl += [group]
 endfor
+
+exe $'hi Visual guibg={a.violet} guifg={p.black}'
+exe $'hi! TelescopeSelection guifg={a.violet}'
+exe $'hi! link TroublePos Hide'
 
 for level in ["Error", "Warn", "Info", "Hint"]
   for part in ["", "VirtualText", "Floating", "Sign"]

@@ -141,7 +141,7 @@ noremap <Leader>x <Cmd>call Terminal()<CR>
 " open a terminal in the current file's folder
 noremap <Leader>e <Cmd>call Terminal(expand("%:p:h"))<CR>
 
-nnoremap <Leader>o <Cmd>Trouble diagnostics toggle filter.severity = vim.diagnostic.severity.ERROR<CR>
+nnoremap <Leader>o <Cmd>Trouble diagnostics toggle focus=false filter.severity=vim.diagnostic.severity.ERROR<CR>
 nnoremap <Leader>b <Cmd>update \| Trouble diagnostics<CR>
 
 nnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>
@@ -288,12 +288,41 @@ vim.lsp.set_log_level("error")
 require("trouble").setup({
   open_no_results = true,
   focus = true,
-  filter = {
-  },
+  multiline = false,
   win = {
     position = "bottom",
     height = 9,
-  }
+  },
+  icons = {
+    folder_closed = "-",
+    folder_open = ":",
+    kinds = {
+      Array = "array",
+      Boolean = "bool",
+      Class = "cls",
+      Constant = "const",
+      Constructor = "constr",
+      Enum = "enum",
+      EnumMember = "variant",
+      Event = "ev",
+      Field = "field",
+      File = "file",
+      Function = "fn",
+      Interface = "if",
+      Module = "mod",
+      Namespace = "=",
+      Null = "null",
+      Number = "num",
+      Object = "obj",
+      Operator = "op",
+      Package = "pkg",
+      Property = "prop",
+      String = "str",
+      Struct = "struct",
+      TypeParameter = "generic",
+      Variable = "var",
+    },
+  },
 })
 
 require("nvim-treesitter.configs").setup {

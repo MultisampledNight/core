@@ -118,7 +118,7 @@ function InteractTask(intended)
   if ctx == "task"
     call ToggleTask(a:intended)
   elseif ctx == "list"
-    call CreateTask(cfg.marker_line)
+    call CreateTask(cfg.start_line)
   else
     call CreateTask()
   endif
@@ -134,11 +134,11 @@ endfunction
 " One of (cursor is not moved unless explicitly listed and
 " `move_cursor` is truthy):
 " [v:null, {}] => no notable context
-" ["list", {marker_line}] => user is in a list entry *without* a checkbox.
-"   The list entry starts at `marker_line`.
-" ["task", {marker_line}] => user is in a list entry *with* a checkbox,
+" ["list", {start_line}] => user is in a list entry *without* a checkbox.
+"   The list entry starts at `start_line`.
+" ["task", {start_line}] => user is in a list entry *with* a checkbox,
 "   the cursor moves to the checkbox fill.
-"   The task entry starts at `marker_line`.
+"   The task entry starts at `start_line`.
 "
 " This overwrites the `K` mark with the initial cursor position
 " as a side effect.
@@ -158,13 +158,22 @@ function Context(move_cursor = v:false)
 
   " did any of them match at all?
   if entry == 0 && task == 0
-    let ctx = [v:null, {}]
+    let ctx = v:null
   elseif entry <= task
     norm h
-    let ctx = ["task", #{marker_line: task}]
+    let ctx = "task"
   else
-    let ctx = ["list", #{marker_line: entry}]
+    let ctx = "list"
   endif
+
+  let ctx = [ctx, {}]
+
+  if ctx[0] != v:null
+    norm ^
+    let ctx[1]["start_line"] = entry
+    let ctx[1]["list_marker"] = s:cursorchar()
+  endif
+
 
   if !a:move_cursor
     norm g`K
@@ -177,7 +186,7 @@ endfunction
 " If in doubt, use `Context` to do this for you.
 function ToggleTask(intended)
   " cursor is at end of match atm, let's look inside
-  let current = getline(".")[charcol(".") - 1]
+  let current = s:cursorchar()
   let final = a:intended
   if current == a:intended
     let final = " "
@@ -319,6 +328,11 @@ function TaskOverview()
 
   " alright, let's break it down then
   echon " (" . join(counts, ", ") . ")"
+endfunction
+
+" Returns the character currently under the cursor.
+function s:cursorchar()
+  return getline(".")[charcol(".") - 1]
 endfunction
 
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call Notes()

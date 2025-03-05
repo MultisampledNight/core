@@ -450,7 +450,7 @@ in {
           ]]
         ])
         (with unstable; [
-          [true [py waypipe]]
+          [true [py waypipe pynitrokey]]
           [cfg.wayland [
             fuzzel waybar grim slurp swappy hyprpicker fnott
             swaybg swaylock wl-clipboard

@@ -1,5 +1,17 @@
 colorscheme semi-duality
 
+" Silently (without cmdline feedback) writes the file if it has been modified.
+command Upd call Upd()
+
+function Upd()
+  " this does not write if the file doesn't exist yet — this is intentional
+  " to support deleting and renaming
+  if &buftype == "" && filewritable(@%)
+    nohlsearch
+    silent update
+  endif
+endfunction
+
 set winblend=10
 set pumblend=10
 
@@ -74,7 +86,7 @@ vnoremap <silent> P "+p
 vnoremap <silent> Y "+y
 
 function TelescopeOnToplevel(command)
-  silent update
+  Upd
   exe $'Telescope {a:command} cwd={g:toplevel}'
 endfunction
 
@@ -159,8 +171,8 @@ nnoremap <Leader>j <Cmd>call CreateNewFile()<CR>
 nnoremap <Leader>c <Cmd>call RenameCurrentFile()<CR>
 nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<CR>
 
-nnoremap <Esc> <Cmd>silent update \| noh<CR>
-nnoremap <Leader>q <Cmd>silent update \| call jobstart("cargo fmt")<CR>
+nnoremap <Esc> <Cmd>Upd<CR>
+nnoremap <Leader>q <Cmd>eval [Upd(), jobstart("cargo fmt")]<CR>
 
 nnoremap <F1> <NOP>
 inoremap <F1> <NOP>
@@ -202,18 +214,10 @@ function AutoWrite(target)
 
     au!
     if a:target
-      au CursorHold,CursorHoldI * call UpdateIfPossible()
+      au CursorHold,CursorHoldI * Upd
     endif
 
   augroup END
-endfunction
-
-function UpdateIfPossible()
-  " this does not write if the file doesn't exist yet — this is intentional
-  " to support deleting and renaming
-  if &buftype == "" && filewritable(@%)
-    silent update
-  endif
 endfunction
 
 command AutoWriteToggle call AutoWriteToggle()

@@ -33,7 +33,7 @@ function StopProgram(name)
 endfunction
 
 function ExecAtFile(command)
-  silent update
+  Upd
 
   exe "lcd " . expand("%:p:h")
   let job_id = jobstart(a:command, { "detach": v:true })

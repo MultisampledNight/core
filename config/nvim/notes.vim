@@ -100,7 +100,7 @@ function Template(name)
   norm gg"_dd
   call RealizeVariables()
 
-  silent update
+  Upd
 endfunction
 function OpenToday()
   let today = strftime(g:date_format)

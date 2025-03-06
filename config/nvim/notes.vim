@@ -154,14 +154,14 @@ function Context(move_cursor = v:false)
   " let's look at what we actually want to do
   " no i can't use treesitter for this,
   " as e.g. [/] is not parsed by it (it's a cancelled checkbox)
-  let entry = search(s:list, "cbWn", limit)
+  let list = search(s:list, "cbWn", limit)
   let flags = a:move_cursor ? "cbWe" : "cbWn"
   let task = search(s:task, flags, limit)
 
   " did any of them match at all?
-  if entry == 0 && task == 0
+  if list == 0 && task == 0
     let ctx = v:null
-  elseif entry <= task
+  elseif list <= task
     norm h
     let ctx = "task"
   else
@@ -171,8 +171,14 @@ function Context(move_cursor = v:false)
   let ctx = [ctx, {}]
 
   if ctx[0] != v:null
-    let ctx[1]["start_line"] = entry
-    let ctx[1]["list_marker"] = s:firstNonEmpty()
+    norm mY
+    exe $'norm {list}G'
+    norm ^
+
+    let ctx[1]["start_line"] = list
+    let ctx[1]["list_marker"] = s:cursorchar()
+
+    norm g`Y
   endif
 
   if !a:move_cursor
@@ -338,17 +344,6 @@ endfunction
 " Returns the character currently under the cursor.
 function s:cursorchar()
   return getline(".")[charcol(".") - 1]
-endfunction
-
-" Returns the first non-empty character.
-function s:firstNonEmpty()
-  norm mY
-
-  norm ^
-  let ch = s:cursorchar()
-
-  norm g`Y
-  return ch
 endfunction
 
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call Notes()

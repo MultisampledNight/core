@@ -169,11 +169,9 @@ function Context(move_cursor = v:false)
   let ctx = [ctx, {}]
 
   if ctx[0] != v:null
-    norm ^
     let ctx[1]["start_line"] = entry
-    let ctx[1]["list_marker"] = s:cursorchar()
+    let ctx[1]["list_marker"] = s:firstNonEmpty()
   endif
-
 
   if !a:move_cursor
     norm g`K
@@ -333,6 +331,17 @@ endfunction
 " Returns the character currently under the cursor.
 function s:cursorchar()
   return getline(".")[charcol(".") - 1]
+endfunction
+
+" Returns the first non-empty character.
+function s:firstNonEmpty()
+  norm mY
+
+  norm ^
+  let ch = s:cursorchar()
+
+  norm g`Y
+  return ch
 endfunction
 
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call Notes()

@@ -26,7 +26,7 @@ in {
 
             # languages
             black
-            nixfmt
+            nixfmt-rfc-style
             llvmPackages_latest.llvm
             llvmPackages_latest.bintools
             llvmPackages_latest.lld
@@ -56,6 +56,7 @@ in {
             websocat
 
             typst
+            typstyle
 
             tinymist
             typos-lsp

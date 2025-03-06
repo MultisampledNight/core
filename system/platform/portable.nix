@@ -1,7 +1,13 @@
-{ config, pkgs, lib, ... }@args:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}@args:
 
 with lib;
-with import ../prelude args; {
+with import ../prelude args;
+{
   imports = [ ./desktop.nix ];
 
   config = {
@@ -39,7 +45,10 @@ with import ../prelude args; {
       };
 
       kmscon.configuration = {
-        system.nixos.tags = [ "kmscon" "hardened" ];
+        system.nixos.tags = [
+          "kmscon"
+          "hardened"
+        ];
         boot.kernelPackages = pkgs.unstable.linuxKernel.packages.linux_hardened;
 
         generalized = {
@@ -51,10 +60,12 @@ with import ../prelude args; {
           kmscon = {
             enable = true;
             hwRender = true;
-            fonts = [{
-              name = "IBM Plex Mono";
-              package = pkgs.ibm-plex;
-            }];
+            fonts = [
+              {
+                name = "IBM Plex Mono";
+                package = pkgs.ibm-plex;
+              }
+            ];
             extraConfig = ''
               font-size=${toString (if cfg.hidpi then 30 else 14)}
 

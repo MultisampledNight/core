@@ -15,7 +15,9 @@ let
     reset = "${esc}(B" + (csi "" "m");
     fg = idx: sgr (30 + idx);
   };
-in {
+in
+{
   indent = strings.replicate table.indent.base " ";
-} // code // (mapAttrs (_: cfg: (code.fg cfg.color) + cfg.symbol + code.reset)
-  table.messages)
+}
+// code
+// (mapAttrs (_: cfg: (code.fg cfg.color) + cfg.symbol + code.reset) table.messages)

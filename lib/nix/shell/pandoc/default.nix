@@ -1,4 +1,6 @@
-{ pkgs ? import <nixos-unstable> { } }:
+{
+  pkgs ? import <nixos-unstable> { },
+}:
 
 pkgs.mkShell rec {
   buildInputs = with pkgs; [ pandoc ];

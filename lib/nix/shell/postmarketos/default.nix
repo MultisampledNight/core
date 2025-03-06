@@ -1,3 +1,5 @@
-{ pkgs ? import <nixos-unstable> { } }:
+{
+  pkgs ? import <nixos-unstable> { },
+}:
 
 pkgs.mkShell { buildInputs = with pkgs; [ pmbootstrap ]; }

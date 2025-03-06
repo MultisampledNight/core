@@ -1,7 +1,11 @@
-{ pkgs ? import <nixos-unstable> { } }:
+{
+  pkgs ? import <nixos-unstable> { },
+}:
 
-let python3Ext = pkgs.python3.withPackages (ps: [ ps.ipython ]);
-in pkgs.mkShell {
+let
+  python3Ext = pkgs.python3.withPackages (ps: [ ps.ipython ]);
+in
+pkgs.mkShell {
   buildInputs = with pkgs; [ python3Ext ];
 
   shellHook = ''

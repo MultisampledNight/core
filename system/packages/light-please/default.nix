@@ -1,5 +1,12 @@
-{ lib, stdenv, fetchFromGitHub, rustPlatform, libxkbcommon
-, enableWayland ? stdenv.isLinux, wayland }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+  libxkbcommon,
+  enableWayland ? stdenv.isLinux,
+  wayland,
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "light-please";
@@ -14,15 +21,20 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-xS2kZnZcTceeSs5kmTDUJugVH/hQf/Kb33C6uZLvavI=";
 
-  postFixup = let libPath = lib.makeLibraryPath [ wayland libxkbcommon ];
-  in ''
-    patchelf $out/bin/light-please \
-      --add-rpath "${libPath}"
-  '';
+  postFixup =
+    let
+      libPath = lib.makeLibraryPath [
+        wayland
+        libxkbcommon
+      ];
+    in
+    ''
+      patchelf $out/bin/light-please \
+        --add-rpath "${libPath}"
+    '';
 
   meta = with lib; {
-    description =
-      "Lightens up the environment before your screen. As in, drawing a white window.";
+    description = "Lightens up the environment before your screen. As in, drawing a white window.";
     homepage = "https://github.com/MultisampledNight/light-please";
     maintainers = [ maintainers.multisn8 ];
   };

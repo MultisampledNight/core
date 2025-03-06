@@ -11,10 +11,16 @@
 # a
 # ```
 
-{ config, pkgs, lib, ... }@args:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}@args:
 
 with lib;
-with builtins; rec {
+with builtins;
+rec {
   zero = sub: /home/multisn8/zero/${sub};
   core = sub: zero /core/${sub};
 
@@ -43,12 +49,10 @@ with builtins; rec {
   #   ]
   # ]
   # => ["meow" "awawa" "mrrp" "owo"]
-  unite = toplevel:
-    concatLists (concatMap tail (filter head (concatLists toplevel)));
+  unite = toplevel: concatLists (concatMap tail (filter head (concatLists toplevel)));
 
   # Maps both keys and values of an attribute set, but each only individually.
-  mapKv = keyOp: valueOp:
-    mapAttrs' (key: value: nameValuePair (keyOp key) (valueOp value));
+  mapKv = keyOp: valueOp: mapAttrs' (key: value: nameValuePair (keyOp key) (valueOp value));
   mapKey = keyOp: mapKv keyOp (v: v);
   mapValue = valueOp: mapKv (k: k) valueOp;
 
@@ -57,11 +61,14 @@ with builtins; rec {
 
   # Converts a list to an attribute set
   # with every value being set to `null`.
-  listToNames = list:
-    listToAttrs (map (ele: {
-      name = ele;
-      value = null;
-    }) list);
+  listToNames =
+    list:
+    listToAttrs (
+      map (ele: {
+        name = ele;
+        value = null;
+      }) list
+    );
 
   # Takes a list of strings and an attribute set,
   # filters the attribute set for all keys that are in the list.
@@ -74,14 +81,21 @@ with builtins; rec {
 
   # Fetches the given nixpkgs revision and returns its import.
   # You can directly access the values to get a package!
-  nixpkgsFromCommit = { rev, hash, opts ? { }, owner ? "nixos" }:
+  nixpkgsFromCommit =
+    {
+      rev,
+      hash,
+      opts ? { },
+      owner ? "nixos",
+    }:
     let
       tree = pkgs.fetchzip {
         name = "nixpkgs-${rev}";
         url = "https://github.com/${owner}/nixpkgs/archive/${rev}.tar.gz";
         hash = hash;
       };
-    in import tree opts;
+    in
+    import tree opts;
 
   # Fetches the nixpkgs PR with the given number and
   # returns an overlay
@@ -89,33 +103,52 @@ with builtins; rec {
   # taking them from the PR instead.
   #
   # `packages` has to be a list of strings.
-  takeFromPr = { pr, hash, packages }:
-    (_: _:
+  takeFromPr =
+    {
+      pr,
+      hash,
+      packages,
+    }:
+    (
+      _: _:
       narrow packages (nixpkgsFromCommit {
         rev = "pull/${toString pr}/head";
         inherit hash;
-      }));
+      })
+    );
 
-  toSudoers = dense:
-    concatStringsSep "\n" (mapAttrsToList (name: value:
-      "Defaults " + (if (isBool value) then
-        (optionalString (!value) "!") + name
-      else if (isString value) then
-        ''${name}="${value}"''
-      else
-        "${name}=${toString value}")) dense);
+  toSudoers =
+    dense:
+    concatStringsSep "\n" (
+      mapAttrsToList (
+        name: value:
+        "Defaults "
+        + (
+          if (isBool value) then
+            (optionalString (!value) "!") + name
+          else if (isString value) then
+            ''${name}="${value}"''
+          else
+            "${name}=${toString value}"
+        )
+      ) dense
+    );
 
   # List of all used video drivers.
-  allVideoDrivers = unique (let
-    unsorted = if cfg.video.driver == null then
-      [ ]
-    else if (isAttrs cfg.video.driver) then
-      (attrValues cfg.video.driver)
-    else
-      singleton cfg.video.driver;
+  allVideoDrivers = unique (
+    let
+      unsorted =
+        if cfg.video.driver == null then
+          [ ]
+        else if (isAttrs cfg.video.driver) then
+          (attrValues cfg.video.driver)
+        else
+          singleton cfg.video.driver;
 
-    pref = cfg.video.prefer;
-  in if pref == null then unsorted else [ pref ] ++ (remove pref unsorted));
+      pref = cfg.video.prefer;
+    in
+    if pref == null then unsorted else [ pref ] ++ (remove pref unsorted)
+  );
 
   # Is there at least one Nvidia GPU on this system?
   hasNv = contains "nvidia" allVideoDrivers;

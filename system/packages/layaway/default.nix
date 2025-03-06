@@ -1,4 +1,9 @@
-{ lib, stdenv, fetchFromGitHub, rustPlatform }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "layaway";
@@ -14,8 +19,7 @@ rustPlatform.buildRustPackage rec {
   cargoHash = "sha256-liWP6AI72xG1O+MbCZ0cjJ2llHj/iv3hR/U3BLv5fKA=";
 
   meta = with lib; {
-    description =
-      "Layout creation for Sway via a relative and human-readable DSL.";
+    description = "Layout creation for Sway via a relative and human-readable DSL.";
     homepage = "https://github.com/MultisampledNight/layaway";
     maintainers = [ maintainers.multisn8 ];
   };

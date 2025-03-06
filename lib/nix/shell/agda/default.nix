@@ -1,3 +1,10 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
-pkgs.mkShell rec { buildInputs = with pkgs; [ agda agda-pkg ]; }
+pkgs.mkShell rec {
+  buildInputs = with pkgs; [
+    agda
+    agda-pkg
+  ];
+}

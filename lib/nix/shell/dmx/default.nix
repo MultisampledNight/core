@@ -1,4 +1,6 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
 with pkgs.lib;
 pkgs.mkShell rec {
@@ -6,8 +8,6 @@ pkgs.mkShell rec {
 
   shellHook = ''
     export SHELL_NAME="''${SHELL_NAME:+$SHELL_NAME/}<dmx>"
-    export LD_LIBRARY_PATH+=":${
-      builtins.toString (makeLibraryPath buildInputs)
-    }";
+    export LD_LIBRARY_PATH+=":${builtins.toString (makeLibraryPath buildInputs)}";
   '';
 }

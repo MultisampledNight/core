@@ -1,13 +1,20 @@
-{ config, pkgs, lib, ... }@args:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}@args:
 
 with lib;
 with import ./prelude args;
 let
-  customVimPlugins = pkgs.unstable.vimPlugins.extend
-    (pkgs.unstable.callPackage ./neovim/custom-plugins.nix { });
+  customVimPlugins = pkgs.unstable.vimPlugins.extend (
+    pkgs.unstable.callPackage ./neovim/custom-plugins.nix { }
+  );
   cudatk = pkgs.unstable.cudatoolkit;
   nvidia = config.boot.kernelPackages.nvidia_x11;
-in {
+in
+{
   documentation = {
     enable = true;
     dev.enable = true;
@@ -45,7 +52,13 @@ in {
             jetbrains.pycharm-community
           ]
         ]
-        [ hasNv [ cudatk nvidia ] ]
+        [
+          hasNv
+          [
+            cudatk
+            nvidia
+          ]
+        ]
       ])
       (with unstable; [
         [
@@ -63,47 +76,77 @@ in {
             nil
           ]
         ]
-        [ cfg.graphical [ godot_4 neovide ] ]
+        [
+          cfg.graphical
+          [
+            godot_4
+            neovide
+          ]
+        ]
       ])
     ];
 
-    sessionVariables = {
-      VK_LOADER_DRIVERS = let
-        manifest = driver: is64bit:
+    sessionVariables =
+      {
+        VK_LOADER_DRIVERS =
           let
-            suffix = optionalString (!is64bit) "-32";
-            # TODO: figure out how to handle ARM and RISC-V archs
-            arch = if is64bit then "x86_64" else "i686";
-          in "/run/opengl-driver${suffix}/share/vulkan/icd.d/${driver}_icd.${arch}.json";
-      in concatMap (driver: map (manifest driver) [ true false ])
-      # that var already took care of putting the preferred one first (if any)
-      allVideoDrivers;
-      NEOVIDE_FORK = "1";
-    } // (if hasNv then {
-      # both required for blender
-      CUDA_PATH = "${cudatk}";
-      CYCLES_CUDA_EXTRA_CFLAGS = concatStringsSep " " [
-        "-I${cudatk}/targets/x86_64-linux/include"
-        "-I${nvidia}/lib"
-      ];
-    } else
-      { }) // (if cfg.wayland then {
-        NIXOS_OZONE_WL = "1";
-        WLR_NO_HARDWARE_CURSORS = "1";
-      } else
-        { });
+            manifest =
+              driver: is64bit:
+              let
+                suffix = optionalString (!is64bit) "-32";
+                # TODO: figure out how to handle ARM and RISC-V archs
+                arch = if is64bit then "x86_64" else "i686";
+              in
+              "/run/opengl-driver${suffix}/share/vulkan/icd.d/${driver}_icd.${arch}.json";
+          in
+          concatMap
+            (
+              driver:
+              map (manifest driver) [
+                true
+                false
+              ]
+            )
+            # that var already took care of putting the preferred one first (if any)
+            allVideoDrivers;
+        NEOVIDE_FORK = "1";
+      }
+      // (
+        if hasNv then
+          {
+            # both required for blender
+            CUDA_PATH = "${cudatk}";
+            CYCLES_CUDA_EXTRA_CFLAGS = concatStringsSep " " [
+              "-I${cudatk}/targets/x86_64-linux/include"
+              "-I${nvidia}/lib"
+            ];
+          }
+        else
+          { }
+      )
+      // (
+        if cfg.wayland then
+          {
+            NIXOS_OZONE_WL = "1";
+            WLR_NO_HARDWARE_CURSORS = "1";
+          }
+        else
+          { }
+      );
 
-    extraInit = (optionalString (hasNv && cfg.xorg) ''
-      export LD_LIBRARY_PATH="${config.hardware.nvidia.package}/lib:$LD_LIBRARY_PATH"
-    '') + (optionalString cfg.xorg ''
-      # is X even running yet?
-      if [[ -n $DISPLAY ]]; then
-        # key repeat delay + rate
-        xset r rate 260 60
-        # turn off the bell sound
-        xset b off
-      fi
-    '');
+    extraInit =
+      (optionalString (hasNv && cfg.xorg) ''
+        export LD_LIBRARY_PATH="${config.hardware.nvidia.package}/lib:$LD_LIBRARY_PATH"
+      '')
+      + (optionalString cfg.xorg ''
+        # is X even running yet?
+        if [[ -n $DISPLAY ]]; then
+          # key repeat delay + rate
+          xset r rate 260 60
+          # turn off the bell sound
+          xset b off
+        fi
+      '');
   };
 
   programs = {
@@ -136,8 +179,8 @@ in {
             nvim-dap
             nvim-dap-ui
 
-            (nvim-treesitter.withPlugins (parsers:
-              with parsers; [
+            (nvim-treesitter.withPlugins (
+              parsers: with parsers; [
                 arduino
                 c
                 cpp
@@ -190,7 +233,8 @@ in {
                 vimdoc
                 agda
                 vhdl
-              ]))
+              ]
+            ))
             nvim-treesitter-context
             nvim-ts-autotag
             rainbow-delimiters-nvim
@@ -215,7 +259,12 @@ in {
       ibm-plex
       manrope
       source-code-pro
-      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+      (nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "JetBrainsMono"
+        ];
+      })
       departure-mono
 
       atkinson-hyperlegible
@@ -235,31 +284,33 @@ in {
     # this adds a few commonly expected fonts like liberation...
     enableDefaultPackages = true;
 
-    fontconfig = let
-      # in points
-      size = 14;
-    in {
-      hinting.style = "slight";
+    fontconfig =
+      let
+        # in points
+        size = 14;
+      in
+      {
+        hinting.style = "slight";
 
-      # ...while this one sets the actually in-place default fonts
-      defaultFonts = {
-        serif = [ "Libertinus Serif" ];
-        sansSerif = [ "IBM Plex Sans" ];
-        monospace = [ "JetBrainsMono NL NF Light" ];
+        # ...while this one sets the actually in-place default fonts
+        defaultFonts = {
+          serif = [ "Libertinus Serif" ];
+          sansSerif = [ "IBM Plex Sans" ];
+          monospace = [ "JetBrainsMono NL NF Light" ];
+        };
+
+        # see fonts-conf(5), especially on the <EDIT ...> part
+        localConf = ''
+          <?xml version='1.0'?>
+          <!DOCTYPE fontconfig SYSTEM 'urn:fontconfig:fonts.dtd'>
+          <fontconfig>
+          <match>
+            <edit name="size" binding="strong">
+              <double>${toString size}</double>
+            </edit>
+          </match>
+          </fontconfig>
+        '';
       };
-
-      # see fonts-conf(5), especially on the <EDIT ...> part
-      localConf = ''
-        <?xml version='1.0'?>
-        <!DOCTYPE fontconfig SYSTEM 'urn:fontconfig:fonts.dtd'>
-        <fontconfig>
-        <match>
-          <edit name="size" binding="strong">
-            <double>${toString size}</double>
-          </edit>
-        </match>
-        </fontconfig>
-      '';
-    };
   };
 }

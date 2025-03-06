@@ -259,15 +259,20 @@ function Enter()
   let text_after_cursor = col(".") != col("$")
   let insertion_start = text_after_cursor ? "i" : "a"
 
-  let [ctx, _cfg] = Context()
+  let [ctx, cfg] = Context()
 
-  if ctx == "task"
-    let marker = "- [ ] "
-  elseif ctx == "list"
-    let marker = "- "
-  else
+  if ctx == v:null
     let marker = ""
+  else
+    let marker = cfg.list_marker . " "
   endif
+
+  " tasks are a kind of list
+  " so do preserve the list marker, but add the checkbox as well
+  if ctx == "task"
+    let marker .= "[ ] "
+  endif
+
   let concretize_indent = " \<BS>"
 
   exe $"norm! {insertion_start}\<Enter>{concretize_indent}{marker}\<Esc>"

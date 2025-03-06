@@ -172,7 +172,7 @@ nnoremap <Leader>c <Cmd>call RenameCurrentFile()<Enter>
 nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<Enter>
 
 nnoremap <Esc> <Cmd>Upd<Enter>
-nnoremap <Leader>q <Cmd>Upd<Enter>
+nnoremap <Leader>q <Cmd>eval [Upd(), b:format()]<Enter>
 
 nnoremap <F1> <NOP>
 inoremap <F1> <NOP>

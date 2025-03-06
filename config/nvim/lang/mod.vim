@@ -49,7 +49,7 @@ let cfg = #{
   \ typ: s:merge(s:soft(2), #{ft: "typst"}),
   \ tmTheme: s:merge(s:soft(2), #{ft: "xml"}),
 \ }
-let just_ft = ["agda", "kdl", "scm"]
+let just_ft = ["agda", "kdl", "scm", "nix"]
 for name in just_ft
   let cfg[name] = #{ft: name}
 endfor

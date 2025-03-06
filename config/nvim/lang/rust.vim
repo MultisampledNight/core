@@ -1,7 +1,8 @@
-let b:format = {-> jobstart(["cargo", "fmt"])}
 
 autocmd BufNewFile,BufRead *.rs
-  \ lua require("dap.ext.vscode").load_launchjs(".ide/launch.json")
+  \ let b:format = {-> jobstart(["cargo", "fmt"])}
+  \|lua require("dap.ext.vscode").load_launchjs(".ide/launch.json")
+
 function RustProjectExecutable()
   let metadata = trim(system("cargo metadata --format-version=1 --offline --no-deps 2>/dev/null"))
   if metadata == ""

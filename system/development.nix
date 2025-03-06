@@ -1,11 +1,10 @@
-{ config, pkgs, lib, ... } @ args:
+{ config, pkgs, lib, ... }@args:
 
 with lib;
 with import ./prelude args;
 let
-  customVimPlugins = pkgs.unstable.vimPlugins.extend (
-    pkgs.unstable.callPackage ./neovim/custom-plugins.nix {}
-  );
+  customVimPlugins = pkgs.unstable.vimPlugins.extend
+    (pkgs.unstable.callPackage ./neovim/custom-plugins.nix { });
   cudatk = pkgs.unstable.cudatoolkit;
   nvidia = config.boot.kernelPackages.nvidia_x11;
 in {
@@ -18,77 +17,84 @@ in {
   environment = {
     systemPackages = unite [
       (with pkgs; [
-        [true [
-          inotify-tools geoipWithDatabase
-          sshfs
+        [
+          true
+          [
+            inotify-tools
+            geoipWithDatabase
+            sshfs
 
-          # languages
-          black 
-          llvmPackages_latest.llvm llvmPackages_latest.bintools llvmPackages_latest.lld
-          clang sccache
+            # languages
+            black
+            nixfmt
+            llvmPackages_latest.llvm
+            llvmPackages_latest.bintools
+            llvmPackages_latest.lld
+            clang
+            sccache
 
-          direnv
-        ]]
-        [cfg.graphical [
-          ghidra sqlitebrowser
-          jetbrains.idea-community
-          jetbrains.pycharm-community
-        ]]
-        [hasNv [
-          cudatk
-          nvidia
-        ]]
+            direnv
+          ]
+        ]
+        [
+          cfg.graphical
+          [
+            ghidra
+            sqlitebrowser
+            jetbrains.idea-community
+            jetbrains.pycharm-community
+          ]
+        ]
+        [ hasNv [ cudatk nvidia ] ]
       ])
       (with unstable; [
-        [true [
-          difftastic mergiraf
-          websocat
+        [
+          true
+          [
+            difftastic
+            mergiraf
+            websocat
 
-          typst
+            typst
 
-          tinymist
-          typos-lsp
-          nil
-        ]]
-        [cfg.graphical [
-          godot_4
-          neovide
-        ]]
+            tinymist
+            typos-lsp
+            nil
+          ]
+        ]
+        [ cfg.graphical [ godot_4 neovide ] ]
       ])
     ];
 
     sessionVariables = {
       VK_LOADER_DRIVERS = let
-        manifest = driver: is64bit: let
-          suffix = optionalString (!is64bit) "-32";
-          # TODO: figure out how to handle ARM and RISC-V archs
-          arch = if is64bit then "x86_64" else "i686";
-        in
-          "/run/opengl-driver${suffix}/share/vulkan/icd.d/${driver}_icd.${arch}.json";
-      in
-        concatMap
-          (driver: map (manifest driver) [true false])
-          # that var already took care of putting the preferred one first (if any)
-          allVideoDrivers;
+        manifest = driver: is64bit:
+          let
+            suffix = optionalString (!is64bit) "-32";
+            # TODO: figure out how to handle ARM and RISC-V archs
+            arch = if is64bit then "x86_64" else "i686";
+          in "/run/opengl-driver${suffix}/share/vulkan/icd.d/${driver}_icd.${arch}.json";
+      in concatMap (driver: map (manifest driver) [ true false ])
+      # that var already took care of putting the preferred one first (if any)
+      allVideoDrivers;
       NEOVIDE_FORK = "1";
-    }
-    // (if hasNv then {
+    } // (if hasNv then {
       # both required for blender
       CUDA_PATH = "${cudatk}";
       CYCLES_CUDA_EXTRA_CFLAGS = concatStringsSep " " [
         "-I${cudatk}/targets/x86_64-linux/include"
         "-I${nvidia}/lib"
       ];
-    } else {})
-    // (if cfg.wayland then {
-      NIXOS_OZONE_WL = "1";
-      WLR_NO_HARDWARE_CURSORS = "1";
-    } else {});
+    } else
+      { }) // (if cfg.wayland then {
+        NIXOS_OZONE_WL = "1";
+        WLR_NO_HARDWARE_CURSORS = "1";
+      } else
+        { });
 
     extraInit = (optionalString (hasNv && cfg.xorg) ''
       export LD_LIBRARY_PATH="${config.hardware.nvidia.package}/lib:$LD_LIBRARY_PATH"
-    '')
-    + (optionalString cfg.xorg ''
+    '') + (optionalString cfg.xorg ''
       # is X even running yet?
       if [[ -n $DISPLAY ]]; then
         # key repeat delay + rate
@@ -115,36 +121,84 @@ in {
           start = [
             multisn8-colorschemes
 
-            nvim-cmp cmp-path cmp-cmdline cmp-nvim-lsp
-            cmp-vsnip vim-vsnip
-            nvim-lspconfig trouble-nvim plenary-nvim
-            telescope-nvim telescope-ui-select-nvim
-            nvim-dap nvim-dap-ui
+            nvim-cmp
+            cmp-path
+            cmp-cmdline
+            cmp-nvim-lsp
+            cmp-vsnip
+            vim-vsnip
+            nvim-lspconfig
+            trouble-nvim
+            plenary-nvim
+            telescope-nvim
+            telescope-ui-select-nvim
+            nvim-dap
+            nvim-dap-ui
 
-            (nvim-treesitter.withPlugins (parsers: with parsers; [
-              arduino c cpp c_sharp elixir gdscript javascript julia haskell
-              ocaml objc lua python r rust swift typescript
-              glsl hlsl wgsl
-              cuda
-              bash
-              gitignore gitcommit git_rebase git_config gitattributes
-              vim nix proto godot_resource
-              kdl ini toml yaml json json5 xml
-              css html
-              sql dot mermaid
-              latex bibtex markdown typst
-              diff query vimdoc
-              agda
-              vhdl
-            ]))
+            (nvim-treesitter.withPlugins (parsers:
+              with parsers; [
+                arduino
+                c
+                cpp
+                c_sharp
+                elixir
+                gdscript
+                javascript
+                julia
+                haskell
+                ocaml
+                objc
+                lua
+                python
+                r
+                rust
+                swift
+                typescript
+                glsl
+                hlsl
+                wgsl
+                cuda
+                bash
+                gitignore
+                gitcommit
+                git_rebase
+                git_config
+                gitattributes
+                vim
+                nix
+                proto
+                godot_resource
+                kdl
+                ini
+                toml
+                yaml
+                json
+                json5
+                xml
+                css
+                html
+                sql
+                dot
+                mermaid
+                latex
+                bibtex
+                markdown
+                typst
+                diff
+                query
+                vimdoc
+                agda
+                vhdl
+              ]))
             nvim-treesitter-context
             nvim-ts-autotag
             rainbow-delimiters-nvim
             typst-preview-nvim
 
-            vim-polyglot vim-signify
+            vim-polyglot
+            vim-signify
           ];
-          opt = [];
+          opt = [ ];
         };
       };
     };
@@ -155,11 +209,12 @@ in {
   fonts = mkIf cfg.graphical {
     packages = with pkgs; [
       hack-font
-      roboto roboto-mono
+      roboto
+      roboto-mono
       ibm-plex
       manrope
       source-code-pro
-      (nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
+      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
       departure-mono
 
       atkinson-hyperlegible
@@ -187,9 +242,9 @@ in {
 
       # ...while this one sets the actually in-place default fonts
       defaultFonts = {
-        serif = ["Libertinus Serif"];
-        sansSerif = ["IBM Plex Sans"];
-        monospace = ["JetBrainsMono NL NF Light"];
+        serif = [ "Libertinus Serif" ];
+        sansSerif = [ "IBM Plex Sans" ];
+        monospace = [ "JetBrainsMono NL NF Light" ];
       };
 
       # see fonts-conf(5), especially on the <EDIT ...> part

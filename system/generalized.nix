@@ -1,17 +1,14 @@
 # Help is available in the configuration.nix(5) man page and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... } @ args:
+{ config, pkgs, lib, ... }@args:
 
 with lib;
 with import ./prelude args;
-let
-  py = pkgs.python3.withPackages (ps: with ps; [
-    requests
-  ]);
+let py = pkgs.python3.withPackages (ps: with ps; [ requests ]);
 in {
   options.generalized = {
     boot = mkOption {
-      type = types.nullOr (types.enum ["uefi" "bios"]);
+      type = types.nullOr (types.enum [ "uefi" "bios" ]);
       default = "uefi";
       description = ''
         How the firmware boots. Advice:
@@ -30,8 +27,8 @@ in {
     };
 
     hostName = mkOption {
-      type = types.strMatching
-        "^$|^[[:alnum:]]([[:alnum:]_-]{0,61}[[:alnum:]])?$";
+      type =
+        types.strMatching "^$|^[[:alnum:]]([[:alnum:]_-]{0,61}[[:alnum:]])?$";
       default = "inconsistent";
       description = "The networking hostname of this system.";
     };
@@ -39,8 +36,9 @@ in {
     layout = mkOption {
       type = types.str;
       default = "bone";
-      description = "What keyboard layout to use on the Linux console and
-      in graphical environments.";
+      description = ''
+        What keyboard layout to use on the Linux console and
+              in graphical environments.'';
     };
 
     cpuVendor = mkOption {
@@ -73,13 +71,15 @@ in {
     externalInterface = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = "Which interface is designated to be exposed to the outside world.";
+      description =
+        "Which interface is designated to be exposed to the outside world.";
     };
 
     ssd = mkOption {
       type = types.bool;
       default = false;
-      description = "If to enable services like fstrim for automatic SSD maintenance.";
+      description =
+        "If to enable services like fstrim for automatic SSD maintenance.";
     };
 
     ssh = mkOption {
@@ -91,7 +91,8 @@ in {
     xorg = mkOption {
       type = types.bool;
       default = false;
-      description = "If to enable Xorg as display protocol with i3. Only in effect on non-server setups.";
+      description =
+        "If to enable Xorg as display protocol with i3. Only in effect on non-server setups.";
     };
 
     wayland = mkOption {
@@ -103,23 +104,26 @@ in {
     graphical = mkOption {
       type = types.bool;
       default = cfg.wayland || cfg.xorg;
-      description = "If to install graphical applications. Automatically enabled if you enable a display protocol.";
+      description =
+        "If to install graphical applications. Automatically enabled if you enable a display protocol.";
     };
 
     hidpi = mkOption {
       type = types.bool;
       default = false;
-      description = "If this system has a high display resolution on a relatively small surface. Causes most elements to be scaled up and a larger font size in the console.";
+      description =
+        "If this system has a high display resolution on a relatively small surface. Causes most elements to be scaled up and a larger font size in the console.";
     };
 
     audio = mkOption {
       type = types.bool;
       default = false;
-      description = "If this system should have PipeWire with compatibility plugins installed and running.";
+      description =
+        "If this system should have PipeWire with compatibility plugins installed and running.";
     };
 
     video.driver = mkOption {
-      type = (with types; nullOr (oneOf [str (attrsOf str)]));
+      type = (with types; nullOr (oneOf [ str (attrsOf str) ]));
       default = null;
       example = {
         "0000:0000" = "i915";
@@ -184,32 +188,33 @@ in {
     profileGuided = mkOption {
       type = types.bool;
       default = false;
-      description = "If to compile a few packages locally and adjusted to this CPU for better performance. Note that this will inherently make this configuration irreproducible on a platform that is only slightly different.";
+      description =
+        "If to compile a few packages locally and adjusted to this CPU for better performance. Note that this will inherently make this configuration irreproducible on a platform that is only slightly different.";
     };
 
     gaming = mkOption {
       type = types.bool;
       default = false;
-      description = "If you are the type of person which is colloquially referred to as gamer. Only in effect on non-server setups.";
+      description =
+        "If you are the type of person which is colloquially referred to as gamer. Only in effect on non-server setups.";
     };
 
     multimedia = mkOption {
       type = types.bool;
       default = false;
-      description = "If you want to record, produce and edit videos, music and audio. Only in effect on non-server setups.";
+      description =
+        "If you want to record, produce and edit videos, music and audio. Only in effect on non-server setups.";
     };
   };
 
-  imports = [./development.nix];
+  imports = [ ./development.nix ];
 
   config = {
-    assertions = [
-      {
-        assertion = !(isAttrs cfg.video.prefer) ||
-          (contains cfg.video.prefer (attrValues cfg.video.driver));
-        message = "The preferred video driver has to be one of the used ones";
-      }
-    ];
+    assertions = [{
+      assertion = !(isAttrs cfg.video.prefer)
+        || (contains cfg.video.prefer (attrValues cfg.video.driver));
+      message = "The preferred video driver has to be one of the used ones";
+    }];
 
     boot = {
       loader = if cfg.boot == "uefi" then {
@@ -227,20 +232,15 @@ in {
         grub.enable = mkDefault false;
       };
 
-      kernelPackages = mkDefault (
-        if cfg.profileGuided
-        then pkgs.unstable.linuxZenFast
-        else pkgs.unstable.linuxKernel.packages.linux_zen
-      );
+      kernelPackages = mkDefault (if cfg.profileGuided then
+        pkgs.unstable.linuxZenFast
+      else
+        pkgs.unstable.linuxKernel.packages.linux_zen);
 
       tmp.cleanOnBoot = true;
 
-      kernelParams = optionals hasNv [
-        "nvidia-drm.fbdev=1"
-      ];
-      blacklistedKernelModules = optionals (!cfg.camera) [
-        "uvcvideo"
-      ];
+      kernelParams = optionals hasNv [ "nvidia-drm.fbdev=1" ];
+      blacklistedKernelModules = optionals (!cfg.camera) [ "uvcvideo" ];
     };
 
     console.colors = [
@@ -272,16 +272,19 @@ in {
 
       graphics = {
         enable = true;
-        extraPackages = with pkgs; selectForDrivers {
-          i915 = [mesa.drivers intel-media-driver intel-compute-runtime.drivers];
-          nouveau = [mesa.drivers];
-        };
+        extraPackages = with pkgs;
+          selectForDrivers {
+            i915 =
+              [ mesa.drivers intel-media-driver intel-compute-runtime.drivers ];
+            nouveau = [ mesa.drivers ];
+          };
 
         enable32Bit = true;
-        extraPackages32 = with pkgs.pkgsi686Linux; selectForDrivers {
-          i915 = [mesa.drivers];
-          nouveau = [mesa.drivers];
-        };
+        extraPackages32 = with pkgs.pkgsi686Linux;
+          selectForDrivers {
+            i915 = [ mesa.drivers ];
+            nouveau = [ mesa.drivers ];
+          };
       };
 
       nvidia = mkIf hasNv {
@@ -307,10 +310,7 @@ in {
     i18n.defaultLocale = "en_US.UTF-8";
 
     console = {
-      font =
-        if cfg.hidpi
-        then null
-        else "Lat2-Terminus16";
+      font = if cfg.hidpi then null else "Lat2-Terminus16";
 
       keyMap = cfg.layout;
     };
@@ -321,15 +321,13 @@ in {
       users.multisn8 = {
         isNormalUser = true;
         extraGroups =
-          ["wheel" "plugdev" "antisuns" "kvm" "scanner" "lp" "dialout"]
-          ++ (optionals cfg.graphical ["input" "video" "audio"])
-          ++ (optionals config.programs.adb.enable ["adbusers"]);
+          [ "wheel" "plugdev" "antisuns" "kvm" "scanner" "lp" "dialout" ]
+          ++ (optionals cfg.graphical [ "input" "video" "audio" ])
+          ++ (optionals config.programs.adb.enable [ "adbusers" ]);
         shell = pkgs.zsh;
       };
 
-      groups = {
-        plugdev = {};
-      };
+      groups = { plugdev = { }; };
     };
 
     services = {
@@ -339,7 +337,7 @@ in {
         # see fwupd.conf(5)
         daemonSettings = {
           # do not fallback to unsafe http (which it does by default)
-          UriSchemes = ["https" "ipfs"];
+          UriSchemes = [ "https" "ipfs" ];
           ShowDevicePrivate = false;
         };
       };
@@ -378,23 +376,24 @@ in {
         # only need to apply udev overrides
         # if there's an override mapping by the user
         # otherwise just rely on default behavior, it'll be fine
-        videoDrivers = optionalString
-          (isAttrs cfg.video.driver)
-          (toString (mapAttrsToList (id: driver: let
-            parts = splitString ":" (toLower id);
-            vendor = elemAt parts 0;
-            device = elemAt parts 1;
+        videoDrivers = optionalString (isAttrs cfg.video.driver) (toString
+          (mapAttrsToList (id: driver:
+            let
+              parts = splitString ":" (toLower id);
+              vendor = elemAt parts 0;
+              device = elemAt parts 1;
 
-            runExtra = {
-              nouveau = "${getBin pkgs.kmod}/bin/modprobe nouveau";
-            }.${driver} or null;
-            run = optionalString (runExtra != null) '', RUN+="${runExtra}"'';
+              runExtra = {
+                nouveau = "${getBin pkgs.kmod}/bin/modprobe nouveau";
+              }.${driver} or null;
+              run = optionalString (runExtra != null) '', RUN+="${runExtra}"'';
 
-            condition = ''SUBSYSTEM=="pci", ATTRS{vendor}=="0x${vendor}", ATTRS{device}=="0x${device}"'';
-            action = ''ATTR{driver_override}="${driver}"'' + run;
-          in ''
-            ${condition}, ${action}
-          '') cfg.video.driver));
+              condition = ''
+                SUBSYSTEM=="pci", ATTRS{vendor}=="0x${vendor}", ATTRS{device}=="0x${device}"'';
+              action = ''ATTR{driver_override}="${driver}"'' + run;
+            in ''
+              ${condition}, ${action}
+            '') cfg.video.driver));
       in ''
         # Quest 1
         SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE:="0666", GROUP:="plugdev"
@@ -423,56 +422,87 @@ in {
     environment = {
       systemPackages = unite [
         (with pkgs; [
-          [true [
-            curl rsync rclone magic-wormhole-rs
-            gptfdisk efibootmgr
-            smartmontools usbutils
-            traceroute
-            fd ripgrep
-            tree
-            file pv
-            ffmpeg mpv
-            jq yq
-            unzip zip
-            sqlite-interactive
-            btop sysstat
-            hexyl
-          ]]
-          [cfg.wireless.wlan [iw]]
-          [cfg.xorg [xclip]]
-          [cfg.graphical [
-            speedcrunch
-            qalculate-gtk
-            glib
-            # themes
-            adapta-gtk-theme adapta-kde-theme
-            breeze-icons volantes-cursors
-          ]]
+          [
+            true
+            [
+              curl
+              rsync
+              rclone
+              magic-wormhole-rs
+              gptfdisk
+              efibootmgr
+              smartmontools
+              usbutils
+              traceroute
+              fd
+              ripgrep
+              tree
+              file
+              pv
+              ffmpeg
+              mpv
+              jq
+              yq
+              unzip
+              zip
+              sqlite-interactive
+              btop
+              sysstat
+              hexyl
+            ]
+          ]
+          [ cfg.wireless.wlan [ iw ] ]
+          [ cfg.xorg [ xclip ] ]
+          [
+            cfg.graphical
+            [
+              speedcrunch
+              qalculate-gtk
+              glib
+              # themes
+              adapta-gtk-theme
+              adapta-kde-theme
+              breeze-icons
+              volantes-cursors
+            ]
+          ]
         ])
         (with unstable; [
-          [true [py waypipe pynitrokey]]
-          [cfg.wayland [
-            fuzzel waybar grim slurp swappy hyprpicker fnott
-            swaybg swaylock wl-clipboard
-          ]]
-          [cfg.graphical [
-            alacritty
-          ]]
+          [ true [ py waypipe pynitrokey ] ]
+          [
+            cfg.wayland
+            [
+              fuzzel
+              waybar
+              grim
+              slurp
+              swappy
+              hyprpicker
+              fnott
+              swaybg
+              swaylock
+              wl-clipboard
+            ]
+          ]
+          [ cfg.graphical [ alacritty ] ]
         ])
       ];
 
       sessionVariables = {
-        TYPST_FONT_PATHS =
-          if config.fonts.fontDir.enable
-          then "/run/current-system/sw/share/X11/fonts"  # not sure if I should upstream this
-          else "";
+        TYPST_FONT_PATHS = if config.fonts.fontDir.enable then
+          "/run/current-system/sw/share/X11/fonts" # not sure if I should upstream this
+        else
+          "";
       } // (if cfg.wayland then {
-        QT_PLUGIN_PATH = map (plugin: "${plugin}/lib") (with pkgs; [libsForQt5.qtwayland]);
+        QT_PLUGIN_PATH =
+          map (plugin: "${plugin}/lib") (with pkgs; [ libsForQt5.qtwayland ]);
         XDG_CURRENT_DESKTOP = "sway";
-      } else {});
+      } else
+        { });
 
       shellAliases = {
-        ls = "ls -Npv --color --hyperlink=auto --time-style=+%Y-%m-%d\\ %H:%M:%S";
+        ls =
+          "ls -Npv --color --hyperlink=auto --time-style=+%Y-%m-%d\\ %H:%M:%S";
         l = "ls -lh --group-directories-first";
         ll = "l -a";
         c = "clear";
@@ -480,9 +510,16 @@ in {
       };
 
       gnome.excludePackages = with pkgs.gnome; [
-        cheese epiphany geary tali iagno hitori atomix evince
+        cheese
+        epiphany
+        geary
+        tali
+        iagno
+        hitori
+        atomix
+        evince
       ];
-      shells = with pkgs; [bashInteractive zsh];
+      shells = with pkgs; [ bashInteractive zsh ];
     };
 
     programs = {
@@ -536,7 +573,7 @@ in {
     xdg = {
       portal = mkIf cfg.graphical {
         enable = true;
-        extraPortals = with pkgs; [xdg-desktop-portal-gtk];
+        extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
       };
       mime = {
         enable = true;
@@ -547,47 +584,56 @@ in {
               name = "${key}/${value}";
               value = target;
             }) values);
-          langs = category: values: associate {
-            key = category;
-            values = values;
-          };
+          langs = category: values:
+            associate {
+              key = category;
+              values = values;
+            };
           nonstandard = map (value: "x-${value}");
         in {
           "application/pdf" = "org.gnome.Evince.desktop";
           "application/json" = "neovide.desktop";
-        } // (
-          langs
-          "application"
-          ([
-            "javascript"
-            "json" "toml" "yaml" "xml"
-            "sql"
-            "zip"
-          ] ++ (nonstandard [
-            "java" "php"
-            "csh" "nuscript"
-            "bat" "powershell"
-            "qml"
-            "tar"
-          ]))
-        ) // (
-          langs
-          "text"
-          ([
-            "julia" "rust"
-            "csv" "csv-schema" "css"
-            "markdown" "org"
-            "plain"
-          ] ++ (nonstandard [
-            "csharp" "erlang" "java" "kotlin"
-            "lua" "python" "sagemath" "vala"
-            "pascal" "nim" "nimscript" "go"
-            "vhdl" "verilog"
-            "sass" "scss"
-            "todo-txt"
-            "readme" "nfo"
-          ]))
-        );
+        } // (langs "application"
+          ([ "javascript" "json" "toml" "yaml" "xml" "sql" "zip" ]
+            ++ (nonstandard [
+              "java"
+              "php"
+              "csh"
+              "nuscript"
+              "bat"
+              "powershell"
+              "qml"
+              "tar"
+            ]))) // (langs "text" ([
+              "julia"
+              "rust"
+              "csv"
+              "csv-schema"
+              "css"
+              "markdown"
+              "org"
+              "plain"
+            ] ++ (nonstandard [
+              "csharp"
+              "erlang"
+              "java"
+              "kotlin"
+              "lua"
+              "python"
+              "sagemath"
+              "vala"
+              "pascal"
+              "nim"
+              "nimscript"
+              "go"
+              "vhdl"
+              "verilog"
+              "sass"
+              "scss"
+              "todo-txt"
+              "readme"
+              "nfo"
+            ])));
       };
     };
     qt = {
@@ -595,49 +641,50 @@ in {
       style = "adwaita-dark";
     };
 
-    security.sudo.extraConfig = with term; toSudoers {
-      # see sudoers(5)
-      passwd_timeout = 0;
-      timestamp_type = "global";
+    security.sudo.extraConfig = with term;
+      toSudoers {
+        # see sudoers(5)
+        passwd_timeout = 0;
+        timestamp_type = "global";
 
-      passprompt = "${indent}${query} auth for %u${cha 8}";
-      badpass_message = "${indent}${error} wrong password";
-      authfail_message = " ${error} %d time(s) incorrect";
-    };
+        passprompt = "${indent}${query} auth for %u${cha 8}";
+        badpass_message = "${indent}${error} wrong password";
+        authfail_message = " ${error} %d time(s) incorrect";
+      };
 
     virtualisation.kvmgt.enable = true;
 
     nixpkgs.overlays = let
       unstablePkgs = import <nixos-unstable> {
         config = {
-          allowUnfreePredicate = pkg: (
-            (builtins.elem (lib.getName pkg) [
+          allowUnfreePredicate = pkg:
+            ((builtins.elem (lib.getName pkg) [
               "nvidia-x11"
               "nvidia-settings"
               # those below are all just for CUDA it's so joever
               "libnpp"
-            ]) || (
-              any
-                (prefix: hasPrefix prefix (lib.getName pkg))
-                ["cuda" "libcu" "libnv"]
-            )
-          );
+            ]) || (any (prefix: hasPrefix prefix (lib.getName pkg)) [
+              "cuda"
+              "libcu"
+              "libnv"
+            ]));
         };
 
         overlays = [
           (takeFromPr {
             pr = 385529;
             hash = "sha256-/iQ4AJKfL5TNrPjHVLG/RTHSdemVPUv28CgmtqcTqio=";
-            packages = ["tinymist"];
+            packages = [ "tinymist" ];
           })
-          (final: prev: if cfg.profileGuided then {
-            godot_4 = prev.godot_4.override {
-              stdenv = final.fastStdenv;
-            };
-            linuxZenFast = prev.linuxPackagesFor (prev.linuxKernel.kernels.linux_zen.override {
-              stdenv = final.fastStdenv;
-            });
-          } else {})
+          (final: prev:
+            if cfg.profileGuided then {
+              godot_4 = prev.godot_4.override { stdenv = final.fastStdenv; };
+              linuxZenFast = prev.linuxPackagesFor
+                (prev.linuxKernel.kernels.linux_zen.override {
+                  stdenv = final.fastStdenv;
+                });
+            } else
+              { })
         ];
       };
     in [
@@ -646,18 +693,14 @@ in {
         custom = import ./packages { pkgs = prev; };
       })
       (final: prev: {
-        mpv = prev.mpv.override {
-          scripts = with final.mpvScripts; [
-            mpris
-          ];
-        };
+        mpv = prev.mpv.override { scripts = with final.mpvScripts; [ mpris ]; };
       })
     ];
     nix = {
       package = pkgs.lix;
       settings = {
         auto-optimise-store = true;
-        experimental-features = ["nix-command" "flakes"];
+        experimental-features = [ "nix-command" "flakes" ];
       };
     };
   };

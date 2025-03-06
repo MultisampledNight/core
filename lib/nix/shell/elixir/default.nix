@@ -1,9 +1,7 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 
 pkgs.mkShell {
-  buildInputs = with pkgs; [
-    elixir
-  ];
+  buildInputs = with pkgs; [ elixir ];
 
   shellHook = ''
     export SHELL_NAME="''${SHELL_NAME:+$SHELL_NAME/}<elixir>"

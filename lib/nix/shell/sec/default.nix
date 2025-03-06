@@ -1,16 +1,15 @@
-{ pkgs ? import <nixpkgs> {
-  config = {
-    allowUnfree = true;
-  };
-} }:
+{ pkgs ? import <nixpkgs> { config = { allowUnfree = true; }; } }:
 
 pkgs.mkShell rec {
   buildInputs = with pkgs; [
-    nmap hashcash openssl
+    nmap
+    hashcash
+    openssl
     binwalk
     ngrok
 
-    intelmetool coreboot-utils
+    intelmetool
+    coreboot-utils
     wireshark
   ];
 

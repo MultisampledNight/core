@@ -1,11 +1,8 @@
-{ config, pkgs, lib, ... } @ args:
+{ config, pkgs, lib, ... }@args:
 
 with lib;
-with import ../prelude args;
-{
-  imports = [
-    ./desktop.nix
-  ];
+with import ../prelude args; {
+  imports = [ ./desktop.nix ];
 
   config = {
     services = {
@@ -30,18 +27,19 @@ with import ../prelude args;
 
     environment.systemPackages = with pkgs; [
       mdadm
-      acpi brightnessctl
+      acpi
+      brightnessctl
       custom.light-please
     ];
 
     specialisation = {
       hardened.configuration = {
-        system.nixos.tags = ["hardened"];
+        system.nixos.tags = [ "hardened" ];
         boot.kernelPackages = pkgs.unstable.linuxKernel.packages.linux_hardened;
       };
 
       kmscon.configuration = {
-        system.nixos.tags = ["kmscon" "hardened"];
+        system.nixos.tags = [ "kmscon" "hardened" ];
         boot.kernelPackages = pkgs.unstable.linuxKernel.packages.linux_hardened;
 
         generalized = {
@@ -53,16 +51,12 @@ with import ../prelude args;
           kmscon = {
             enable = true;
             hwRender = true;
-            fonts = [
-              {
-                name = "IBM Plex Mono";
-                package = pkgs.ibm-plex;
-              }
-            ];
+            fonts = [{
+              name = "IBM Plex Mono";
+              package = pkgs.ibm-plex;
+            }];
             extraConfig = ''
-              font-size=${
-                toString (if cfg.hidpi then 30 else 14)
-              }
+              font-size=${toString (if cfg.hidpi then 30 else 14)}
 
               xkb-layout=de
               xkb-variant=bone
@@ -95,7 +89,7 @@ with import ../prelude args;
       };
 
       webcam.configuration = {
-        system.nixos.tags = ["webcam"];
+        system.nixos.tags = [ "webcam" ];
         generalized.camera = true;
       };
     };

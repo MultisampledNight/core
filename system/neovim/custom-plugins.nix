@@ -2,8 +2,7 @@
 # but I don't want to have all that out-of-bounds state management for the few plugins I maintain anyway
 { pkgs, lib, ... }:
 
-let
-  build = pkgs.vimUtils.buildVimPlugin;
+let build = pkgs.vimUtils.buildVimPlugin;
 in final: prev: {
   multisn8-colorschemes = build {
     name = "multisn8-colorschemes";

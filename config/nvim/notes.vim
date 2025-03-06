@@ -23,18 +23,18 @@ function Notes()
   call extend(shortcuts, map(split(": ? ! -"), {_, ch -> [ch, ch]}))
 
   for [key, fill] in shortcuts
-    exe $"noremap <Leader>{key} <Cmd>call InteractTask('{fill}')<CR>"
+    exe $"noremap <Leader>{key} <Cmd>call InteractTask('{fill}')<Enter>"
   endfor
 
   set tw=60 sw=2 ts=2 sts=0 et
 
-  noremap <Leader>m <Cmd>call OpenToday()<CR>
+  noremap <Leader>m <Cmd>call OpenToday()<Enter>
 
-  noremap <LeftRelease> <Cmd>call ToggleIfCheckbox("x")<CR>
-  noremap <2-LeftMouse> <Cmd>call ToggleIfCheckbox(">")<CR>
-  noremap <RightRelease> <Cmd>call ToggleIfCheckbox("/")<CR>
+  noremap <LeftRelease> <Cmd>call ToggleIfCheckbox("x")<Enter>
+  noremap <2-LeftMouse> <Cmd>call ToggleIfCheckbox(">")<Enter>
+  noremap <RightRelease> <Cmd>call ToggleIfCheckbox("/")<Enter>
 
-  inoremap <Enter> <Cmd>call Enter()<CR>
+  inoremap <Enter> <Cmd>call Enter()<Enter>
   nnoremap <A-Tab> >>
   nnoremap <A-S-Tab> <<
 
@@ -82,7 +82,7 @@ function RealizeVariables()
 
   let line = matches[0].lnum
   let kind = matches[0].submatches[1]
-  exe 'norm /'.regex."\<CR>\"_d//e\<CR>"
+  exe 'norm /'.regex."\<Enter>\"_d//e\<Enter>"
 
   if kind == 'insert'
     startinsert
@@ -240,7 +240,7 @@ function ToggleIfCheckbox(intended)
   call InteractTask(a:intended)
 
   " position the cursor so it's at the center of the checkbox
-  silent exe $"norm $?{s:checkbox}\<CR>l"
+  silent exe $"norm $?{s:checkbox}\<Enter>l"
 endfunction
 
 " Presses enter, preserving the context

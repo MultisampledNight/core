@@ -73,15 +73,15 @@ tnoremap <A-Esc> <C-\><C-N>
 
 nnoremap <silent> j gj
 nnoremap <silent> k gk
-nnoremap gn n<Cmd>noh<CR>
-nnoremap gN N<Cmd>noh<CR>
+nnoremap gn n<Cmd>noh<Enter>
+nnoremap gN N<Cmd>noh<Enter>
 nnoremap <silent> P "+p
 nnoremap <silent> Y "+y
 
 vnoremap <silent> j gj
 vnoremap <silent> k gk
-vnoremap gn n<Cmd>noh<CR>
-vnoremap gN N<Cmd>noh<CR>
+vnoremap gn n<Cmd>noh<Enter>
+vnoremap gN N<Cmd>noh<Enter>
 vnoremap <silent> P "+p
 vnoremap <silent> Y "+y
 
@@ -138,41 +138,41 @@ function Terminal(cwd = ".")
   call jobstart(cmd, opts)
 endfunction
 
-nnoremap <Leader><Leader> <Cmd>Telescope resume<CR>
-nnoremap <Leader>f <Cmd>call TelescopeOnToplevel("find_files follow=true")<CR>
-nnoremap <Leader>/ <Cmd>call TelescopeOnToplevel("live_grep")<CR> 
-nnoremap gd <Cmd>call TelescopeOnToplevel("lsp_definitions")<CR>
-nnoremap gu <Cmd>call TelescopeOnToplevel("lsp_references")<CR>
-nnoremap <Leader>i <Cmd>call TelescopeOnToplevel("lsp_implementations")<CR>
+nnoremap <Leader><Leader> <Cmd>Telescope resume<Enter>
+nnoremap <Leader>f <Cmd>call TelescopeOnToplevel("find_files follow=true")<Enter>
+nnoremap <Leader>/ <Cmd>call TelescopeOnToplevel("live_grep")<Enter> 
+nnoremap gd <Cmd>call TelescopeOnToplevel("lsp_definitions")<Enter>
+nnoremap gu <Cmd>call TelescopeOnToplevel("lsp_references")<Enter>
+nnoremap <Leader>i <Cmd>call TelescopeOnToplevel("lsp_implementations")<Enter>
 
 nmap <X1Mouse> <LeftMouse>gd
 nmap <X2Mouse> <LeftMouse><C-o>
 
 " open a terminal in the project root
-noremap <Leader>x <Cmd>call Terminal()<CR>
+noremap <Leader>x <Cmd>call Terminal()<Enter>
 " open a terminal in the current file's folder
-noremap <Leader>e <Cmd>call Terminal(expand("%:p:h"))<CR>
+noremap <Leader>e <Cmd>call Terminal(expand("%:p:h"))<Enter>
 
-nnoremap <Leader>o <Cmd>Trouble diagnostics toggle focus=false filter.severity=vim.diagnostic.severity.ERROR<CR>
-nnoremap <Leader>b <Cmd>update \| Trouble diagnostics<CR>
+nnoremap <Leader>o <Cmd>Trouble diagnostics toggle focus=false filter.severity=vim.diagnostic.severity.ERROR<Enter>
+nnoremap <Leader>b <Cmd>update \| Trouble diagnostics<Enter>
 
-nnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>
-vnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<CR>
-nnoremap <Leader>r <Cmd>update \| lua vim.lsp.buf.rename()<CR>
-nnoremap <Leader>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
-vnoremap <Leader>a <Cmd>update \| lua vim.lsp.buf.code_action()<CR>
-nnoremap <Leader>g <Cmd>call TelescopeOnToplevel("lsp_workspace_symbols")<CR>
+nnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<Enter>
+vnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<Enter>
+nnoremap <Leader>r <Cmd>update \| lua vim.lsp.buf.rename()<Enter>
+nnoremap <Leader>a <Cmd>update \| lua vim.lsp.buf.code_action()<Enter>
+vnoremap <Leader>a <Cmd>update \| lua vim.lsp.buf.code_action()<Enter>
+nnoremap <Leader>g <Cmd>call TelescopeOnToplevel("lsp_workspace_symbols")<Enter>
 
-nnoremap <Leader>s <Cmd>call TelescopeOnToplevel("treesitter")<CR>
-nnoremap <Leader>w <Cmd>call TelescopeOnToplevel("keymaps")<CR>
+nnoremap <Leader>s <Cmd>call TelescopeOnToplevel("treesitter")<Enter>
+nnoremap <Leader>w <Cmd>call TelescopeOnToplevel("keymaps")<Enter>
 
-nnoremap <Leader>. <Cmd>call TelescopeOnToplevel("git_status")<CR>
-nnoremap <Leader>j <Cmd>call CreateNewFile()<CR>
-nnoremap <Leader>c <Cmd>call RenameCurrentFile()<CR>
-nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<CR>
+nnoremap <Leader>. <Cmd>call TelescopeOnToplevel("git_status")<Enter>
+nnoremap <Leader>j <Cmd>call CreateNewFile()<Enter>
+nnoremap <Leader>c <Cmd>call RenameCurrentFile()<Enter>
+nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<Enter>
 
-nnoremap <Esc> <Cmd>Upd<CR>
-nnoremap <Leader>q <Cmd>eval [Upd(), jobstart("cargo fmt")]<CR>
+nnoremap <Esc> <Cmd>Upd<Enter>
+nnoremap <Leader>q <Cmd>eval [Upd(), jobstart("cargo fmt")]<Enter>
 
 nnoremap <F1> <NOP>
 inoremap <F1> <NOP>

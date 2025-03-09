@@ -1,1 +1,4 @@
 :preserve_vars_on_panic 1
+:dep chumsky = "1.0.0-alpha.8"
+:toolchain nightly
+:codegen_backend cranelift

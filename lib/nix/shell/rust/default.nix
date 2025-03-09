@@ -19,6 +19,7 @@ pkgs.mkShell rec {
       typos
       just
       fd
+      sea-orm-cli
 
       valgrind
       gdb

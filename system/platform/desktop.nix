@@ -168,7 +168,7 @@ with import ../prelude args;
             # since zathura flickers white when reloading, but evince does so only with the background color
             zathura
             scrcpy
-            fractal
+            element-desktop
             signal-desktop
           ]
         ]

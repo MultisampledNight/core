@@ -77,7 +77,7 @@ bindsym $mod+Shift+d exec tor-browser
 bindsym $mod+a exec firefox -p git
 bindsym $mod+x exec thunderbird
 bindsym $mod+p exec firefox -p zulip
-bindsym $mod+adiaeresis exec fractal
+bindsym $mod+adiaeresis exec element-desktop
 bindsym $mod+c exec lighting
 
 bindsym $mod+t exec notes

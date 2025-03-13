@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# disable-tty -- Sets the screen of TTY1 off after 1 minute of inactivity
+setterm --blank=1 | sudo tee /dev/tty1

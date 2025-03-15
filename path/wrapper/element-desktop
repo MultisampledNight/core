@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+WAYLAND_DISPLAY= /run/current-system/sw/bin/element-desktop $@

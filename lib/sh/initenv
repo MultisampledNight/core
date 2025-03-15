@@ -37,5 +37,5 @@ extra=$(
     | head -c-1
 )
 lib="$core/lib"
-export PATH="$PATH:$lib/sh:$extra:$HOME/studio/typst/packages/flow/util"
+export PATH="$lib/sh:$extra:$HOME/studio/typst/packages/flow/util:$PATH"
 export PYTHONPATH="$lib/py"

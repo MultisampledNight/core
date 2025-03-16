@@ -799,7 +799,7 @@ in
       [
         (final: prev: {
           unstable = unstablePkgs;
-          custom = import ./packages { pkgs = prev; };
+          custom = import ./packages { pkgs = unstablePkgs; };
         })
         (final: prev: {
           mpv = prev.mpv.override { scripts = with final.mpvScripts; [ mpris ]; };

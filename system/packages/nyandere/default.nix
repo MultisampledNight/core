@@ -12,10 +12,10 @@ rustPlatform.buildRustPackage rec {
     owner = "MultisampledNight";
     repo = pname;
     rev = "5706e3a19737c13a1dfa5043bbd4d965b2457932";
-    hash = lib.fakeHash;
+    hash = "sha256-vzQXPlR78/m9mB8pflsa7WCIMSuoWdczRcgo6yj3gcM=";
   };
 
-  cargoHash = lib.fakeHash;
+  cargoHash = "sha256-L2LOjKdU/6bkzw0ZrebARhR/MmwC0ET3rVZzhf1VQho=";
 
   meta = with lib; {
     description = "Scripting language for personal purchase tracking and analysis.";

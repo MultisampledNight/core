@@ -478,6 +478,7 @@ in
               rsync
               rclone
               magic-wormhole-rs
+              dogdns
               gptfdisk
               efibootmgr
               smartmontools
@@ -512,6 +513,7 @@ in
             cfg.graphical
             [
               speedcrunch
+              oxipng
               qalculate-gtk
               glib
               # themes

@@ -320,7 +320,7 @@ function TaskOverview()
       continue
     endif
 
-    call add(counts, $"{times} × [{ch}]")
+    call add(counts, $"{times} [{ch}]")
   endfor
 
   " print them nicely

@@ -25,11 +25,22 @@ rec {
   core = sub: zero /core/${sub};
 
   term = import ./term.nix (args // { inherit core; });
+
   unstable = pkgs.unstable;
   custom = pkgs.custom;
 
   # Shorthand for generalized's configuration, usually done by the end-user.
   cfg = config.generalized;
+
+  machine = rec {
+    # Which color to use for prompts and the works.
+    # This is currently a number in [0, 5] -- it is built for duality which uses 6 accent colors.
+    accent = mod entropy 6;
+    # Some random number that's the same per host.
+    entropy = lib.fromHexString (builtins.hashString "sha256" cfg.hostName);
+  };
+
+  mod = mag: rem: mag - (mag / rem) * rem;
 
   # Flattens the given list twice.
   # 1. The first level is flattened unconditionally.

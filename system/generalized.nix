@@ -634,10 +634,32 @@ in
       zsh = {
         enable = true;
         autosuggestions.enable = true;
-        promptInit = ''
-          sign_color='6'
-          PROMPT=" %D{%H %M} %F{$sign_color}%(!.#.=)%f "
-          RPROMPT='%(?..%F{1}%?%f) %F{5}%~%f %F{4}@%M%f'
+        promptInit = let
+          cfg = {
+            timeFormat = "%H %M";
+            sign = {
+              root = "#";
+              user = "=";
+              # ANSI base16 color
+              color = toString (machine.accent + 1);
+            };
+          };
+
+          part = with cfg; {
+            date = "%D{${timeFormat}}";
+            sign = "%F{${sign.color}}%(!.${sign.root}.${sign.user})%f";
+            exitCode = "%(?..%F{1}%?%f)";
+            cwd = "%F{5}%~%f";
+            machine = "%F{4}@%M%f";
+          };
+
+          seq = mapValue toString (with part; {
+            left = [date sign];
+            right = [exitCode cwd machine];
+          });
+        in with seq; ''
+          PROMPT=' ${left} '
+          RPROMPT='${right}'
         '';
       };
     };

@@ -664,6 +664,11 @@ in
       };
     };
 
+    # the default is hourly for some reason
+    systemd.timers.fwupd-refresh.timerConfig = {
+      OnCalendar = "daily";
+    };
+
     xdg = {
       portal = mkIf cfg.graphical {
         enable = true;

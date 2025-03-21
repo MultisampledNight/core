@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-rsync \
-	-e 'ssh -p 50022 -o NoHostAuthenticationForLocalhost=yes -i ~/.ssh/id_to_elusive' \
-	--info=progress2 --mkpath $@

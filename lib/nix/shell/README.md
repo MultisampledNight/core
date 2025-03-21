@@ -24,13 +24,8 @@ An example `.envrc` for a typical [Rust] project **for local development** might
 use nix '<rust>'
 ```
 
-Be aware of in which context you're operating when running `direnv allow`. Think especially twice about your host machine rather than on [elusive].
-
-## Interaction with [elusive]
-
-All shells are evaluated once and put into the Nix store on the [elusive] base image, to make sure their dependencies don't have to be downloaded on actual use.
+Be aware of in which context you're operating when running `direnv allow`. Think especially twice about your host machine rather than on a secured VM.
 
 [Rust]: https://www.rust-lang.org/
 [Python]: https://www.python.org/
 [typst]: https://typst.app/
-[elusive]: ../../system/elusive/README.md

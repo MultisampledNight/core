@@ -48,11 +48,6 @@ for example window manager hotkeys or shell helpers.
 
 You usually don't need to call them directly on the terminal.
 
-#### [`elusive`](./path/elusive)
-
-Facilitate interaction with [elusive],
-see [`system/elusive`](./system/elusive) for details.
-
 #### [`lib`](./path/lib)
 
 Don't perform any meaningful work on their own.
@@ -184,11 +179,6 @@ The exceptions stopping that at the moment are:
 
 ## Terminology
 
-### elusive
-
-The codename for the system I use for constructing VMs!
-Check the [elusive] README for details.
-
 ### zero
 
 Usually the folder `~/zero`.
@@ -201,7 +191,7 @@ to avoid having other software pollute my state.
 However, you're free to ask if a mechanism could be made standalone —
 I'm very much interested in keeping software
 which is used by others
-standards-compilant.
+standards-compliant.
 
 #### Why?
 
@@ -237,5 +227,4 @@ It might reveal a lot about you.
 
 [NixOS]: https://nixos.org/
 [CUDA]: https://developer.nvidia.com/cuda-zone
-[elusive]: ./system/elusive
 [Undertale]: https://undertale.com/

@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-sshfs \
-	-p	50022 \
-	-o	IdentityFile=~/.ssh/id_to_elusive,ServerAliveInterval=15,reconnect,max_conns=32,dir_cache=yes,NoHostAuthenticationForLocalhost=yes \
-	$@

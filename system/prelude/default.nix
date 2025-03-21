@@ -34,8 +34,7 @@ rec {
 
   machine = rec {
     # Which color to use for prompts and the works.
-    # This is currently a number in [0, 5] -- it is built for duality which uses 6 accent colors.
-    accent = mod entropy 6;
+    accent = mod entropy 15;
     # Some random number that's the same per host.
     entropy = lib.fromHexString (builtins.hashString "sha256" cfg.hostName);
   };

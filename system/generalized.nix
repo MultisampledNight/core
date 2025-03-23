@@ -635,33 +635,46 @@ in
       zsh = {
         enable = true;
         autosuggestions.enable = true;
-        promptInit = let
-          cfg = {
-            timeFormat = "%H %M";
-            sign = {
-              root = "#";
-              user = "=";
-              # ANSI base16 color
-              color = toString (machine.accent + 1);
+        promptInit =
+          let
+            cfg = {
+              timeFormat = "%H %M";
+              sign = {
+                root = "#";
+                user = "=";
+                # ANSI base16 color
+                color = toString (machine.accent + 1);
+              };
             };
-          };
 
-          part = with cfg; {
-            date = "%D{${timeFormat}}";
-            sign = "%F{${sign.color}}%(!.${sign.root}.${sign.user})%f";
-            exitCode = "%(?..%F{1}%?%f)";
-            cwd = "%F{5}%~%f";
-            machine = "%F{4}@%M%f";
-          };
+            part = with cfg; {
+              date = "%D{${timeFormat}}";
+              sign = "%F{${sign.color}}%(!.${sign.root}.${sign.user})%f";
+              exitCode = "%(?..%F{1}%?%f)";
+              cwd = "%F{5}%~%f";
+              machine = "%F{4}@%M%f";
+            };
 
-          seq = mapValue toString (with part; {
-            left = [date sign];
-            right = [exitCode cwd machine];
-          });
-        in with seq; ''
-          PROMPT=' ${left} '
-          RPROMPT='${right}'
-        '';
+            seq = mapValue toString (
+              with part;
+              {
+                left = [
+                  date
+                  sign
+                ];
+                right = [
+                  exitCode
+                  cwd
+                  machine
+                ];
+              }
+            );
+          in
+          with seq;
+          ''
+            PROMPT=' ${left} '
+            RPROMPT='${right}'
+          '';
       };
     };
 
@@ -801,11 +814,6 @@ in
           };
 
           overlays = [
-            (takeFromPr {
-              pr = 385529;
-              hash = "sha256-/iQ4AJKfL5TNrPjHVLG/RTHSdemVPUv28CgmtqcTqio=";
-              packages = [ "tinymist" ];
-            })
             (
               final: prev:
               if cfg.profileGuided then

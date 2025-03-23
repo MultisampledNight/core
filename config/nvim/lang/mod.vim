@@ -1,7 +1,8 @@
 runtime lang/godot.vim
-runtime lang/rust.vim
-runtime lang/python.vim
 runtime lang/latex.vim
+runtime lang/nix.vim
+runtime lang/python.vim
+runtime lang/rust.vim
 runtime lang/typst.vim
 
 " Shorthands for setting configuration options

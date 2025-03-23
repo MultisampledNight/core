@@ -498,6 +498,7 @@ in
               sqlite-interactive
               btop
               sysstat
+              cryptsetup
               hexyl
             ]
           ]

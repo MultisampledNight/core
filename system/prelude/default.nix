@@ -36,7 +36,7 @@ rec {
     # Which color to use for prompts and the works.
     accent = mod entropy 15;
     # Some random number that's the same per host.
-    entropy = lib.fromHexString (builtins.hashString "sha256" cfg.hostName);
+    entropy = lib.fromHexString (builtins.hashString "sha512" cfg.hostName);
   };
 
   mod = mag: rem: mag - (mag / rem) * rem;

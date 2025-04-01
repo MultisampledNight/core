@@ -532,6 +532,7 @@ in
               py
               waypipe
               pynitrokey
+              opensc
             ]
           ]
           [

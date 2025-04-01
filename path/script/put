@@ -4,7 +4,7 @@ set -euo pipefail
 
 if [[ ${#@} -lt 2 ]]; then
 	error "usage: <machine> <local-source-path> [<remote-target-path>]"
-	error "remote target path defaults the zero recv dir"
+	error "remote target path defaults to the zero recv dir"
 	return 1
 fi
 

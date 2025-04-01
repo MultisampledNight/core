@@ -491,7 +491,7 @@ end
 local bin = "/run/current-system/sw/bin"
 
 require("typst-preview").setup {
-  open_cmd = "webapp %s",
+  open_cmd = "webapp %s 2>/dev/null",
   dependencies_bin = {
     ["tinymist"] = bin .. "/tinymist",
     ["websocat"] = bin .. "/websocat",

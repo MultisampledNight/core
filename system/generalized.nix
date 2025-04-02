@@ -501,6 +501,7 @@ in
               sysstat
               cryptsetup
               hexyl
+              libguestfs
             ]
           ]
           [

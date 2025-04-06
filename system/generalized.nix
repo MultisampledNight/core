@@ -480,6 +480,7 @@ in
               magic-wormhole-rs
               dogdns
               gptfdisk
+              nvme-cli
               efibootmgr
               smartmontools
               usbutils

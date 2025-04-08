@@ -15,7 +15,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-vzQXPlR78/m9mB8pflsa7WCIMSuoWdczRcgo6yj3gcM=";
   };
 
-  cargoHash = "sha256-L2LOjKdU/6bkzw0ZrebARhR/MmwC0ET3rVZzhf1VQho=";
+  cargoHash = "sha256-igzKzeOUZb0AHDjwkO2PV/PvYg2t3fB7vXaJA93kTLA=";
 
   meta = with lib; {
     description = "Scripting language for personal purchase tracking and analysis.";

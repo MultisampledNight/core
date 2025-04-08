@@ -77,6 +77,7 @@ nnoremap gn n<Cmd>noh<Enter>
 nnoremap gN N<Cmd>noh<Enter>
 nnoremap <silent> P "+p
 nnoremap <silent> Y "+y
+nnoremap <silent> X "+X
 
 vnoremap <silent> j gj
 vnoremap <silent> k gk
@@ -84,6 +85,7 @@ vnoremap gn n<Cmd>noh<Enter>
 vnoremap gN N<Cmd>noh<Enter>
 vnoremap <silent> P "+p
 vnoremap <silent> Y "+y
+vnoremap <silent> X "+x
 
 function TelescopeOnToplevel(command)
   Upd

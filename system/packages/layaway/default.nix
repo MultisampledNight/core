@@ -16,7 +16,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-SzAuVFEy56svasO3+1p6ysBRrIQd0UZX++/P4ZuwWm0=";
   };
 
-  cargoHash = "sha256-vgZcNByBYHdk6E49gFOThrtQO34OrcmJ6r9E1FRp+vg=";
+  cargoHash = "sha256-QVxlkE+sq4U048LnshI/tq6HInKiSgjQLAdR+27/wEI=";
 
   meta = with lib; {
     description = "Layout creation for Sway via a relative and human-readable DSL.";

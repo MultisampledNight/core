@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+set -eu
+watch -n1 ping -c1 $@

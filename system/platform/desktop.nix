@@ -449,6 +449,18 @@ with import ../prelude args;
                 IconURL = ytIcon;
               }
               {
+                Name = "ZDF";
+                Alias = "@zdf";
+                URLTemplate = "https://www.zdf.de/suche?q={searchTerms}";
+                Method = "GET";
+              }
+              {
+                Name = "ARD";
+                Alias = "@ard";
+                URLTemplate = "https://www.ardmediathek.de/suche/{searchTerms}";
+                Method = "GET";
+              }
+              {
                 Name = "ProtonDB";
                 Alias = "@protondb";
                 URLTemplate = "https://www.protondb.com/search?q={searchTerms}";

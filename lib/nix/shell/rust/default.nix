@@ -20,6 +20,7 @@ pkgs.mkShell rec {
       just
       fd
       sea-orm-cli
+      sqlx-cli
 
       valgrind
       gdb

@@ -183,7 +183,9 @@ inoremap <F1> <NOP>
 let g:neovide_refresh_rate = 60
 let g:neovide_refresh_rate_idle = 5
 let g:neovide_cursor_unfocused_outline_width = 0.025
-let g:neovide_cursor_animation_length = 0.08
+let g:neovide_cursor_animation_length = 0.25
+let g:neovide_cursor_short_animation_length = 0.125
+let g:neovide_position_animation_length = 0.25
 let g:neovide_floating_blur_amount_x = 16.0
 let g:neovide_floating_blur_amount_y = 16.0
 let g:neovide_floating_shadow = v:true

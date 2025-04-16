@@ -1,7 +1,7 @@
 
 autocmd BufNewFile,BufRead *.rs
   \ setlocal equalprg=rustfmt
-  \|let b:format = {-> jobstart(["cargo", "fmt"])}
+  \|let b:format = {-> jobstart(["cargo", "fmt"], #{cwd: expand("%:h")})}
   \|lua require("dap.ext.vscode").load_launchjs(".ide/launch.json")
 
 function RustProjectExecutable()

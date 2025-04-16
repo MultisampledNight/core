@@ -291,6 +291,7 @@ lspconfig.tinymist.setup {
   offset_encoding = "utf-8",
 }
 lspconfig.nil_ls.setup {}
+lspconfig.java_language_server.setup {}
 vim.lsp.set_log_level("error")
 
 require("trouble").setup({

@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-e41SD7XTbt+Io2opHMoYmAMW5WuqD9Gs1C+kXBOHZpg=";
   };
 
-  cargoHash = "sha256-xS2kZnZcTceeSs5kmTDUJugVH/hQf/Kb33C6uZLvavI=";
+  cargoHash = "sha256-g51qXIyMHX1kHTJMf1ullxd2cr8YCqwuH4ClFq/4GdI=";
 
   postFixup =
     let

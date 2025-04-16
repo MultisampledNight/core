@@ -187,6 +187,7 @@ in
                 c_sharp
                 elixir
                 gdscript
+                java
                 javascript
                 julia
                 haskell

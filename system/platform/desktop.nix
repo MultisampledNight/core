@@ -461,6 +461,18 @@ with import ../prelude args;
                 Method = "GET";
               }
               {
+                Name = "3sat";
+                Alias = "@3sat";
+                URLTemplate = "https://www.3sat.de/suche?q={searchTerms}&synth=true&attrs=";
+                Method = "GET";
+              }
+              {
+                Name = "ARTE";
+                Alias = "@arte";
+                URLTemplate = "https://www.arte.tv/en/search/?q=mreow&genre=all";
+                Method = "GET";
+              }
+              {
                 Name = "ProtonDB";
                 Alias = "@protondb";
                 URLTemplate = "https://www.protondb.com/search?q={searchTerms}";

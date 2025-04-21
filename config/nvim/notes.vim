@@ -35,8 +35,10 @@ function Notes()
   noremap <RightRelease> <Cmd>call ToggleIfCheckbox("/")<Enter>
 
   inoremap <Enter> <Cmd>call Enter()<Enter>
-  nnoremap <A-Tab> >>
-  nnoremap <A-S-Tab> <<
+  nnoremap <A-Tab> >>2l
+  nnoremap <A-S-Tab> <<2h
+  inoremap <A-Tab> <Esc>>>2la
+  inoremap <A-S-Tab> <Esc><<2ha
 
   " always have a pane on the right that shows headings
 lua <<EOF

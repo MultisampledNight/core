@@ -46,6 +46,7 @@ in
         [
           cfg.graphical
           [
+            godot_4
             ghidra
             sqlitebrowser
             jetbrains.idea-community
@@ -79,7 +80,6 @@ in
         [
           cfg.graphical
           [
-            godot_4
             neovide
           ]
         ]

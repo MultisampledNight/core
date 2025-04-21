@@ -70,7 +70,6 @@ input type:touchpad {
 }
 
 bindsym $mod+Tab exec fuzzel
-bindsym $mod+j exec firefox -p fedi
 bindsym $mod+d exec firefox
 bindsym $mod+u exec firefox -p fedi2
 bindsym $mod+Shift+d exec tor-browser

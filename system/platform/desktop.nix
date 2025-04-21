@@ -241,6 +241,8 @@ with import ../prelude args;
           wikipediaIcon = "https://en.wikipedia.org/static/favicon/wikipedia.ico";
           wikidataIcon = "https://www.wikidata.org/static/favicon/wikidata.ico";
           osmIcon = "https://www.openstreetmap.org/assets/osm_logo-4b074077c29e100f40ee64f5177886e36b570d4cc3ab10c7b263003d09642e3f.svg";
+
+          mouserIcon = "https://www.mouser.de/favicon.ico";
         in
         {
           DownloadDirectory = "\${home}/media/downloads";
@@ -512,6 +514,25 @@ with import ../prelude args;
                 URLTemplate = "https://www.openstreetmap.org/search?query={searchTerms}";
                 Method = "GET";
                 IconURL = osmIcon;
+              }
+              {
+                Name = "Mouser";
+                Alias = "@mouser";
+                URLTemplate = "https://www.mouser.de/c/?q={searchTerms}";
+                Method = "GET";
+                IconURL = mouserIcon;
+              }
+              {
+                Name = "The Free Dictionary";
+                Alias = "@tfd";
+                URLTemplate = "https://www.thefreedictionary.com/{searchTerms}";
+                Method = "GET";
+              }
+              {
+                Name = "Free Thesaurus";
+                Alias = "@fts";
+                URLTemplate = "https://www.freethesaurus.com/{searchTerms}";
+                Method = "GET";
               }
             ];
 

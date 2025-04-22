@@ -2,10 +2,11 @@
   pkgs ? import <nixpkgs> {}
 }: 
 
-pkgs.mkShell rec {
+pkgs.mkShell {
   buildInputs = with pkgs; [
     jdk
-    java-language-server
+    jdt-language-server
+    google-java-format
   ];
 
   shellHook = ''

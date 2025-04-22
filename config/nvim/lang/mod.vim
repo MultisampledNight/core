@@ -1,4 +1,5 @@
 runtime lang/godot.vim
+runtime lang/java.vim
 runtime lang/latex.vim
 runtime lang/nix.vim
 runtime lang/python.vim

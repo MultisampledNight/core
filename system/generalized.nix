@@ -532,6 +532,7 @@ in
             true
             [
               py
+              julia
               waypipe
               pynitrokey
               opensc

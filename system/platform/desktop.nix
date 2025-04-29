@@ -520,7 +520,25 @@ with import ../prelude args;
                 Alias = "@mouser";
                 URLTemplate = "https://www.mouser.de/c/?q={searchTerms}";
                 Method = "GET";
+              }
+              {
+                Name = "Mrose";
+                Alias = "@mrose";
+                URLTemplate = "https://mrose.de/suche/?p3={searchTerms}";
+                Method = "GET";
                 IconURL = mouserIcon;
+              }
+              {
+                Name = "AbS Lieder";
+                Alias = "@abslieder";
+                URLTemplate = "https://www.abs-lieder.de/advanced_search_result.php?categories_id=&inc_subcat=1&keywords={searchTerms}";
+                Method = "GET";
+              }
+              {
+                Name = "HELE";
+                Alias = "@hele";
+                URLTemplate = "https://www.hele.de/eShop/index.php?lang=0&cl=search&searchparam={searchTerms}";
+                Method = "GET";
               }
               {
                 Name = "The Free Dictionary";

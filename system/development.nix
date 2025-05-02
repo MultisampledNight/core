@@ -152,7 +152,6 @@ in
   programs = {
     neovim = {
       defaultEditor = true;
-      package = pkgs.unstable.neovim-unwrapped;
       withNodeJs = true;
       withRuby = false;
 

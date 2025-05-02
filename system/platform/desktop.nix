@@ -241,8 +241,6 @@ with import ../prelude args;
           wikipediaIcon = "https://en.wikipedia.org/static/favicon/wikipedia.ico";
           wikidataIcon = "https://www.wikidata.org/static/favicon/wikidata.ico";
           osmIcon = "https://www.openstreetmap.org/assets/osm_logo-4b074077c29e100f40ee64f5177886e36b570d4cc3ab10c7b263003d09642e3f.svg";
-
-          mouserIcon = "https://www.mouser.de/favicon.ico";
         in
         {
           DownloadDirectory = "\${home}/media/downloads";
@@ -526,7 +524,6 @@ with import ../prelude args;
                 Alias = "@mrose";
                 URLTemplate = "https://mrose.de/suche/?p3={searchTerms}";
                 Method = "GET";
-                IconURL = mouserIcon;
               }
               {
                 Name = "AbS Lieder";
@@ -538,6 +535,12 @@ with import ../prelude args;
                 Name = "HELE";
                 Alias = "@hele";
                 URLTemplate = "https://www.hele.de/eShop/index.php?lang=0&cl=search&searchparam={searchTerms}";
+                Method = "GET";
+              }
+              {
+                Name = "BuyDisplay";
+                Alias = "@buydisplay";
+                URLTemplate = "https://www.buydisplay.com/catalogsearch/result/?q={searchTerms}";
                 Method = "GET";
               }
               {

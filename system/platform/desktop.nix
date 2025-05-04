@@ -532,6 +532,12 @@ with import ../prelude args;
                 Method = "GET";
               }
               {
+                Name = "Täubner Arbeitskleidung";
+                Alias = "@abstäubner";
+                URLTemplate = "https://www.taeubner-arbeitskleidung.de/suche?suchtxt={searchTerms}";
+                Method = "POST";
+              }
+              {
                 Name = "HELE";
                 Alias = "@hele";
                 URLTemplate = "https://www.hele.de/eShop/index.php?lang=0&cl=search&searchparam={searchTerms}";

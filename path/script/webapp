@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 set -eu
 firefox -p _app \
-	--kiosk --new-window \
 	--name=webapp \
 	$@

@@ -4,6 +4,12 @@ function s:Determine()
     return $TYPST_ROOT
   endif
 
+  let cwd = getcwd()
+
+  if filereadable(".project")
+    return cwd
+  endif
+
   " is this a git repo?
   let toplevel = trim(system("git rev-parse --show-toplevel"))
   if v:shell_error == 0
@@ -17,7 +23,7 @@ function s:Determine()
   endif
 
   " fall back to the cwd
-  return getcwd()
+  return cwd
 endfunction
 
 function ProjectToplevel()

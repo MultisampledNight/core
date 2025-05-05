@@ -421,6 +421,12 @@ with import ../prelude args;
                 IconURL = docsrsIcon;
               }
               {
+                Name = "Java SE 21 API reference";
+                Alias = "@javase21";
+                URLTemplate = "https://docs.oracle.com/en/java/javase/21/docs/api/search.html?q={searchTerms}";
+                Method = "GET";
+              }
+              {
                 Name = "NixOS options";
                 Alias = "@nixopts";
                 URLTemplate = "https://search.nixos.org/options?query={searchTerms}";

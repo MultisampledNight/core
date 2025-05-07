@@ -151,6 +151,12 @@ in
 
   programs = {
     neovim = {
+      package = pkgs.unstable.neovim-unwrapped.overrideAttrs (prev: {
+        meta = prev.meta // {
+          maintainers = [ ];
+        };
+      });
+
       defaultEditor = true;
       withNodeJs = true;
       withRuby = false;

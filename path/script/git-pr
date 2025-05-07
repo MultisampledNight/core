@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -eux
+
+number="$1"
+branch="pull-$number"
+
+# get the pr branch and give it a name
+git fetch origin "refs/pull/$number/head:$branch"
+# switch to it
+git switch "$branch"
+

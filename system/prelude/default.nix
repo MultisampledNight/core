@@ -89,6 +89,9 @@ rec {
   # If a key is not in `lookup`, it'll have no effect on the joined list.
   select = lookup: keys: concatMap (key: lookup.${key} or [ ]) keys;
 
+  optAttrs = optionalAttrs;
+  optString = optionalString;
+
   # Fetches the given nixpkgs revision and returns its import.
   # You can directly access the values to get a package!
   nixpkgsFromCommit =
@@ -108,13 +111,16 @@ rec {
     import tree opts;
 
   # Overrides a Rust package's source, including the cargo dep hash.
-  overrideRust = prevPkg: { src, cargoHash }: prevPkg.overrideAttrs (_: rec {
-    inherit src;
-    cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+  overrideRust =
+    prevPkg:
+    { src, cargoHash }:
+    prevPkg.overrideAttrs (_: rec {
       inherit src;
-      hash = cargoHash;
-    };
-  });
+      cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+        inherit src;
+        hash = cargoHash;
+      };
+    });
 
   # Fetches the nixpkgs PR with the given number and
   # returns an overlay
@@ -144,7 +150,7 @@ rec {
         "Defaults "
         + (
           if (isBool value) then
-            (optionalString (!value) "!") + name
+            (optString (!value) "!") + name
           else if (isString value) then
             ''${name}="${value}"''
           else

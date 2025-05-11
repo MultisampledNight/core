@@ -693,8 +693,6 @@ with import ../prelude args;
     };
   nixpkgs = {
     config.allowUnfree = true;
-
-    overlays = [ ];
   };
 
   system.copySystemConfiguration = true;

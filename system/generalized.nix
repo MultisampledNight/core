@@ -417,7 +417,7 @@ in
           # only need to apply udev overrides
           # if there's an override mapping by the user
           # otherwise just rely on default behavior, it'll be fine
-          videoDrivers = optionalString (isAttrs cfg.video.driver) (
+          videoDrivers = optString (isAttrs cfg.video.driver) (
             toString (
               mapAttrsToList (
                 id: driver:
@@ -431,7 +431,7 @@ in
                       nouveau = "${getBin pkgs.kmod}/bin/modprobe nouveau";
                     }
                     .${driver} or null;
-                  run = optionalString (runExtra != null) '', RUN+="${runExtra}"'';
+                  run = optString (runExtra != null) '', RUN+="${runExtra}"'';
 
                   condition = ''SUBSYSTEM=="pci", ATTRS{vendor}=="0x${vendor}", ATTRS{device}=="0x${device}"'';
                   action = ''ATTR{driver_override}="${driver}"'' + run;
@@ -562,21 +562,12 @@ in
 
       sessionVariables =
         {
-          TYPST_FONT_PATHS =
-            if config.fonts.fontDir.enable then
-              "/run/current-system/sw/share/X11/fonts" # not sure if I should upstream this
-            else
-              "";
+          TYPST_FONT_PATHS = optString config.fonts.fontDir.enable "/run/current-system/sw/share/X11/fonts"; # not sure if I should upstream this
         }
-        // (
-          if cfg.wayland then
-            {
-              QT_PLUGIN_PATH = map (plugin: "${plugin}/lib") (with pkgs; [ libsForQt5.qtwayland ]);
-              XDG_CURRENT_DESKTOP = "sway";
-            }
-          else
-            { }
-        );
+        // (optAttrs cfg.wayland {
+          QT_PLUGIN_PATH = map (plugin: "${plugin}/lib") (with pkgs; [ libsForQt5.qtwayland ]);
+          XDG_CURRENT_DESKTOP = "sway";
+        });
 
       shellAliases = {
         ls = "ls -Npv --color --hyperlink=auto --time-style=+%Y-%m-%d\\ %H:%M:%S";
@@ -834,17 +825,14 @@ in
             })
             (
               final: prev:
-              if cfg.profileGuided then
-                {
-                  godot_4 = prev.godot_4.override { stdenv = final.fastStdenv; };
-                  linuxZenFast = prev.linuxPackagesFor (
-                    prev.linuxKernel.kernels.linux_zen.override {
-                      stdenv = final.fastStdenv;
-                    }
-                  );
-                }
-              else
-                { }
+              optAttrs cfg.profileGuided {
+                godot_4 = prev.godot_4.override { stdenv = final.fastStdenv; };
+                linuxZenFast = prev.linuxPackagesFor (
+                  prev.linuxKernel.kernels.linux_zen.override {
+                    stdenv = final.fastStdenv;
+                  }
+                );
+              }
             )
           ];
         };

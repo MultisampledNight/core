@@ -93,7 +93,7 @@ in
             manifest =
               driver: is64bit:
               let
-                suffix = optionalString (!is64bit) "-32";
+                suffix = optString (!is64bit) "-32";
                 # TODO: figure out how to handle ARM and RISC-V archs
                 arch = if is64bit then "x86_64" else "i686";
               in
@@ -135,10 +135,10 @@ in
       );
 
     extraInit =
-      (optionalString (hasNv && cfg.xorg) ''
+      (optString (hasNv && cfg.xorg) ''
         export LD_LIBRARY_PATH="${config.hardware.nvidia.package}/lib:$LD_LIBRARY_PATH"
       '')
-      + (optionalString cfg.xorg ''
+      + (optString cfg.xorg ''
         # is X even running yet?
         if [[ -n $DISPLAY ]]; then
           # key repeat delay + rate

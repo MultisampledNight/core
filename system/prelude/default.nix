@@ -107,6 +107,15 @@ rec {
     in
     import tree opts;
 
+  # Overrides a Rust package's source, including the cargo dep hash.
+  overrideRust = prevPkg: { src, cargoHash }: prevPkg.overrideAttrs (_: rec {
+    inherit src;
+    cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+      inherit src;
+      hash = cargoHash;
+    };
+  });
+
   # Fetches the nixpkgs PR with the given number and
   # returns an overlay
   # which overrides the given package names,

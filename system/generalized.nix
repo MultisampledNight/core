@@ -822,18 +822,15 @@ in
               # updating so we can customize the short animation length
               # the weird double-override is needed due to how the vendoring is implemented
               # https://nixos.wiki/wiki/Rust#Using_overrideArgs_with_Rust_Packages
-              neovide = prev.neovide.overrideAttrs (prevAttrs: rec {
+              neovide = overrideRust prev.neovide {
                 src = pkgs.fetchFromGitHub {
                   owner = "neovide";
                   repo = "neovide";
                   rev = "3075a94f2e86ad301ab45816baec87f0c61de748";
                   hash = "sha256-6gcHhT+HtxP6LfHVRtGOadAffswihD+bvuvHrFFNtoI=";
                 };
-                cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-                  inherit src;
-                  hash = "sha256-1ni8AZIwAz5R2Ejt9Fj5qmybvL4KZV/M3BMqQx4HFLU=";
-                };
-              });
+                cargoHash = "sha256-1ni8AZIwAz5R2Ejt9Fj5qmybvL4KZV/M3BMqQx4HFLU=";
+              };
             })
             (
               final: prev:

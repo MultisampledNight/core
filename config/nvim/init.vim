@@ -25,7 +25,6 @@ set signcolumn=yes
 set title
 set titlestring=%m%h%w%F
 set titlelen=0
-set linebreak
 set undofile
 set shortmess+=W
 set notimeout

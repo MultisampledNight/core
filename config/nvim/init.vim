@@ -29,6 +29,7 @@ set undofile
 set shortmess+=W
 set notimeout
 set nottimeout
+set nowrap
 
 set completeopt=menu,menuone,preview,noselect
 set mouse=a

@@ -113,14 +113,17 @@ rec {
   # Overrides a Rust package's source, including the cargo dep hash.
   overrideRust =
     prevPkg:
-    { src, cargoHash }:
-    prevPkg.overrideAttrs (_: rec {
-      inherit src;
-      cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-        inherit src;
-        hash = cargoHash;
-      };
-    });
+    { src, cargoHash, ... }@args:
+    prevPkg.overrideAttrs (
+      _:
+      rec {
+        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+          inherit src;
+          hash = cargoHash;
+        };
+      }
+      // (filterAttrs (name: _: !(contains name [ "cargoHash" ])) args)
+    );
 
   # Fetches the nixpkgs PR with the given number and
   # returns an overlay

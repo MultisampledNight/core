@@ -822,6 +822,17 @@ in
                 };
                 cargoHash = "sha256-1ni8AZIwAz5R2Ejt9Fj5qmybvL4KZV/M3BMqQx4HFLU=";
               };
+              # had some alignment corner-case qol fixes on 2025-05-11
+              typstyle = overrideRust prev.typstyle {
+                version = "0.13.6";
+                src = pkgs.fetchFromGitHub {
+                  owner = "Enter-tainer";
+                  repo = "typstyle";
+                  rev = "v0.13.6";
+                  hash = "sha256-tuzNRvoIvEYqYUhyaEcExaAjMfdA8n/+i/SfT9xeERE=";
+                };
+                cargoHash = "sha256-Lxg4siUkdyL2Cmy3ToPvlDYYHZbRIHl7MuUG8uWqqvc=";
+              };
             })
             (
               final: prev:

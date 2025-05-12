@@ -567,6 +567,12 @@ with import ../prelude args;
                 URLTemplate = "https://www.freethesaurus.com/{searchTerms}";
                 Method = "GET";
               }
+              {
+                Name = "Save now on Wayback Machine";
+                Alias = "@savewm";
+                URLTemplate = "https://web.archive.org/save/{searchTerms}";
+                Method = "GET";
+              }
             ];
 
             Remove = [

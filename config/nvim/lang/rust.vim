@@ -1,4 +1,3 @@
-
 autocmd BufNewFile,BufRead *.rs
   \ setlocal equalprg=rustfmt
   \|let b:format = {-> jobstart(["cargo", "fmt"])}

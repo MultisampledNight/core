@@ -132,6 +132,14 @@ flash() {
 		oflag=sync
 }
 
+dir-rename() {
+  old="$1"
+  new="$2"
+  for folder in `fd --type directory "^$old$"`; do
+    mv "$folder" "$(dirname $folder)/$new"
+  done
+}
+
 # evaluates the pattern on the device and then pulls the files over
 adb-pull-pattern() {
 	adb shell "cd $(dirname $1) && tar -zcf - $(basename $1)" \

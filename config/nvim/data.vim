@@ -81,3 +81,7 @@ function s:Literal(source)
     throw $"cannot parse TOML literal `{a:source}` (note that not all features are supported)"
   endif
 endfunction
+
+let g:data = "~/studio/typst/packages/flow/asset/data.toml"
+let g:data = g:data->expand()->readfile()->TomlDecode()
+

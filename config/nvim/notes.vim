@@ -4,17 +4,11 @@ let daily_note = zero . "/daily-note"
 let template = zero . "/template"
 
 function Notes()
-  let data = "~/studio/typst/packages/flow/asset/data.toml"
-  let data = data->expand()->readfile()->TomlDecode()
-
-  let g:date_format = data.date.short
-  let g:datetime_format = data.date.long
-
-  let s:list = data.regex.list
+  let s:list = g:data.regex.list
   " other regex engines use the parens to denote groups
   " but the vim one doesn't!
-  let s:checkbox = data.regex.checkbox->filter('v:val !~ "[()]"')
-  let s:fills = data.task.fills
+  let s:checkbox = g:data.regex.checkbox->filter('v:val !~ "[()]"')
+  let s:fills = g:data.task.fills
 
   let s:task = s:list . s:checkbox
 

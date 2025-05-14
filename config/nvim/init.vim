@@ -1,5 +1,7 @@
 colorscheme semi-duality
 
+runtime data.vim
+
 " Silently (without cmdline feedback) writes the file if it has been modified.
 command Upd call Upd()
 
@@ -47,6 +49,9 @@ set nofoldenable
 
 let mapleader = " "
 let localleader = " "
+
+let g:date_format = g:data.date.short
+let g:datetime_format = g:data.date.long
 
 
 function SelectionToClipboard()
@@ -200,7 +205,6 @@ runtime env.vim
 runtime notes.vim
 runtime output/mod.vim
 runtime lang/mod.vim
-runtime data.vim
 
 " optional helper commands, if sensible for the current buffer
 let s:autowrite = v:false

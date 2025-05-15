@@ -44,7 +44,7 @@ input type:touch map_to_output eDP-1
 input type:tablet_tool map_to_output eDP-1
 input type:tablet_pad map_to_output eDP-1
 
-input 8146:20737:Melfas_LGD_AIT_Touch_Controller map_to_output DP-2
+input 8146:20737:Melfas_LGD_AIT_Touch_Controller map_to_output HDMI-A-1
 
 input type:keyboard {
     xkb_layout "de"

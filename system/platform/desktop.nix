@@ -579,6 +579,12 @@ with import ../prelude args;
                 URLTemplate = "https://web.archive.org/save/{searchTerms}";
                 Method = "GET";
               }
+              {
+                Name = "DOI resolver";
+                Alias = "@doi";
+                URLTemplate = "https://dx.doi.org/?hdl={searchTerms}";
+                Method = "POST";
+              }
             ];
 
             Remove = [

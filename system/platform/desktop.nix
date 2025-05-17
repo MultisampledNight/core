@@ -448,6 +448,12 @@ with import ../prelude args;
                 IconURL = typstIcon;
               }
               {
+                Name = "Bandcamp";
+                Alias = "@bandcamp";
+                URLTemplate = "https://bandcamp.com/search?q={searchTerms}";
+                Method = "GET";
+              }
+              {
                 Name = "YouTube";
                 Alias = "@youtube";
                 URLTemplate = "https://www.youtube.com/results?search_query={searchTerms}";

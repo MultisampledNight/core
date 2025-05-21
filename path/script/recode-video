@@ -2,10 +2,16 @@
 # recode-video -- arguments are source target, re-encodes to av1 with opus
 set -eu
 
+# use libsvtav1: really damn fast and good configurability
+# https://trac.ffmpeg.org/wiki/Encode/AV1#SVT-AV1
+# bias towards speed and faster decoding
+
 ffmpeg \
 	-hwaccel auto \
-	-i "$2.unproc" \
+	-i "$1" \
 	-f webm \
-	-vcodec av1 \
+	-vcodec libsvtav1 \
 	-acodec libopus \
+	-preset 7 \
+	-svtav1-params fast-decode=2 \
 	"$2"

@@ -14,10 +14,10 @@ with import ../prelude args;
     services = {
       logind = {
         lidSwitchExternalPower = "ignore";
-        lidSwitch = "suspend";
+        lidSwitch = "ignore";
         extraConfig = ''
           HandlePowerKey=ignore
-          HandleSuspendKey=hibernate
+          HandleSuspendKey=ignore
         '';
       };
 

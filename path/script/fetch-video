@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+set -eu
+
+yt-dlp --output "$2.unproc" "$1"
+recode-video "$2.unproc" "$2"
+rm "$2.unproc"

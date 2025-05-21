@@ -582,8 +582,8 @@ with import ../prelude args;
               {
                 Name = "DOI resolver";
                 Alias = "@doi";
-                URLTemplate = "https://dx.doi.org/?hdl={searchTerms}";
-                Method = "POST";
+                URLTemplate = "https://dx.doi.org/{searchTerms}";
+                Method = "GET";
               }
             ];
 

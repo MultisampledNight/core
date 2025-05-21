@@ -477,6 +477,7 @@ in
               curl
               rsync
               rclone
+              yt-dlp
               magic-wormhole-rs
               dogdns
               gptfdisk
@@ -490,7 +491,7 @@ in
               tree
               file
               pv
-              ffmpeg
+              ffmpeg-full
               mpv
               jq
               yq

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# recode-video -- arguments are source target, re-encodes to av1 with opus
+set -eu
+
+ffmpeg \
+	-hwaccel auto \
+	-i "$2.unproc" \
+	-f webm \
+	-vcodec av1 \
+	-acodec libopus \
+	"$2"

@@ -1,5 +1,4 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i python -p python3 yt-dlp
+#!/usr/bin/env python
 import subprocess
 import sys
 from pathlib import Path

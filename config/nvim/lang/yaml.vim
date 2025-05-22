@@ -4,6 +4,9 @@ autocmd BufNewFile,BufRead *.yaml,*.yml
 function Reference()
   " inserts a hayagriva reference
   let name = trim(input("Name to cite with: "))
+  if name == ""
+    return
+  endif
 
   let text =<< trim eval YAML
 

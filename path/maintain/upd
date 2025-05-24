@@ -10,7 +10,7 @@ local=`nixos-release-local`
 remote=`nixos-release-remote`
 if [[ "$local" < "$remote" ]]; then
 	sudo nix-channel \
-		--add "https://nixos.org/channels/$remote" \
+		--add "https://nixos.org/channels/nixos-$remote" \
 		nixos
 fi
 

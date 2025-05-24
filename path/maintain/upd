@@ -2,7 +2,7 @@
 set -eux
 
 # get the latest repo revision
-cd "$zero"
+cd "$core"
 git pull
 
 # update channels if needed

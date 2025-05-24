@@ -28,7 +28,6 @@ output HDMI-A-1 position 0,0
 exec systemctl --user import-environment XDG_CURRENT_DESKTOP WAYLAND_DISPLAY DISPLAY
 exec gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 exec gsettings set org.gnome.desktop.interface gtk-theme Adapta-Nokto-Eta
-exec gsettings set org.gnome.desktop.interface icon-theme breeze-dark
 
 exec_always layaway
 exec fnott

@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# nixos-release-local -- outputs the latest nixos release available upstream
+git ls-remote --tags \
+	https://github.com/nixos/nixpkgs.git \
+	refs/tags/??.?? \
+	| cut -f2 \
+	| tail -n1 \
+	| rg -o '..\...'

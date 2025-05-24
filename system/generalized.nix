@@ -281,8 +281,6 @@ in
     ];
 
     hardware = {
-      pulseaudio.enable = false; # handled by pipewire-pulse instead
-
       cpu.intel.updateMicrocode = cfg.cpuVendor == "intel";
       cpu.amd.updateMicrocode = cfg.cpuVendor == "amd";
 
@@ -523,7 +521,6 @@ in
               # themes
               adapta-gtk-theme
               adapta-kde-theme
-              breeze-icons
               volantes-cursors
             ]
           ]

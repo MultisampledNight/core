@@ -1,3 +1,20 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 set -eux
-sudo nixos-rebuild switch --upgrade-all $@
+
+# get the latest repo revision
+cd "$zero"
+git pull
+
+# update channels if needed
+local=`nixos-release-local`
+remote=`nixos-release-remote`
+if [[ "$local" < "$remote" ]]; then
+	sudo nix-channel \
+		--add "https://nixos.org/channels/$remote" \
+		nixos
+fi
+
+# and let's go rebuild! :3
+sudo nixos-rebuild switch \
+	--upgrade-all \
+	"$@"

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# nixos-release-local -- outputs the currently installed nixos release
+nixos-version | rg -o '^..\...'

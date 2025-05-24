@@ -258,33 +258,33 @@ in
   };
 
   fonts = mkIf cfg.graphical {
-    packages = with pkgs; [
-      hack-font
-      roboto
-      roboto-mono
-      ibm-plex
-      manrope
-      source-code-pro
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-        ];
-      })
-      departure-mono
+    packages =
+      with pkgs;
+      [
+        hack-font
+        roboto
+        roboto-mono
+        ibm-plex
+        manrope
+        source-code-pro
+        departure-mono
 
-      atkinson-hyperlegible
-      montserrat
-      noto-fonts
-      cantarell-fonts
-      inter
-      overpass
-      ttf_bitstream_vera
-      ubuntu_font_family
-      source-han-sans
+        atkinson-hyperlegible
+        montserrat
+        noto-fonts
+        cantarell-fonts
+        inter
+        overpass
+        ttf_bitstream_vera
+        ubuntu_font_family
+        source-han-sans
 
-      libertinus
-    ];
+        libertinus
+      ]
+      ++ (with nerd-fonts; [
+        fira-code
+        jetbrains-mono
+      ]);
 
     fontDir.enable = true;
     # this adds a few commonly expected fonts like liberation...

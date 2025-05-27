@@ -483,6 +483,8 @@ in
               efibootmgr
               smartmontools
               usbutils
+              cyme
+              tio
               traceroute
               fd
               ripgrep

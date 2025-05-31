@@ -33,6 +33,7 @@ in
 
             # languages
             black
+            html-tidy
             nixfmt-rfc-style
             llvmPackages_latest.llvm
             llvmPackages_latest.bintools

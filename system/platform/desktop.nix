@@ -631,7 +631,7 @@ with import ../prelude args;
               };
               "addon@darkreader.org" = addon "darkreader";
               "uBlock0@raymondhill.net" = addon "ublock-origin";
-              "langpack-de@firefox.mozilla.org" = addon "deutsch-de-language-pack";
+              "jid1-BoFifL9Vbdl2zQ@jetpack" = addon "decentraleyes";
             };
 
           Preferences = {

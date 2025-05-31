@@ -1,6 +1,7 @@
 runtime lang/godot.vim
 runtime lang/html.vim
 runtime lang/java.vim
+runtime lang/json.vim
 runtime lang/latex.vim
 runtime lang/nix.vim
 runtime lang/python.vim
@@ -45,13 +46,14 @@ endfunction
 
 let cfg = #{
   \ gd: #{ft: "gdscript", updatetime: 500},
-  \ rust: #{equalprg: "rustfmt", formatprg: "rustfmt"},
-  \ md: s:merge(s:soft(2), #{tw: 80}),
-  \ sql: s:soft(4),
   \ html: s:hard(2),
+  \ json: s:hard(2),
+  \ md: s:merge(s:soft(2), #{tw: 80}),
+  \ rust: #{equalprg: "rustfmt", formatprg: "rustfmt"},
+  \ sql: s:soft(4),
   \ tex: s:merge(s:soft(2), #{ft: "latex"}),
-  \ typ: s:merge(s:soft(2), #{ft: "typst"}),
   \ tmTheme: s:merge(s:soft(2), #{ft: "xml"}),
+  \ typ: s:merge(s:soft(2), #{ft: "typst"}),
 \ }
 let just_ft = ["agda", "kdl", "scm", "nix"]
 for name in just_ft

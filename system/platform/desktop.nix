@@ -180,7 +180,10 @@ with import ../prelude args;
       (with custom; [
         [
           true
-          [ layaway nyandere ]
+          [
+            layaway
+            nyandere
+          ]
         ]
       ])
     ];

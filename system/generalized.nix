@@ -292,19 +292,19 @@ in
           with pkgs;
           selectForDrivers {
             i915 = [
-              mesa.drivers
+              mesa
               intel-media-driver
               intel-compute-runtime.drivers
             ];
-            nouveau = [ mesa.drivers ];
+            nouveau = [ mesa ];
           };
 
         enable32Bit = true;
         extraPackages32 =
           with pkgs.pkgsi686Linux;
           selectForDrivers {
-            i915 = [ mesa.drivers ];
-            nouveau = [ mesa.drivers ];
+            i915 = [ mesa ];
+            nouveau = [ mesa ];
           };
       };
 
@@ -845,6 +845,11 @@ in
                 );
               }
             )
+            (final: prev: {
+              julia = prev.julia.withPackages [
+                "LanguageServer"
+              ];
+            })
           ];
         };
       in

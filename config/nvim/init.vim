@@ -1,5 +1,6 @@
 colorscheme semi-duality
 
+lua vim.fn.delete(vim.lsp.get_log_path())
 runtime data.vim
 
 " Silently (without cmdline feedback) writes the file if it has been modified.
@@ -296,6 +297,7 @@ lspconfig.tinymist.setup {
 }
 lspconfig.nil_ls.setup {}
 lspconfig.jdtls.setup {}
+lspconfig.julials.setup {}
 vim.lsp.set_log_level("error")
 
 require("trouble").setup({

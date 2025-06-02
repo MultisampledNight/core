@@ -1,0 +1,11 @@
+#!/usr/bin/env julia
+
+function main(ARGS) @main
+    path = get(ARGS, 1, ".")
+
+    for file in readdir(path)
+        println(file)
+    end
+end
+
+

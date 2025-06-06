@@ -358,6 +358,7 @@ in
           ])
           ++ (optionals config.programs.adb.enable [ "adbusers" ]);
         shell = pkgs.zsh;
+        createHome = true;
       };
 
       groups = {
@@ -805,7 +806,20 @@ in
         authfail_message = " ${error} %d time(s) incorrect";
       };
 
-    virtualisation.kvmgt.enable = true;
+    virtualisation = {
+      vmVariant = {
+        virtualisation.resolution = {
+          x = 1920;
+          y = 1080;
+        };
+
+        services.getty.autologinUser = "multisn8";
+        users = {
+          mutableUsers = false;
+          users.multisn8.initialHashedPassword = "";
+        };
+      };
+    };
 
     nixpkgs.overlays =
       let

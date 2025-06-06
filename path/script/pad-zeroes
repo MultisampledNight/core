@@ -1,11 +1,31 @@
 #!/usr/bin/env julia
+# pad-zeroes -- Pads zeroes to numerical prefixes of the given files, up to the longest numerical prefix, renaming them in place.
 
-function main(ARGS) @main
-    path = get(ARGS, 1, ".")
+function main(paths) @main
+    directories = map(dirname, paths)
+    # Split into numerical prefix and the rest.
+    names = match.(r"^(?<prefix>\d+)(?<rest>.*)$", map(basename, paths))
 
-    for file in readdir(path)
-        println(file)
+    # How long should prefixes be? (Only taking into account relevant files)
+    longest = maximum(n -> n["prefix"] |> length, filter((!) ∘ isnothing, names))
+
+    # Actually rename.
+    for (source, directory, name) in zip(paths, directories, names)
+        # Don't perform anything on given files that don't have numerical prefixes.
+        if isnothing(name)
+            continue
+        end
+        (prefix, rest) = name
+
+        prefix = lpad(prefix, longest, "0")
+        target = joinpath(directory, prefix * rest)
+
+        if source == target
+            println("$source left the same")
+        else
+            println("$source -> $target")
+            mv(source, target)
+        end
     end
 end
-
 

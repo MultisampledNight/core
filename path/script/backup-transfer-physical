@@ -9,7 +9,7 @@ block="/dev/disk/by-label/$permadisk"
 mount="/run/media/$(whoami)/$permadisk"
 final="$mount/$(basename "$archive")"
 
-if [[ ! -e "block" ]]; then
+if [[ ! -e "$block" ]]; then
 	error disk "$permadisk" is not plugged in, not transferring there
 	exit 1
 fi

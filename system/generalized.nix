@@ -504,6 +504,23 @@ in
               hexyl
               libguestfs
               fbida
+              # i had to look that up manually in the nixpkgs source tree under
+              # <nixpkgs/pkgs/development/libraries/aspell/dictionaries.nix>
+              # this function is not documented anywhere.
+              (aspellWithDicts (
+                dicts: with dicts; [
+                  de # German
+                  en # English
+                  eo # Esperanto
+                  fi # Finnish
+                  nl # Dutch
+                  pl # Polish
+                  ru # Russian
+                  sv # Swedish
+                  uk # Ukrainian
+                  vi # Vietnamese
+                ]
+              ))
             ]
           ]
           [

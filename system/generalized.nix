@@ -503,6 +503,7 @@ in
               cryptsetup
               hexyl
               libguestfs
+              fbida
             ]
           ]
           [
@@ -675,7 +676,7 @@ in
 
     # the default is hourly for some reason
     systemd.timers.fwupd-refresh.timerConfig = {
-      OnCalendar = "daily";
+      OnCalendar = "weekly";
     };
 
     xdg = {
@@ -817,22 +818,16 @@ in
                 src = pkgs.fetchFromGitHub {
                   owner = "neovide";
                   repo = "neovide";
-                  rev = "3075a94f2e86ad301ab45816baec87f0c61de748";
-                  hash = "sha256-6gcHhT+HtxP6LfHVRtGOadAffswihD+bvuvHrFFNtoI=";
+                  rev = "627956990b4d85a2a98a13e0c50da2155d15cd72";
+                  hash = "sha256-WwLEL6GyLLPbGEJrpSRLTJr+CqevZZ5MBZNUbXLWn3I=";
                 };
                 cargoHash = "sha256-1ni8AZIwAz5R2Ejt9Fj5qmybvL4KZV/M3BMqQx4HFLU=";
               };
-              # had some alignment corner-case qol fixes on 2025-05-11
-              typstyle = overrideRust prev.typstyle {
-                version = "0.13.6";
-                src = pkgs.fetchFromGitHub {
-                  owner = "Enter-tainer";
-                  repo = "typstyle";
-                  rev = "v0.13.6";
-                  hash = "sha256-tuzNRvoIvEYqYUhyaEcExaAjMfdA8n/+i/SfT9xeERE=";
-                };
-                cargoHash = "sha256-Lxg4siUkdyL2Cmy3ToPvlDYYHZbRIHl7MuUG8uWqqvc=";
-              };
+            })
+            (takeFromPr {
+              pr = 414294;
+              hash = "sha256-5Im2LMJqWWwkzcNKcV0tdKaH7y599nRH6gNBJpL0fVY=";
+              packages = [ "typstyle" ];
             })
             (
               final: prev:

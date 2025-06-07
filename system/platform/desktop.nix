@@ -451,6 +451,12 @@ with import ../prelude args;
                 IconURL = typstIcon;
               }
               {
+                Name = "Sourcegraph";
+                Aliases = "@code-srcgrph";
+                URLTemplate = "https://sourcegraph.com/search?q=context:global+{searchTerms}&patternType=keyword&sm=0";
+                Method = "GET";
+              }
+              {
                 Name = "Bandcamp";
                 Alias = "@bandcamp";
                 URLTemplate = "https://bandcamp.com/search?q={searchTerms}";

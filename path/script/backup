@@ -5,7 +5,7 @@ set -euo pipefail
 of=`hostname`
 now=`date --rfc-3339=seconds`
 
-export archive="$HOME/_archive/$now $of-slim.tar.zst"
+export archive="$HOME/_archive/$now $of-small.tar.zst"
 
 backup-create "$@"
 backup-transfer-physical || true

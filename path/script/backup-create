@@ -6,7 +6,7 @@ set -euo pipefail
 if [[ ${#@} -gt 0 ]]; then
 	source=$@
 else
-	source=($HOME/{notes,studio,media} "$core" "$state_share")
+	source=($HOME/{notes,studio} "$core" "$state_share")
 fi
 
 maintenance

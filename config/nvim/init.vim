@@ -146,6 +146,26 @@ function Terminal(cwd = ".")
   call jobstart(cmd, opts)
 endfunction
 
+" Toggles a pane showing all document symbols
+" as provided by the LSP server.
+function ToggleSymbols()
+lua <<EOF
+  require("trouble").toggle({
+    mode = "symbols",
+    filter = {
+      buf = 0,
+    },
+    win = {
+      position = "left",
+      wo = {
+        -- otherwise the heading name is shown twice
+        winhighlight = "Comment:Hide",
+      },
+    }
+  })
+EOF
+endfunction
+
 nnoremap <Leader><Leader> <Cmd>Telescope resume<Enter>
 nnoremap <Leader>f <Cmd>call TelescopeOnToplevel("find_files follow=true")<Enter>
 nnoremap <Leader>/ <Cmd>call TelescopeOnToplevel("live_grep")<Enter> 
@@ -163,6 +183,7 @@ noremap <Leader>e <Cmd>call Terminal(expand("%:p:h"))<Enter>
 
 nnoremap <Leader>o <Cmd>Trouble diagnostics toggle focus=false filter.severity=vim.diagnostic.severity.ERROR<Enter>
 nnoremap <Leader>b <Cmd>update \| Trouble diagnostics<Enter>
+nnoremap <Leader>v <Cmd>call ToggleSymbols()<Enter>
 
 nnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<Enter>
 vnoremap <Leader>n <Cmd>update \| lua if require("dap").session() == nil then vim.lsp.buf.hover() else require("dap.ui.widgets").hover() end<Enter>
@@ -350,7 +371,6 @@ require("nvim-treesitter.configs").setup {
       init_selection = "<Leader><Enter>",
       scope_incremental = "<Leader>u",
       node_incremental = "<Leader>t",
-      node_decremental = "<Leader>v",
     },
   },
 }

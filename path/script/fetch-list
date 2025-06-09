@@ -12,6 +12,8 @@ def main():
 def download(target: str):
     cmd = [
         "yt-dlp",
+        "-t",
+        "sleep",
         "--extract-audio",
         "--audio-format",
         "opus",

@@ -35,24 +35,7 @@ function Notes()
   inoremap <A-S-Tab> <Esc><<2ha
 
   " insert brackets around the selected text
-  vnoremap <Leader>l <Esc>g`<i[<Esc>g`>la]<Esc>
-
-  " always have a pane on the right that shows headings
-lua <<EOF
-  require("trouble").open({
-    mode = "symbols",
-    filter = {
-      buf = 0,
-    },
-    win = {
-      position = "left",
-      wo = {
-        -- otherwise the heading name is shown twice
-        winhighlight = "Comment:Hide",
-      },
-    }
-  })
-EOF
+  vnoremap <Leader>y <Esc>g`<i[<Esc>g`>la]<Esc>
 endfunction
 
 function Associate(pattern, template)

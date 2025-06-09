@@ -36,6 +36,8 @@ function Notes()
 
   " insert brackets around the selected text
   vnoremap <Leader>y <Esc>g`<i[<Esc>g`>la]<Esc>
+  " or just on the current word in normal mode
+  nmap <Leader>y viw<Leader>y
 endfunction
 
 function Associate(pattern, template)

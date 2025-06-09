@@ -156,7 +156,7 @@ lua <<EOF
       buf = 0,
     },
     win = {
-      position = "left",
+      position = "right",
       wo = {
         -- otherwise the heading name is shown twice
         winhighlight = "Comment:Hide",

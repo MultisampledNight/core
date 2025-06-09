@@ -34,6 +34,9 @@ function Notes()
   inoremap <A-Tab> <Esc>>>2la
   inoremap <A-S-Tab> <Esc><<2ha
 
+  " insert brackets around the selected text
+  vnoremap <Leader>l <Esc>g`<i[<Esc>g`>la]<Esc>
+
   " always have a pane on the right that shows headings
 lua <<EOF
   require("trouble").open({

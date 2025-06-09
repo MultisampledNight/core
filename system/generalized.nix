@@ -486,6 +486,8 @@ in
               cyme
               tio
               traceroute
+              tcpdump
+              oniux
               fd
               ripgrep
               tree

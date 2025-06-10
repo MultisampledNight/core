@@ -108,6 +108,106 @@ function CreateNewFile()
   call mkdir(fnamemodify(full_path, ":h"), "p")
   exe "edit " . full_path
   write
+
+  call FillWithTemplate()
+endfunction
+
+" Populate the currently open file with an automatically found template.
+" A template is any file named `_template` in any of the current or parent
+" directories, ending with the extension also to be used by the current file.
+"
+" As an example, consider these files:
+"
+" ```
+" /_template.typ
+" /folder/_template.typ
+" /folder/specific/_template.rs
+" /folder/specific/new.typ
+" ```
+"
+" When calling this function while `new.typ` is open,
+" it will be filled with `/folder/_template.typ`.
+" `/folder/specific/_template.rs` is nearer, but ends in `.rs`, not `.typ`,
+" and `/_template.typ` is a directory too far (the path components are
+" traversed from end to start in the search process).
+function FillWithTemplate()
+  if exists("b:templated")
+    return
+  endif
+  let b:templated = v:true
+
+  let template = FindTemplate()
+  if template == v:null
+    " no template there to put in qwq
+    return
+  endif
+
+  exe "read " . template
+
+  norm gg"_dd
+  call RealizeVariables()
+
+  Upd
+endfunction
+
+function FindTemplate()
+  " traverse directories from end of path to start of path,
+  " looking for _template.ext in each
+  let ext = expand("%:e")
+  let template = "_template." . ext
+
+  " note: currently points at the file, too: will be removed in the 1st iter
+  let looking_under = expand("%:p")
+  
+  while looking_under != "/"
+    " go one path component up
+    let looking_under = fnamemodify(looking_under, ":h")
+
+    " anything like it?
+    let candidate = looking_under . "/" . template
+
+    if filereadable(candidate)
+      " yeah, that's it! yay!
+      return candidate
+    endif
+  endfor
+
+  return v:null
+endfunction
+
+function RealizeVariables()
+  " substitute cfg values
+  " e.g. %now% -> 2025-06-10 15:36:55
+  let vars = #{
+    \ title: expand("%:t:r"),
+    \ now: strftime(g:datetime_format),
+  \ }
+
+  let [start, end] = ["%", "%"]
+  for [name, value] in items(vars)
+    exe 'sil! %s/' . start . name . end . '/' . value . '/Ieg'
+  endfor
+
+  noh
+
+  " position the cursor
+  " if it's %cursor.insert%, do switch into insert mode as well
+  let regex = start . 'cursor\(\.\(normal\|insert\)\|\)' . end
+  let matches = matchbufline(bufnr("%"), regex, 1, "$", #{submatches: v:true})
+  if empty(matches)
+    norm G
+    return
+  endif
+
+  let line = matches[0].lnum
+  let kind = matches[0].submatches[1]
+  exe 'norm /' . regex . "\<Enter>\"_d//e\<Enter>"
+
+  if kind == 'insert'
+    startinsert
+  endif
+
+  noh
 endfunction
 
 function RenameCurrentFile()
@@ -253,6 +353,7 @@ endfunction
 command AutoWriteToggle call AutoWriteToggle()
 command AutoWrite call AutoWrite(v:true)
 command AutoWriteDisable call AutoWrite(v:false)
+command RVar call RealizeVariables()
 autocmd FocusGained * checktime
 
 

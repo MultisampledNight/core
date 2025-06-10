@@ -1,7 +1,6 @@
 let notes = "~/notes"
 let zero = notes . "/zero"
 let daily_note = zero . "/daily-note"
-let template = zero . "/template"
 
 function Notes()
   let s:list = g:data.regex.list
@@ -40,52 +39,6 @@ function Notes()
   nmap <Leader>y viw<Leader>y
 endfunction
 
-function Associate(pattern, template)
-  exe 'au BufNewFile '.a:pattern.' call Template("'.a:template.'")'
-endfunction
-function RealizeVariables()
-  " substitute cfg values
-  let vars = #{
-    \ title: expand("%:t:r"),
-    \ now: strftime(g:datetime_format),
-  \ }
-  
-  for [name, value] in items(vars)
-    exe 'sil! %s/\$'.name.'/'.value.'/Ieg'
-  endfor
-
-  noh
-
-  " position the cursor
-  let regex = '\$cursor\(\.\(normal\|insert\)\|\)'
-  let matches = matchbufline(bufnr("%"), regex, 1, "$", #{submatches: v:true})
-  if empty(matches)
-    norm G
-    return
-  endif
-
-  let line = matches[0].lnum
-  let kind = matches[0].submatches[1]
-  exe 'norm /'.regex."\<Enter>\"_d//e\<Enter>"
-
-  if kind == 'insert'
-    startinsert
-  endif
-
-  noh
-endfunction
-function Template(name)
-  if exists("b:templated")
-    return
-  endif
-  let b:templated = v:true
-  exe "read " . g:template . "/" . a:name
-
-  norm gg"_dd
-  call RealizeVariables()
-
-  Upd
-endfunction
 function OpenToday()
   let today = strftime(g:date_format)
   exe "edit ".g:daily_note."/".today.".typ"
@@ -332,11 +285,5 @@ endfunction
 
 autocmd BufNewFile,BufRead ~/notes/*.{md,typ} call Notes()
 
-" Needs to be ordered from most specific to least specific,
-" since the first successful `Template` call inhibits all others
-call Associate(daily_note."/*.typ", "Daily.typ")
-call Associate(notes."/*.typ", "Note.typ")
-
-command RVar call RealizeVariables()
 command Tasks call TaskOverview()
 

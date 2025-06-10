@@ -121,6 +121,8 @@ endfunction
 " Populate the currently open file with an automatically found template.
 " A template is any file named `_template` in any of the current or parent
 " directories, ending with the extension also to be used by the current file.
+" (Alternatively, a folder called _template with the extension as file name
+" inside is also okay.)
 "
 " As an example, consider these files:
 "
@@ -158,9 +160,9 @@ endfunction
 
 function FindTemplate()
   " traverse directories from end of path to start of path,
-  " looking for _template.ext in each
+  " looking for _template.ext or _template/ext in each
+  let prefix = "_template"
   let ext = expand("%:e")
-  let template = "_template." . ext
 
   " note: currently points at the file, too: will be removed in the 1st iter
   let looking_under = expand("%:p")
@@ -170,13 +172,17 @@ function FindTemplate()
     let looking_under = fnamemodify(looking_under, ":h")
 
     " anything like it?
-    let candidate = looking_under . "/" . template
+    let separators = [".", "/"]
+    for sep in separators
+      let template = prefix . sep . ext
+      let candidate = looking_under . "/" . template
 
-    if filereadable(candidate)
-      " yeah, that's it! yay!
-      return candidate
-    endif
-  endfor
+      if filereadable(candidate)
+        " yeah, that's it! yay!
+        return candidate
+      endif
+    endfor
+  endwhile
 
   return v:null
 endfunction
@@ -451,6 +457,7 @@ require("trouble").setup({
       Field = "field",
       File = "file",
       Function = "fn",
+      Method = "fn",
       Interface = "if",
       Module = "mod",
       Namespace = "=",

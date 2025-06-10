@@ -284,6 +284,7 @@ in
       ]
       ++ (with nerd-fonts; [
         fira-code
+        fira-math
         jetbrains-mono
       ]);
 

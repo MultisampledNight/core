@@ -105,10 +105,16 @@ function CreateNewFile()
   endif
 
   let full_path = expand("%:.:h") . "/" . sub_path
+
   call mkdir(fnamemodify(full_path, ":h"), "p")
   exe "edit " . full_path
-  write
 
+  if filereadable(expand("%"))
+    echo " (file already exists: opened)"
+    return
+  endif
+
+  write
   call FillWithTemplate()
 endfunction
 

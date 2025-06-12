@@ -232,7 +232,8 @@ function TaskCount(fill = ".")
   " note that the . is escaped — otherwise the first character in the regex
   " would be replaced
   let expr = substitute(s:task, '\.', a:fill, "")
-  return searchcount(#{pattern: expr}).total
+  " 0 <=> no limit (default would be 100)
+  return searchcount(#{pattern: expr, maxcount: 0}).total
 endfunction
 
 " Echoes a short overview over how many tasks there are in this file

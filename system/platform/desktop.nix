@@ -452,7 +452,7 @@ with import ../prelude args;
               }
               {
                 Name = "Sourcegraph";
-                Aliases = "@code-srcgrph";
+                Alias = "@code-srcgrph";
                 URLTemplate = "https://sourcegraph.com/search?q=context:global+{searchTerms}&patternType=keyword&sm=0";
                 Method = "GET";
               }
@@ -592,6 +592,37 @@ with import ../prelude args;
                 Name = "DOI resolver";
                 Alias = "@doi";
                 URLTemplate = "https://dx.doi.org/{searchTerms}";
+                Method = "GET";
+              }
+              {
+                Name = "Semantic Scholar";
+                Alias = "@semsch";
+                URLTemplate = "https://www.semanticscholar.org/search?q={searchTerms}&sort=relevance";
+                Method = "GET";
+              }
+              {
+                Name = "PubMed";
+                Alias = "@pubmed";
+                URLTemplate = "https://pubmed.ncbi.nlm.nih.gov/?term={searchTerms}";
+                Method = "GET";
+              }
+              # CAUTION: all of these are *preprint* servers, not peer reviewed! do not rely on these for anything.
+              {
+                Name = "arXiv";
+                Alias = "@arxiv";
+                URLTemplate = "https://arxiv.org/search/?query={searchTerms}&searchtype=all&source=header";
+                Method = "GET";
+              }
+              {
+                Name = "bioRxiv";
+                Alias = "@biorxiv";
+                URLTemplate = "https://www.biorxiv.org/search/{searchTerms}";
+                Method = "GET";
+              }
+              {
+                Name = "medRxiv";
+                Alias = "@medrxiv";
+                URLTemplate = "https://www.medrxiv.org/search/{searchTerms}";
                 Method = "GET";
               }
             ];

@@ -41,7 +41,7 @@ endfunction
 
 function OpenToday()
   let today = strftime(g:date_format)
-  exe "edit ".g:daily_note."/".today.".typ"
+  call OpenFile(g:daily_note . "/" . today . ".typ")
 endfunction
 
 function InteractTask(intended)

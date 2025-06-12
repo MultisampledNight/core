@@ -589,6 +589,12 @@ with import ../prelude args;
                 Method = "GET";
               }
               {
+                Name = "WolframAlpha";
+                Alias = "@wolfal";
+                URLTemplate = "https://www.wolframalpha.com/input?i={searchTerms}";
+                Method = "GET";
+              }
+              {
                 Name = "DOI resolver";
                 Alias = "@doi";
                 URLTemplate = "https://dx.doi.org/{searchTerms}";

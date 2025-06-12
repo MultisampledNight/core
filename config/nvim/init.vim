@@ -98,6 +98,18 @@ function TelescopeOnToplevel(command)
   exe $'Telescope {a:command} cwd={g:toplevel}'
 endfunction
 
+" Opens the given file. If it doesn't already exist,
+" also insert a template.
+function OpenFile(path)
+  exe "edit " . a:path
+
+  if filereadable(expand("%"))
+    return
+  endif
+
+  write
+  call FillWithTemplate()
+endfunction
 function CreateNewFile()
   let sub_path = trim(input("New file name: ", expand("<cword>")))
   if sub_path == ""
@@ -107,15 +119,7 @@ function CreateNewFile()
   let full_path = expand("%:.:h") . "/" . sub_path
 
   call mkdir(fnamemodify(full_path, ":h"), "p")
-  exe "edit " . full_path
-
-  if filereadable(expand("%"))
-    echo " (file already exists: opened)"
-    return
-  endif
-
-  write
-  call FillWithTemplate()
+  call OpenFile(full_path)
 endfunction
 
 " Populate the currently open file with an automatically found template.

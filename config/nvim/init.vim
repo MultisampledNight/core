@@ -149,7 +149,8 @@ function InsertTemplate()
     return
   endif
 
-  exe "read " . fnameescape(template)
+  " minus so it's done at the current line, not below it
+  exe "-read " . fnameescape(template)
   call RealizeVariables()
   Upd
 endfunction

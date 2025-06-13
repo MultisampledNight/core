@@ -101,14 +101,14 @@ endfunction
 " Opens the given file. If it doesn't already exist,
 " also insert a template.
 function OpenFile(path)
-  exe "edit " . a:path
+  exe "edit " . fnameescape(a:path)
 
   if filereadable(expand("%"))
     return
   endif
 
   write
-  call FillWithTemplate()
+  call InsertTemplate()
 endfunction
 function CreateNewFile()
   let sub_path = trim(input("New file name: ", expand("<cword>")))
@@ -142,23 +142,15 @@ endfunction
 " `/folder/specific/_template.rs` is nearer, but ends in `.rs`, not `.typ`,
 " and `/_template.typ` is a directory too far (the path components are
 " traversed from end to start in the search process).
-function FillWithTemplate()
-  if exists("b:templated")
-    return
-  endif
-  let b:templated = v:true
-
+function InsertTemplate()
   let template = FindTemplate()
   if template == v:null
     " no template there to put in qwq
     return
   endif
 
-  exe "read " . template
-
-  norm gg"_dd
+  exe "read " . fnameescape(template)
   call RealizeVariables()
-
   Upd
 endfunction
 
@@ -315,6 +307,11 @@ nnoremap <Leader>. <Cmd>call TelescopeOnToplevel("git_status")<Enter>
 nnoremap <Leader>j <Cmd>call CreateNewFile()<Enter>
 nnoremap <Leader>c <Cmd>call RenameCurrentFile()<Enter>
 nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<Enter>
+
+" InsertTemplate is also called automatically.
+" some systems allow nested logical files within a physical file though,
+" so the user may wish to add the template one more time
+nnoremap <Leader><Leader>j <Cmd>call InsertTemplate()<Enter>
 
 nnoremap <Esc> <Cmd>Upd<Enter>
 nnoremap <Leader>q <Cmd>eval [Upd(), b:format()]<Enter>

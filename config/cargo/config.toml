@@ -18,8 +18,9 @@ debug = "line-tables-only"
 # Thought for graphical applications.
 [profile.gfx]
 inherits = "dev"
-opt-level = 1
-lto = "thin"
+# this is [5%, 20%] more compile time in my tests
+# cranelift is just that fast that 
+opt-level = 3
 
 # Release with debuginfo.
 [profile.huge]

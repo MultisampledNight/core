@@ -312,7 +312,7 @@ nnoremap <Leader>d <Cmd>call DeleteCurrentFile()<Enter>
 " InsertTemplate is also called automatically.
 " some systems allow nested logical files within a physical file though,
 " so the user may wish to add the template one more time
-nnoremap <Leader><Leader>j <Cmd>call InsertTemplate()<Enter>
+nnoremap <Leader>, <Cmd>call InsertTemplate()<Enter>
 
 nnoremap <Esc> <Cmd>Upd<Enter>
 nnoremap <Leader>q <Cmd>eval [Upd(), b:format()]<Enter>

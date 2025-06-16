@@ -32,6 +32,7 @@ set undofile
 set shortmess+=W
 set notimeout
 set nottimeout
+set linebreak
 set nowrap
 
 set completeopt=menu,menuone,preview,noselect

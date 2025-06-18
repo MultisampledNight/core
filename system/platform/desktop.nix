@@ -607,6 +607,12 @@ with import ../prelude args;
                 Method = "GET";
               }
               {
+                Name = "Connected Papers";
+                Alias = "@conn-papers";
+                URLTemplate = "https://www.connectedpapers.com/search?q={searchTerms}";
+                Method = "GET";
+              }
+              {
                 Name = "PubMed";
                 Alias = "@pubmed";
                 URLTemplate = "https://pubmed.ncbi.nlm.nih.gov/?term={searchTerms}";

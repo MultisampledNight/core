@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# rsync but try to replicate structure exactly
+set -euo pipefail
+
+rsy --links --hard-links --owner --group --delete \
+	"$@"

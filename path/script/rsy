@@ -3,9 +3,17 @@
 set -euo pipefail
 
 rsync \
-	--recursive \
-	--progress \
+	--delete \
 	--update \
-	--partial \
+	--recursive \
+	--itemize-changes \
+	--human-readable \
 	--compress \
+	--partial \
+	--times \
+	--atimes \
+	--open-noatime \
+	--perms \
+	--xattrs \
+	--stats \
 	"$@"

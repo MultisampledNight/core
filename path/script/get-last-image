@@ -3,7 +3,7 @@
 set -euo pipefail
 
 images='/sdcard/DCIM/Camera'
-last=`adb shell ls -1c "$images" '|' tail -n1`
+last=`adb shell ls -1c "$images" '|' head -n1`
 
 adb pull "$images/$last" >/dev/null
 echo "$last"

@@ -507,6 +507,7 @@ in
               hexyl
               libguestfs
               fbida
+              hyperfine
               # i had to look that up manually in the nixpkgs source tree under
               # <nixpkgs/pkgs/development/libraries/aspell/dictionaries.nix>
               # this function is not documented anywhere.

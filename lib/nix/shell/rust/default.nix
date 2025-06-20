@@ -9,13 +9,17 @@ pkgs.mkShell rec {
     [
       rustup
       cargo-audit
+      cargo-crev
+      cargo-dist
       cargo-expand
       cargo-flamegraph
-      cargo-nextest
+      cargo-geiger
       cargo-make
-      cargo-watch
-      cargo-dist
+      cargo-nextest
+      cargo-pgo
       cargo-vet
+      cargo-watch
+      cargo-wizard
       typos
       just
       fd
@@ -27,7 +31,8 @@ pkgs.mkShell rec {
       lldb
       rr
       clang
-      llvmPackages.libclang
+      llvmPackages_20.libclang
+      bolt_20
       libgcc.lib
       mold
       elfkickers
@@ -92,6 +97,12 @@ pkgs.mkShell rec {
 
     rustup default $RUSTC_VERSION
     rustup install stable
-    rustup component add rustfmt clippy rust-src rust-analyzer rustc-codegen-cranelift
+    rustup component add \
+      rustfmt \
+      clippy \
+      rust-src \
+      rust-analyzer \
+      rustc-codegen-cranelift \
+      llvm-tools
   '';
 }

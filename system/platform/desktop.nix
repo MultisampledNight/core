@@ -583,6 +583,12 @@ with import ../prelude args;
                 Method = "GET";
               }
               {
+                Name = "Duden";
+                Alias = "@duden";
+                URLTemplate = "https://www.duden.de/suchen/dudenonline/{searchTerms}";
+                Method = "GET";
+              }
+              {
                 Name = "Save now on Wayback Machine";
                 Alias = "@savewm";
                 URLTemplate = "https://web.archive.org/save/{searchTerms}";

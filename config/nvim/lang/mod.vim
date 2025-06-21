@@ -49,7 +49,7 @@ let cfg = #{
   \ html: s:hard(2),
   \ json: s:hard(2),
   \ md: s:merge(s:soft(2), #{tw: 80}),
-  \ rust: #{equalprg: "rustfmt", formatprg: "rustfmt"},
+  \ rust: #{equalprg: "rustfmt --edition=2024", formatprg: "rustfmt --edition=2024"},
   \ sql: s:soft(4),
   \ tex: s:merge(s:soft(2), #{ft: "latex"}),
   \ tmTheme: s:merge(s:soft(2), #{ft: "xml"}),

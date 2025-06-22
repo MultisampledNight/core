@@ -1,17 +1,32 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 # recode-video -- arguments are source target, re-encodes to av1 with opus
 set -eu
 
 # use libsvtav1: really damn fast and good configurability
-# https://trac.ffmpeg.org/wiki/Encode/AV1#SVT-AV1
 # bias towards speed and faster decoding
+# preset 7 is ~2.5× speed while 8 is ~4× speed
+#
+# https://gitlab.com/AOMediaCodec/SVT-AV1/-/blob/master/Docs/Parameters.md
+# https://trac.ffmpeg.org/wiki/Encode/AV1#SVT-AV1
+
+# have to be colon-separated (required by ffmpeg's libsvtav1 integration)
+# but on one line would be too long, so i'm doing this
+svtav1_params=(
+	# go for visual/perceived quality
+	tune=0
+	# better to decode faster
+	fast-decode=2
+	# want to improve low-contrast cases
+	enable-variance-boost=1
+	variance-boost-strength=3
+)
 
 ffmpeg \
 	-hwaccel auto \
 	-i "$1" \
 	-f webm \
 	-vcodec libsvtav1 \
+		-preset 8 \
+		-svtav1-params "${(j/:/)svtav1_params}" \
 	-acodec libopus \
-	-preset 7 \
-	-svtav1-params fast-decode=2 \
 	"$2"

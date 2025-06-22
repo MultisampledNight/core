@@ -494,7 +494,6 @@ in
               tree
               file
               pv
-              ffmpeg-full
               mpv
               jq
               yq
@@ -559,6 +558,7 @@ in
               waypipe
               pynitrokey
               opensc
+              ffmpeg-full
             ]
           ]
           [
@@ -868,6 +868,7 @@ in
               final: prev:
               optAttrs cfg.profileGuided {
                 godot_4 = prev.godot_4.override { stdenv = final.fastStdenv; };
+                ffmpeg-full = prev.ffmpeg-full.override { stdenv = final.fastStdenv; };
                 linuxZenFast = prev.linuxPackagesFor (
                   prev.linuxKernel.kernels.linux_zen.override {
                     stdenv = final.fastStdenv;

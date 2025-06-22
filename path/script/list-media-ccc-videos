@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+# see e.g. https://media.ccc.de/b/conferences/gpn/gpn23
+
+for line in $(
+	curl "$1" \
+		| htmlq \
+			'a[href^="/v"]:not([href$="/audio"]):not([href$="/playlist"])' \
+			--attribute href \
+		| sort \
+		| uniq
+); do
+	echo "https://media.ccc.de$line"
+done

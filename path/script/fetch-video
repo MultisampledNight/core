@@ -1,6 +1,17 @@
 #!/usr/bin/env zsh
-set -eu
+set -xeuo pipefail
 
-yt-dlp -t sleep --output "unproc.$2" "$1"
+args=()
+
+if [[ ${#@} -gt 2 ]]; then
+	args+=(--format "$1")
+	shift
+fi
+
+if [[ -e "$2" ]]; then
+	echo "$2 already exists; skipping"
+fi
+
+yt-dlp $args -t sleep --output "unproc.$2" "$1"
 recode-video "unproc.$2" "$2"
 rm "unproc.$2"

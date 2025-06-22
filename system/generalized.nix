@@ -498,6 +498,7 @@ in
               mpv
               jq
               yq
+              htmlq
               unzip
               zip
               sqlite-interactive

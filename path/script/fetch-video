@@ -15,4 +15,5 @@ fi
 
 yt-dlp $args -t sleep --output "unproc.$2" "$1"
 recode-video "unproc.$2" "$2"
+du -sh "unproc.$2" "$2"
 rm "unproc.$2"

@@ -463,6 +463,12 @@ with import ../prelude args;
                 Method = "GET";
               }
               {
+                Name = "media.ccc.de";
+                Alias = "@mediaccc";
+                URLTemplate = "https://media.ccc.de/search/?q={searchTerms}";
+                Method = "GET";
+              }
+              {
                 Name = "YouTube";
                 Alias = "@youtube";
                 URLTemplate = "https://www.youtube.com/results?search_query={searchTerms}";

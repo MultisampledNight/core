@@ -30,7 +30,14 @@ with import ../prelude args;
       enable = mkDefault true;
       drivers = with pkgs; [ brlaser ];
     };
+
     joycond.enable = true;
+    wivrn = {
+      enable = true;
+      defaultRuntime = true;
+      openFirewall = true;
+      autoStart = true;
+    };
 
     tor = {
       enable = true;

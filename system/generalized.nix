@@ -463,8 +463,6 @@ in
 
           ${videoDrivers}
         '';
-
-      system76-scheduler.enable = true;
     };
 
     environment = {
@@ -880,6 +878,14 @@ in
               julia = prev.julia.withPackages [
                 "LanguageServer"
               ];
+            })
+            (final: prev: {
+              blender = prev.blender.overrideAttrs (pAttr: {
+                patches = pAttr.patches ++ [
+                  # https://projects.blender.org/blender/blender/issues/119901
+                  ./packages/blender/openxr-wayland.patch
+                ];
+              });
             })
           ];
         };

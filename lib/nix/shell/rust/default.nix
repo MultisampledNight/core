@@ -63,9 +63,6 @@ pkgs.mkShell rec {
       vulkan-tools-lunarg
       vulkan-validation-layers
       vulkan-extension-layer
-      monado
-      openxr-loader
-      openxr-loader.dev
 
       librealsense-gui
       opencv

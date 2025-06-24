@@ -14,6 +14,7 @@ pkgs.mkShell rec {
       cargo-expand
       cargo-flamegraph
       cargo-geiger
+      cargo-insta
       cargo-make
       cargo-nextest
       cargo-pgo

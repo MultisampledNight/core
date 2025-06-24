@@ -28,10 +28,11 @@ function Notes()
   noremap <RightRelease> <Cmd>call ToggleIfCheckbox("/")<Enter>
 
   inoremap <Enter> <Cmd>call Enter()<Enter>
-  nnoremap <A-Tab> >>2l
-  nnoremap <A-S-Tab> <<2h
-  inoremap <A-Tab> <Esc>>>2la
-  inoremap <A-S-Tab> <Esc><<2ha
+  " ax<BS> is only to "realize" space if the cursor is at the end of the line
+  nnoremap <A-Tab> ax<BS><Esc>>>2l
+  nnoremap <A-S-Tab> ax<BS><Esc><lt><lt>2h
+  inoremap <A-Tab> <Esc>ax<BS><Esc>>>2la
+  inoremap <A-S-Tab> <Esc>ax<BS><Esc><lt><lt>ha
 
   " insert brackets around the selected text
   vnoremap <Leader>y <Esc>g`<i[<Esc>g`>la]<Esc>

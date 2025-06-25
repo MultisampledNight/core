@@ -15,11 +15,27 @@ function batfmt() {
 for device in $(adb devices | cut -f1 | tail -n+2); do
 	alias sh="adb -s \"$device\" shell"
 
-	details=`sh '
-		for name in \
-			ro.{product.{cpu.abi,vendor.{manufacturer,model}},serialno} \
-		; do
-			getprop "$name"
+	props=`echo '
+		ro.{
+			build.version.{
+				release,
+				sdk,
+				security_patch
+			},
+			product.{
+				cpu.abi,
+				vendor.{
+					manufacturer,
+					model
+				}
+			},
+			serialno
+		}
+	' | tr -d '[:space:]'`
+
+	details=`sh "
+		for name in $props; do
+			getprop \"\\$name\"
 		done
 
 		cat /proc/uptime
@@ -28,16 +44,20 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 
 		dumpsys cpuinfo | head -n1
 		dumpsys battery
-	'`
+	"`
+	echo "$details"
 
-	abi=`line 1`
-	manufacturer=`line 2`
-	model=`line 3`
-	serialno=`line 4`
-	uptime=`line 5`
-	nproc=`line 6`
-	cpuload=`line 7`
-	battery=`echo "$details" | tail -n+8 | yq '.[]'`
+	os_release=`line 1`
+	apilvl=`line 2`
+	security_patch=`line 3`
+	abi=`line 4`
+	manufacturer=`line 5`
+	model=`line 6`
+	serialno=`line 7`
+	uptime=`line 8`
+	nproc=`line 9`
+	cpuload=`line 10`
+	battery=`echo "$details" | tail -n+11 | yq '.[]'`
 
 	begin "$manufacturer $model `fade \"$serialno\"`"
 
@@ -71,5 +91,9 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 			| (. / 60 / 60 / 24) as \$d
 			| "\($d | floor)d \($h | floor)h \($m | round)min"
 		'`
+	
+	part OSY \
+		"Android $os_release" \
+		`fade api"$apilvl" sec"$security_patch"`
 done
 

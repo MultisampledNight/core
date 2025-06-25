@@ -3,6 +3,7 @@ set -euo pipefail
 . util
 
 alias jq='jq -r'
+alias rg='rg --color=never'
 
 function line() {
 	echo "$details" | head -n "$1" | tail -n1
@@ -20,7 +21,12 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 		; do
 			getprop "$name"
 		done
+
 		cat /proc/uptime
+
+		nproc
+
+		dumpsys cpuinfo | head -n1
 		dumpsys battery
 	'`
 
@@ -29,12 +35,15 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 	model=`line 3`
 	serialno=`line 4`
 	uptime=`line 5`
-	battery=`echo "$details" | tail -n+6 | yq '.[]'`
+	nproc=`line 6`
+	cpuload=`line 7`
+	battery=`echo "$details" | tail -n+8 | yq '.[]'`
 
 	begin "$manufacturer $model `fade \"$serialno\"`"
 
 	part CPU \
-		$(fade "$abi")
+		`echo "$cpuload" | rg 'Load: (\S*) / (\S*) / (\S*)' -r '$1, $2, $3'` \
+		$(fade "$nproc"core "$abi")
 
 	part BAT \
 		`batfmt '\(

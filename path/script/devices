@@ -77,6 +77,8 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 		$(fade `batfmt '\(
 			.voltage / 1000
 		)V \(
+			."Charge counter" / 1000
+		)mAh \(
 			.temperature / 10
 		)°C \(
 			.technology | ascii_downcase

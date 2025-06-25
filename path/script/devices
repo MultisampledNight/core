@@ -58,8 +58,9 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 	part UPT \
 		`echo "$uptime" | cut -f1 -d' ' | jq '
 			(. / 60 % 60) as \$m
-			| (. / 60 / 60) as \$h
-			| "\($h | floor)h \($m | round)min"
+			| (. / 60 / 60 % 24) as \$h
+			| (. / 60 / 60 / 24) as \$d
+			| "\($d | floor)d \($h | floor)h \($m | round)min"
 		'`
 done
 

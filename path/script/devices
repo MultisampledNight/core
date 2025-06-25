@@ -45,7 +45,6 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 		dumpsys cpuinfo | head -n1
 		dumpsys battery
 	"`
-	echo "$details"
 
 	os_release=`line 1`
 	apilvl=`line 2`

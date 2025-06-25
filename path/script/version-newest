@@ -1,0 +1,11 @@
+#!/usr/bin/env -S jq -f
+# Accepts a JSON array of semvers on stdin and outputs the newest/largest one.
+# vim: ts=2 sw=2 et
+max_by(
+  ltrimstr("v")
+  | split(".")
+  | map(
+    . as $part
+    | try tonumber catch $part
+  )
+)

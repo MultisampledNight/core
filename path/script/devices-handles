@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+adb devices | cut -f1 | tail -n+2 | column

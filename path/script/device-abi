@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+. adblib
+
+prop ro.product.cpu.abi
+

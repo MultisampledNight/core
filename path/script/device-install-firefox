@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+
+. adblib
+
+releases='https://archive.mozilla.org/pub/fenix/releases'
+abi=`device-abi "$handle"`
+
+# slash is important: otherwise the webserver appears to think it's a file and 404s
+version=`curlj "$releases/" \
+	| jq '.prefixes | map(rtrimstr("/"))' \
+	| version-filter-stable \
+	| version-newest \
+	| jq -r`
+
+apk_url="$releases/$version/android\
+/fenix-$version-android-$abi\
+/fenix-$version.multi.android-$abi.apk"
+
+# some devices (e.g. Oculus Quest) have issues when copying larger files via ADB
+# Firefox is over 100 MiB big
+# hence let's actually get it on the device
+sh <<REMOTE
+set -x
+cd /data/local/tmp
+
+curl --compressed -C - -Lo firefox.apk "$apk_url"
+pm install \
+	--originating-uri "$apk_url" \
+	firefox.apk
+rm firefox.apk
+REMOTE
+

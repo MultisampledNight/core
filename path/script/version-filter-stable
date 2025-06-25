@@ -1,0 +1,10 @@
+#!/usr/bin/env -S jq -f
+# Accepts a JSON array of semvers on stdin and outputs a JSON array with semvers that only have numerical components.
+# vim: ts=2 sw=2 et
+map(
+  select(
+    ltrimstr("v")
+    | split(".")
+    | all(try (tonumber | true) catch false)
+  )
+)

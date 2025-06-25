@@ -1,0 +1,11 @@
+#!/usr/bin/env echo "Not intended to be run manually. Instead, it's to be imported by scripts."
+# vim: ft=zsh
+#
+# Utilities for interacting with ADB devices.
+# Not affiliated with ADB in any way.
+# Depends on: adb, rg.
+
+alias rg='rg --color=never'
+alias sh="adb -s \"$handle\" shell"
+alias prop='sh getprop'
+

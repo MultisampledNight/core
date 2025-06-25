@@ -1,0 +1,107 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+
+. util
+. adblib
+
+alias jq='jq -r'
+
+function line() {
+	echo "$details" | head -n "$1" | tail -n1
+}
+function batfmt() {
+	echo "$battery" | jq ". | \"$1\""
+}
+
+props=`echo '
+	ro.{
+		build.version.{
+			release,
+			sdk,
+			security_patch
+		},
+		product.{
+			cpu.abi,
+			vendor.{
+				manufacturer,
+				model
+			}
+		},
+		serialno
+	}
+' | tr -d '[:space:]'`
+
+details=`sh "
+	for name in $props; do
+		getprop \"\\$name\"
+	done
+
+	cat /proc/uptime
+
+	cat /sys/bus/cpu/devices/cpu0/cpufreq/cpuinfo_{min,max}_freq
+	nproc
+	dumpsys cpuinfo | head -n1
+
+	dumpsys battery
+"`
+
+os_release=`line 1`
+apilvl=`line 2`
+security_patch=`line 3`
+abi=`line 4`
+manufacturer=`line 5`
+model=`line 6`
+serialno=`line 7`
+
+uptime=`line 8`
+
+freq_min=`line 9`
+freq_max=`line 10`
+nproc=`line 11`
+cpuload=`line 12`
+
+battery=`echo "$details" | tail -n+13 | yq '.[]'`
+
+begin "$manufacturer $model" `fade "$serialno"`
+
+part CPU \
+	`echo "$cpuload" | rg 'Load: (\S*) / (\S*) / (\S*)' -r '$1, $2, $3'` \
+	$(fade \
+		"$nproc"core \
+		`echo "[$freq_min, $freq_max]" | jq 'map(. / 1000) | "[\(.[0]):\(.[1])]GHz"'` \
+		"$abi")
+
+part BAT \
+	`batfmt '\(
+		.level
+	)% \(
+		if to_entries | map(select(.key | contains("powered"))) | any(.value)
+		then "↑"
+		else "↓"
+		end
+	)'` \
+	\
+	$(fade `batfmt '\(
+		.voltage / 1000
+	)V \(
+		."Charge counter" / 1000
+	)mAh \(
+		.temperature / 10
+	)°C \(
+		.technology | ascii_downcase
+	)'`)
+
+# stored in seconds, first part is uptime (second part is just idle time)
+part UPT \
+	`echo "$uptime" | cut -f1 -d' ' | jq '
+		(. / 60 % 60) as \$m
+		| (. / 60 / 60 % 24) as \$h
+		| (. / 60 / 60 / 24) as \$d
+		| "\($d | floor)d \($h | floor)h \($m | round)min"
+	'`
+
+part OSY \
+	"Android $os_release" \
+	`fade api"$apilvl" sec"$security_patch"`
+

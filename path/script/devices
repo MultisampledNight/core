@@ -40,9 +40,10 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 
 		cat /proc/uptime
 
+		cat /sys/bus/cpu/devices/cpu0/cpufreq/cpuinfo_{min,max}_freq
 		nproc
-
 		dumpsys cpuinfo | head -n1
+
 		dumpsys battery
 	"`
 
@@ -53,16 +54,24 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 	manufacturer=`line 5`
 	model=`line 6`
 	serialno=`line 7`
-	uptime=`line 8`
-	nproc=`line 9`
-	cpuload=`line 10`
-	battery=`echo "$details" | tail -n+11 | yq '.[]'`
 
-	begin "$manufacturer $model `fade \"$serialno\"`"
+	uptime=`line 8`
+
+	freq_min=`line 9`
+	freq_max=`line 10`
+	nproc=`line 11`
+	cpuload=`line 12`
+
+	battery=`echo "$details" | tail -n+13 | yq '.[]'`
+
+	begin "$manufacturer $model" `fade "$serialno"`
 
 	part CPU \
 		`echo "$cpuload" | rg 'Load: (\S*) / (\S*) / (\S*)' -r '$1, $2, $3'` \
-		$(fade "$nproc"core "$abi")
+		$(fade \
+			"$nproc"core \
+			`echo "[$freq_min, $freq_max]" | jq 'map(. / 1000) | "[\(.[0]):\(.[1])]GHz"'` \
+			"$abi")
 
 	part BAT \
 		`batfmt '\(

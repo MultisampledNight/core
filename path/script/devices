@@ -2,32 +2,42 @@
 set -euo pipefail
 . util
 
+alias jq='jq -r'
+
 function line() {
 	echo "$details" | head -n "$1" | tail -n1
 }
-function fmt() {
-	echo "$battery" | jq -r ". | \"$1\""
+function batfmt() {
+	echo "$battery" | jq ". | \"$1\""
 }
 
 for device in $(adb devices | cut -f1 | tail -n+2); do
 	alias sh="adb -s \"$device\" shell"
 
 	details=`sh '
-		for name in ro.{product.vendor.{manufacturer,model},serialno}; do
+		for name in \
+			ro.{product.{cpu.abi,vendor.{manufacturer,model}},serialno} \
+		; do
 			getprop "$name"
 		done
+		cat /proc/uptime
 		dumpsys battery
 	'`
 
-	manufacturer=`line 1`
-	model=`line 2`
-	serialno=`line 3`
-	battery=`echo "$details" | tail -n+4 | yq '.[]'`
+	abi=`line 1`
+	manufacturer=`line 2`
+	model=`line 3`
+	serialno=`line 4`
+	uptime=`line 5`
+	battery=`echo "$details" | tail -n+6 | yq '.[]'`
 
 	begin "$manufacturer $model `fade \"$serialno\"`"
 
+	part CPU \
+		$(fade "$abi")
+
 	part BAT \
-		`fmt '\(
+		`batfmt '\(
 			.level
 		)% \(
 			if to_entries | map(select(.key | contains("powered"))) | any(.value)
@@ -36,12 +46,20 @@ for device in $(adb devices | cut -f1 | tail -n+2); do
 			end
 		)'` \
 		\
-		$(fade `fmt '\(
+		$(fade `batfmt '\(
 			.voltage / 1000
 		)V \(
 			.temperature / 10
 		)°C \(
 			.technology | ascii_downcase
 		)'`)
+	
+	# stored in seconds, first part is uptime (second part is just idle time)
+	part UPT \
+		`echo "$uptime" | cut -f1 -d' ' | jq '
+			(. / 60 % 60) as \$m
+			| (. / 60 / 60) as \$h
+			| "\($h | floor)h \($m | round)min"
+		'`
 done
 

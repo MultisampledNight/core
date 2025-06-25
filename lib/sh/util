@@ -11,7 +11,13 @@ colorize() {
   color=$1
   shift
   text="$*"
-  printf "$(tput setaf $color)$text$(tput sgr0)"
+
+  # are we on a tty?
+  if [[ -t 2 ]]; then
+    printf "$(tput setaf $color)$text$(tput sgr0)"
+  else
+    printf "$text"
+  fi
 }
 
 emit() {
@@ -20,6 +26,11 @@ emit() {
 
   indent
   printf "$symbol %s\n" "$*"
+}
+
+
+fade() {
+  colorize 8 "$*"
 }
 
 begin() {

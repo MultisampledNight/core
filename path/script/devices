@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+. util
+
+function line() {
+	echo "$details" | head -n "$1" | tail -n1
+}
+function fmt() {
+	echo "$battery" | jq -r ". | \"$1\""
+}
+
+for device in $(adb devices | cut -f1 | tail -n+2); do
+	alias sh="adb -s \"$device\" shell"
+
+	details=`sh '
+		for name in ro.{product.vendor.{manufacturer,model},serialno}; do
+			getprop "$name"
+		done
+		dumpsys battery
+	'`
+
+	manufacturer=`line 1`
+	model=`line 2`
+	serialno=`line 3`
+	battery=`echo "$details" | tail -n+4 | yq '.[]'`
+
+	begin "$manufacturer $model `fade \"$serialno\"`"
+
+	part BAT \
+		`fmt '\(
+			.level
+		)% \(
+			if to_entries | map(select(.key | contains("powered"))) | any(.value)
+			then "↑"
+			else "↓"
+			end
+		)'` \
+		\
+		$(fade `fmt '\(
+			.voltage / 1000
+		)V \(
+			.temperature / 10
+		)°C \(
+			.technology | ascii_downcase
+		)'`)
+done
+

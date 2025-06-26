@@ -536,7 +536,7 @@ in
           [
             cfg.graphical
             [
-              speedcrunch
+              wf-recorder
               oxipng
               qalculate-gtk
               glib

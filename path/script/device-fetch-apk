@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+name="$2"
+
+. adblib
+
+apk=`sh "pm list package -f \
+	| grep -i \"$name\"" \
+	| rg '^package:(.*)=.*\$' -r '$1'`
+remote pull "$apk" "$name.apk"
+

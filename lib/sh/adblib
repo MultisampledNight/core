@@ -6,6 +6,7 @@
 # Depends on: adb, rg.
 
 alias rg='rg --color=never'
-alias sh="adb -s \"$handle\" shell"
+alias remote="adb -s \"$handle\""
+alias sh="remote shell"
 alias prop='sh getprop'
 

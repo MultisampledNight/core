@@ -147,14 +147,6 @@ with import ../prelude args;
           cfg.multimedia
           [
             # video
-            # OBS Studio and its plugins
-            (wrapOBS {
-              plugins = with obs-studio-plugins; [
-                obs-vkcapture
-                obs-pipewire-audio-capture
-                input-overlay
-              ];
-            })
             libsForQt5.kdenlive
 
             # audio
@@ -705,6 +697,15 @@ with import ../prelude args;
       enable = true;
       remotePlay.openFirewall = true;
     };
+  };
+  programs.obs-studio = mkIf cfg.multimedia {
+    enable = true;
+    enableVirtualCamera = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      obs-vkcapture
+      obs-pipewire-audio-capture
+      input-overlay
+    ];
   };
 
   environment.etc."thunderbird/policies/policies.json".source =

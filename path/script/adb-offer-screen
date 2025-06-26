@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+adb $@ reverse tcp:8080 tcp:8080
+
+wf-recorder --muxer=v4l2 --codec=rawvideo --file=/dev/video1 -o eDP-1 &
+ffmpeg -i /dev/video1 -f mpegts -framerate 60 tcp://127.0.0.1:8080\?listen &
+
+wait

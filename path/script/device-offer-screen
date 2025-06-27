@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+
+. util
+. adblib
+
+port='8080'
+
+remote reverse "tcp:$port" "tcp:$port"
+
+ask select an output to share
+geometry="$(slurp -o)"
+
+begin launching screen recording
+wf-recorder \
+	--muxer=v4l2 \
+	--codec=rawvideo \
+	--file=/dev/video1 \
+	--pixel-format=yuv420p \
+	--geometry "$geometry" &
+
+begin recoding video
+ffmpeg \
+	-re \
+	-framerate 60 \
+	-i /dev/video1 \
+	-f mpegts \
+	-b:v 16000k \
+	-r 60 \
+	"tcp://127.0.0.1:$port?listen=1" &
+
+begin opening url on device
+sh am start "tcp://127.0.0.1:$port"
+
+wait

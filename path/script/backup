@@ -2,10 +2,11 @@
 set -euo pipefail
 . util
 
-of=`hostname`
+machine=`hostname`
 now=`date --rfc-3339=seconds`
+name="${name:-small}"
 
-export archive="$HOME/_archive/$now $of-small.tar.zst"
+export archive="$HOME/_archive/$now $machine-$name.tar.zst"
 
 backup-create "$@"
 backup-transfer-physical || true

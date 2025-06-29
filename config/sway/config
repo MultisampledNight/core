@@ -48,7 +48,7 @@ input 8146:20737:Melfas_LGD_AIT_Touch_Controller map_to_output HDMI-A-1
 input type:keyboard {
     xkb_layout "de"
     xkb_variant "bone"
-    repeat_rate 120
+    repeat_rate 200
     repeat_delay 260
 }
 

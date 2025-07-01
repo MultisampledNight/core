@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+. adblib
+
+scrcpy \
+	-s "$handle" \
+	--stay-awake \
+	--no-video \
+	--no-audio
+

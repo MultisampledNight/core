@@ -22,12 +22,11 @@ wf-recorder \
 
 begin recoding video
 ffmpeg \
-	-re \
-	-framerate 60 \
-	-i /dev/video1 \
-	-f mpegts \
-	-b:v 16000k \
 	-r 60 \
+	-i /dev/video1 \
+	-b:v 4000k \
+	-f mpegts \
+	-framerate 60 \
 	"tcp://127.0.0.1:$port?listen=1" &
 
 begin opening url on device

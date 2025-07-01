@@ -506,6 +506,7 @@ in
               libguestfs
               fbida
               hyperfine
+              nix-bundle
               # i had to look that up manually in the nixpkgs source tree under
               # <nixpkgs/pkgs/development/libraries/aspell/dictionaries.nix>
               # this function is not documented anywhere.
@@ -897,6 +898,16 @@ in
         })
         (final: prev: {
           mpv = prev.mpv.override { scripts = with final.mpvScripts; [ mpris ]; };
+          # https://github.com/nix-community/nix-bundle/pull/120
+          # makes it runnable again (function was removed in nixpkgs)
+          nix-bundle = prev.nix-bundle.overrideAttrs {
+            src = pkgs.fetchFromGitHub {
+              owner = "matthewbauer";
+              repo = "nix-bundle";
+              rev = "84638f4a8cff38f7a023b2a89c5209cde5ed9534";
+              hash = "sha256-J/PvGqz5DOJ4Fmf47XbwgpdpfZ+ALIZFI304UNtS2XU=";
+            };
+          };
         })
       ];
     nix = {

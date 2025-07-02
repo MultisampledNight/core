@@ -1,0 +1,59 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i zsh -p zsh poppler-utils imagemagick
+# invert-pdf -- invert the colors of the entire pdf (note: does this by rasterizing every page)
+set -euo pipefail
+
+. util
+
+original=`realpath -- "$1"`
+inverted=`realpath -- "$2"`
+
+# don't want to pollute cwd with SVGs
+scratch=`mktemp -d`
+pushd "$scratch"
+
+pages=`pdf-page-count "$original"`
+
+mkdir orig inv
+
+begin "pdf -> png -> invert for $pages pages"
+
+for page in {1..$pages}; do (
+	begin "$page / $pages"
+
+	png="orig/$page.png"
+	inv="inv/$page.pdf"
+
+	pdftoppm \
+		-f "$page" \
+		-singlefile \
+		-r 900 \
+		-png \
+		-sep '' \
+		"$original" \
+		"orig/$page"
+	part "$page / $pages : pdf -> png"
+
+	magick \
+		"$png" \
+		-negate \
+		"$inv"
+
+	part "$page / $pages : png inverted"
+)& done
+
+wait
+
+begin 'png -> pdf'
+
+# (on) tells zsh to sort the glob by number
+pdfunite \
+	inv/*.pdf(n) \
+	"$inverted"
+
+popd
+rm -rf "$scratch"
+
+complete "inverted $original to $inverted"
+
+

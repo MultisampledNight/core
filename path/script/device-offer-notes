@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+
+. util
+. adblib
+
+port='8081'
+addr='::1'
+bind="$addr:$port"
+
+adb reverse "tcp:$port" "tcp:$port"
+notes --listen "$bind"
+
+

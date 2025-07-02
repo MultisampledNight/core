@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+pdfinfo "$1" | rg 'Pages:' | column -tH 1

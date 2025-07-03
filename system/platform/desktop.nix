@@ -599,6 +599,13 @@ with import ../prelude args;
               URLTemplate = "https://www.medrxiv.org/search/{searchTerms}";
               Method = "GET";
             }
+            # gaming
+            {
+              Name = "Speedrun.com";
+              Alias = "@speedrun";
+              URLTemplate = "https://www.speedrun.com/search?q={searchTerms}";
+              Method = "GET";
+            }
           ];
 
           Remove = [

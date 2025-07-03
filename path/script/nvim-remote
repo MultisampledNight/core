@@ -1,3 +1,5 @@
 #!/usr/bin/env zsh
 set -euo pipefail
-nvim --server '::1:8081' --remote-ui "$@"
+
+# ...android can't do ipv6, apparently
+nvim --server '127.0.0.1:8081' --remote-ui "$@"

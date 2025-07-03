@@ -9,7 +9,7 @@ port='8081'
 addr='::1'
 bind="$addr:$port"
 
-adb reverse "tcp:$port" "tcp:$port"
+remote reverse "tcp:$port" "tcp:$port"
 notes --listen "$bind"
 
 

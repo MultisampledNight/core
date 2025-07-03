@@ -1,0 +1,23 @@
+[default.extend-words]
+# value being eq to key means that it's always valid
+
+# note abbreviations
+hom = "hom"
+
+# names
+thi = "thi"
+
+# German
+Interaktion = "Interaktion"
+Tage = "Tage"
+extrem = "extrem"
+homogenes = "homogenes"
+
+als = "als"
+ein = "ein"
+ist = "ist"
+sie = "sie"
+
+# French
+mesures = "mesures"
+

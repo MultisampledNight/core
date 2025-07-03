@@ -418,7 +418,11 @@ lspconfig.texlab.setup {
   },
 }
 lspconfig.ts_ls.setup {}
-lspconfig.typos_lsp.setup {}
+lspconfig.typos_lsp.setup {
+  init_options = {
+    config = vim.env.core .. "/config/typos/config.toml",
+  },
+}
 lspconfig.tinymist.setup {
   settings = {
     formatterPrintWidth = 80,

@@ -485,6 +485,12 @@ with import ../prelude args;
               Method = "GET";
             }
             {
+              Name = "On-Line Encyclopedia of Integer Sequences";
+              Alias = "@oeis";
+              URLTemplate = "https://oeis.org/search?go=Search&q={searchTerms}";
+              Method = "GET";
+            }
+            {
               Name = "OpenStreetMap";
               Alias = "@osm";
               URLTemplate = "https://www.openstreetmap.org/search?query={searchTerms}";

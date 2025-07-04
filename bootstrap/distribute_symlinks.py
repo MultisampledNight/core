@@ -99,9 +99,9 @@ def install_one(
     target = Path(target)
     repo = Path(__file__).resolve().parent.parent
 
-    if only_user and name.is_absolute():
+    if only_user and not is_user(name):
         if verbose:
-            print("Skipping", name)
+            print(f"Skipping {name} due to it being")
         return
     target = Path(abspath(repo / target))
 
@@ -158,6 +158,10 @@ def keymap(op, subject):
 
 def valuemap(op, subject):
     return kvmap(lambda k, v: (k, op(v)), subject)
+
+
+def is_user(path: Path) -> bool:
+    return str(path).startswith(str(Path.home()))
 
 
 def ensure_root(msg="Must be run as root.", fail_fast=True):

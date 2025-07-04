@@ -1,4 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env -S zsh -i
+# interactive mode is to get $PROMPT and $RPROMPT visible
 set -euo pipefail
 
 case "$1" in
@@ -28,5 +29,7 @@ to "$1" <<REMOTE
 	cd core
 
 	python3 ./bootstrap/distribute_symlinks.py --only-user
+	echo "PROMPT='$PROMPT'" >> ~/.privaterc
+	echo "RPROMPT='$RPROMPT'" >> ~/.privaterc
 REMOTE
 

@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-set -euo pipefail
-pushd $(mktemp -d)
-	curl -O https://f-droid.org/F-Droid.apk
-	adb install F-Droid.apk
-popd

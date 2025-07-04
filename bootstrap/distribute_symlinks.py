@@ -15,7 +15,6 @@ from itertools import starmap
 from os.path import abspath
 from pathlib import Path
 
-ROOT = "/"
 USER = "multisn8"
 
 
@@ -77,8 +76,7 @@ def destinations():
 
     all = root
     # note: using Path("~") rather than Path.home()
-    # so expanduser() later can, well, expand it accordingly
-    all |= keymap(lambda name: Path("~") / name, home)
+    all |= keymap(lambda name: Path.home() / name, home)
 
     return all
 
@@ -92,7 +90,6 @@ def install_one(
     name,
     target,
     user=USER,
-    root=ROOT,
     only_user=False,
     actually_install=False,
     verbose=False,
@@ -106,7 +103,7 @@ def install_one(
         if verbose:
             print("Skipping", name)
         return
-    name = expanduser(name, root=root, user=user)
+    name = expanduser(name)
     target = Path(abspath(repo / target))
 
     if verbose:
@@ -164,10 +161,6 @@ def valuemap(op, subject):
     return kvmap(lambda k, v: (k, op(v)), subject)
 
 
-def expanduser(path, root=ROOT, user=USER):
-    return Path(root) / str(path).replace("~", f"home/{user}")
-
-
 def ensure_root(msg="Must be run as root.", fail_fast=True):
     if os.geteuid() != 0:
         print(
@@ -182,8 +175,6 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Puts symlinks where specified. Does not take any precautions against path traversal attacks."
     )
-    parser.add_argument("--root", action="store", default=ROOT)
-    parser.add_argument("--user", action="store", default=USER)
     parser.add_argument(
         "--only-user",
         action="store_true",

@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+case "$1" in
+	# TODO: add adb case:
+	#
+	# + install termux
+	# + in termux, install openssh, configure sshd
+	# + on this machine, generate ~/.ssh/id_to_termux ssh key
+	# + send the public ssh key to termux
+	# + launch sshd on termux
+	#
+	# then spill over into the termux case via ;&
+	(termux) 
+		to "$1" <<REMOTE
+			pkg install --yes python git zsh fd ripgrep magic-wormhole-rs
+			chsh -s zsh
+REMOTE
+	;;
+esac
+
+to "$1" <<REMOTE
+	cd ~
+	mkdir -p zero/core
+	cd zero
+
+	git clone https://github.com/MultisampledNight/core.git
+	cd core
+
+	python3 ./bootstrap/distribute_symlinks.py --only-user
+REMOTE
+

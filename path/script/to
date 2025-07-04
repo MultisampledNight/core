@@ -7,16 +7,22 @@ if [[ ${#@} -lt 1 ]]; then
 	return 1
 fi
 
-if [[ "$1" == "possible" ]]; then
-	adb wait-for-device
-	connector=(adb shell)
-else
-	if ssh "$1" waypipe --version >/dev/null; then
-		connector=(waypipe ssh "$1")
-	else
+case "$1" in
+	(adb)
+		adb wait-for-device
+		connector=(adb shell)
+	;;
+	(termux)
+		adb forward tcp:8022 tcp:8022
+		connector=(ssh -i ~/.ssh/id_to_termux -p 8022 127.0.0.1)
+	;;
+	(*)
 		connector=(ssh "$1")
-	fi
-fi
+		if ssh "$1" waypipe --version >/dev/null; then
+			connector=(waypipe ssh "$1")
+		fi
+	;;
+esac
 
 shift 1
 $connector "$@"

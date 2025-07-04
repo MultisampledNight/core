@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+repo="$1"
+artifact="$2"
+
+# TODO
+

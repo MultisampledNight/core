@@ -50,6 +50,12 @@ rationalise-dot() {
 zle -N rationalise-dot
 bindkey . rationalise-dot
 
+alias ls='ls -Npv --color --hyperlink=auto --time-style=+%Y-%m-%d\\ %H:%M:%S'
+alias l='ls -lh --group-directories-first'
+alias ll='l -a'
+alias c='clear'
+alias help='man'
+
 alias evcxr='evcxr --edit-mode vi'
 alias nv='neovide'
 alias zt='zathura --fork'

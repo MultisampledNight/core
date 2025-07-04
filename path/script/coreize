@@ -13,7 +13,7 @@ case "$1" in
 	# then spill over into the termux case via ;&
 	(termux) 
 		to "$1" <<REMOTE
-			pkg install --yes python git zsh fd ripgrep magic-wormhole-rs
+			pkg install --yes python git zsh fd ripgrep magic-wormhole-rs direnv
 			chsh -s zsh
 REMOTE
 	;;

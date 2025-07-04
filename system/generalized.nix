@@ -591,14 +591,6 @@ in
           XDG_CURRENT_DESKTOP = "sway";
         });
 
-      shellAliases = {
-        ls = "ls -Npv --color --hyperlink=auto --time-style=+%Y-%m-%d\\ %H:%M:%S";
-        l = "ls -lh --group-directories-first";
-        ll = "l -a";
-        c = "clear";
-        help = "man";
-      };
-
       gnome.excludePackages = with pkgs.gnome; [
         cheese
         epiphany

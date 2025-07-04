@@ -29,7 +29,7 @@ to "$1" <<REMOTE
 	cd core
 
 	python3 ./bootstrap/distribute_symlinks.py --only-user
-	echo "PROMPT='$PROMPT'" >> ~/.privaterc
+	echo "PROMPT='$PROMPT'" > ~/.privaterc
 	echo "RPROMPT='$RPROMPT'" >> ~/.privaterc
 REMOTE
 

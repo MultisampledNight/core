@@ -7,19 +7,26 @@ if [[ ${#@} -lt 1 ]]; then
 	return 1
 fi
 
+# android-specific stuff
+specify=()
+# zsh-specific syntax: $+ echoes 1 if var is set and 0 otherwise
+if (( $+handle )); then
+	specify=(-s "$handle")
+fi
+
 case "$1" in
 	(adb)
-		adb wait-for-device
-		connector=(adb shell)
+		adb $specify wait-for-device
+		connector=(adb $specify shell)
 	;;
 	(termux)
-		adb forward tcp:8022 tcp:8022
+		adb $specify forward tcp:8022 tcp:8022
 		connector=(ssh -i ~/.ssh/id_to_termux -p 8022 127.0.0.1)
 	;;
 	(*)
 		connector=(ssh "$1")
 		if ssh "$1" waypipe --version >/dev/null; then
-			connector=(waypipe ssh "$1")
+			connector=(waypipe $connector)
 		fi
 	;;
 esac

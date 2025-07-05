@@ -14,19 +14,21 @@ case "$1" in
 	# then spill over into the termux case via ;&
 	(termux) 
 		to "$1" <<REMOTE
-			pkg install --yes python git zsh fd ripgrep magic-wormhole-rs direnv
+			pkg install --yes python git zsh fd ripgrep magic-wormhole-rs direnv difftastic
 			chsh -s zsh
 REMOTE
 	;;
 esac
 
 to "$1" <<REMOTE
+	set -euo pipefail
 	cd ~
 	mkdir -p zero/core
 	cd zero
 
-	git clone https://github.com/MultisampledNight/core.git
+	git clone https://github.com/MultisampledNight/core.git || true
 	cd core
+	git pull
 
 	python3 ./bootstrap/distribute_symlinks.py --only-user
 	echo "PROMPT='$PROMPT'" > ~/.privaterc

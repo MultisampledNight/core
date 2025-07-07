@@ -4,16 +4,22 @@ set -euo pipefail
 
 # default, then selective override
 if [[ ${#@} -gt 0 ]]; then
-	source=$@
+	source=($@)
 else
 	source=($HOME/{notes,studio} "$core" "$state_share")
 fi
 
 maintenance
 
-begin archiving to "$archive"
+begin archiving "$source" to "$archive"
 hint ' source size:' `adu $source`
-tar --zstd --sort name --create --file "$archive" $source
+tar \
+	--zstd \
+	--sort name \
+	--create \
+	--file \
+	"$archive" \
+	$source
 hint 'archive size:' `adu "$archive"`
 
 complete creation finished!

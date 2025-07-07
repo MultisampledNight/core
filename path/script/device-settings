@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+
+. adblib
+
+sh am start com.android.settings
+

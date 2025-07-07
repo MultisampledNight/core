@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# format-fat -- formats an entire flash drive to be printer-friendly
 set -euo pipefail
 
 mkfs.fat --invariant --mbr=y "$@"

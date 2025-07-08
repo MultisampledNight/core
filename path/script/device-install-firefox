@@ -14,21 +14,10 @@ version=`curlj "$releases/" \
 	| version-newest \
 	| jq -r`
 
-apk_url="$releases/$version/android\
+export url="$releases/$version/android\
 /fenix-$version-android-$abi\
 /fenix-$version.multi.android-$abi.apk"
+export package='org.mozilla.firefox'
 
-# some devices (e.g. Oculus Quest) have issues when copying larger files via ADB
-# Firefox is over 100 MiB big
-# hence let's actually get it on the device
-sh <<REMOTE
-set -x
-cd /data/local/tmp
-
-curl --compressed -C - -Lo firefox.apk "$apk_url"
-pm install \
-	--originating-uri "$apk_url" \
-	firefox.apk
-rm firefox.apk
-REMOTE
+device-update-apk "$handle"
 

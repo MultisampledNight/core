@@ -65,5 +65,10 @@ complete() {
   emit 2 x "$*"
 }
 
+mkcd() {
+  mkdir -p -- "$1"
+  cd "$1"
+}
+
 # common paths i feel like i use all the time
 . initenv

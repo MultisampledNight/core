@@ -2,7 +2,6 @@
 set -euo pipefail
 handle="$1"
 
-. util
 . adblib
 
 alias jq='jq -r'

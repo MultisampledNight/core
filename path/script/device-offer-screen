@@ -6,7 +6,6 @@ set -euo pipefail
 handle="$1"
 port='5900'
 
-. util
 . adblib
 
 

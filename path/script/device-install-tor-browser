@@ -1,0 +1,55 @@
+#!/usr/bin/env zsh
+set -xeuo pipefail
+handle="$1"
+
+. adblib
+
+mirror='https://dist.torproject.org/torbrowser/'
+# https://tor.eff.org/dist/torbrowser/
+# https://archive.torproject.org/tor-package-archive/torbrowser/
+# https://tor.calyxinstitute.org/dist/torbrowser/
+
+# example device-abi outputs: arm64-v8a, armeabi-v7a
+# but the url wants aarch64 for arm64 and above while only wanting armv7 otherwise
+# hence split down
+arch=`device-abi "$handle" \
+	| jq -Rr '
+		rtrimstr("a")
+		| split("-")
+		| map(rtrimstr("eabi"))
+		| join("")
+		| if startswith("arm64")
+			then "aarch64"
+			else . end
+	'`
+version=`curl "$mirror" \
+	| htmlq --text 'a:not([href^="/"])[href$="/"]' \
+	| jq -Rs 'rtrimstr("\n") | split("\n") | map(rtrimstr("/"))' \
+	| version-filter-stable \
+	| version-newest \
+	| jq -r`
+
+export url="$mirror/$version/tor-browser-android-$arch-$version.apk"
+export package='org.torproject.torbrowser'
+export key='EF6E286DDA85EA2A4BA7DE684E2C6E8793298290'
+
+apk="$package.apk"
+signature="$apk.asc"
+
+
+# get the apk first of all
+net-fetch-apk
+
+# verify the signature
+# roughly based on https://support.torproject.org/tbb/how-to-verify-signature/
+if ! gpg --list-key "$key"; then
+	net-fetch-key "$key" | gpg --import -
+fi
+
+cd "$apk_stash"
+curlc "$url.asc" -o "$signature"
+
+gpg --verify "$signature" "$apk"
+
+install-apk "$apk"
+

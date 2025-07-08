@@ -5,8 +5,13 @@
 # Not affiliated with ADB in any way.
 # Depends on: adb, rg.
 
+. util
+
 alias rg='rg --color=never'
 alias remote="adb -s \"$handle\""
 alias sh="remote shell"
 alias prop='sh getprop'
+alias install-apk='remote install --no-streaming'
+
+export apk_stash="$HOME/media/pub/program/android"
 

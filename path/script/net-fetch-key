@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# net-fetch-key -- fetches the key whose fingerprint was given as arg, printing it
+set -euo pipefail
+
+api='https://keys.openpgp.org/vks/v1/by-fingerprint'
+curl -s "$api/$1"
+

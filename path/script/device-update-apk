@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# doesn't take any arguments: expects env variables $url and $package to be set
+set -euo pipefail
+handle="$1"
+
+. adblib
+
+net-fetch-apk
+install-apk "$apk_stash/$package.apk"
+

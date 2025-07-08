@@ -16,9 +16,14 @@ function batfmt() {
 
 props=`echo '
 	ro.{
+		soc.{
+			manufacturer,
+			model
+		},
 		build.version.{
 			release,
 			sdk,
+			min_supported_target_sdk,
 			security_patch
 		},
 		product.{
@@ -46,24 +51,31 @@ details=`sh "
 	dumpsys battery
 "`
 
-os_release=`line 1`
-apilvl=`line 2`
-security_patch=`line 3`
-abi=`line 4`
-manufacturer=`line 5`
-model=`line 6`
-serialno=`line 7`
+soc_manufacturer=`line 1`
+soc=`line 2`
+os_release=`line 3`
+sdk=`line 4`
+min_sdk=`line 5`
+security_patch=`line 6`
+abi=`line 7`
+manufacturer=`line 8`
+model=`line 9`
+serialno=`line 10`
 
-uptime=`line 8`
+uptime=`line 11`
 
-freq_min=`line 9`
-freq_max=`line 10`
-nproc=`line 11`
-cpuload=`line 12`
+freq_min=`line 12`
+freq_max=`line 13`
+nproc=`line 14`
+cpuload=`line 15`
 
-battery=`echo "$details" | tail -n+13 | yq '.[]'`
+battery=`echo "$details" | tail -n+16 | yq '.[]'`
 
 begin "$manufacturer $model" `fade "$serialno"`
+
+part SOC \
+	"$soc" \
+	`fade "$soc_manufacturer"`
 
 part CPU \
 	`echo "$cpuload" | rg 'Load: (\S*) / (\S*) / (\S*)' -r '$1, $2, $3'` \
@@ -103,5 +115,5 @@ part UPT \
 
 part OSY \
 	"Android $os_release" \
-	`fade api"$apilvl" sec"$security_patch"`
+	`fade sdk"$min_sdk":"$sdk" sec"$security_patch"`
 

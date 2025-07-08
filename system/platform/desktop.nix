@@ -612,6 +612,21 @@ with import ../prelude args;
               URLTemplate = "https://www.speedrun.com/search?q={searchTerms}";
               Method = "GET";
             }
+            # law
+            {
+              # EU cases and legislation
+              Name = "EUR-Lex";
+              Alias = "@eurlex";
+              URLTemplate = "https://eur-lex.europa.eu/search.html?scope=EURLEX&lang=en&text={searchTerms}";
+              Method = "GET";
+            }
+            {
+              # national legislation
+              Name = "N-Lex";
+              Alias = "@nlex";
+              URLTemplate = "https://n-lex.europa.eu/n-lex/aggregated-results?search=multi&selectedCorpus=bg.apis.soap,cz.legis.sbirka,de.legis.juris,ee.legis.start,ee.legis.total,hu.jogszabalytar,ie.legis.sbook,lv.legis.vestnesis,ro.legis.iservice,sv.legis.fulltext&selectedCountries=bg,cz,de,ee,hu,ie,lv,ro,sv,&textSearchPosition=title,text&allCountries=true&words_in_title={searchTerms}&words_in_text1={searchTerms}";
+              Method = "GET";
+            }
           ];
 
           Remove = [

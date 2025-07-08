@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+handle="$1"
+
+. adblib
+
+abi=`device-abi "$handle"`
+

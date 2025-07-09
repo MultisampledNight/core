@@ -53,6 +53,7 @@ pkgs.mkShell rec {
       fontconfig
       freetype
 
+      libgbm
       shaderc
       directx-shader-compiler
       ocl-icd
@@ -76,8 +77,18 @@ pkgs.mkShell rec {
       python3
       renderdoc
       gnuplot
+
+      ffmpeg
+
+      zstd
+      lz4
+
+      rust-bindgen
     ]
     ++ extraPkgs;
+  depsBuildBuild = with pkgs; [
+    pkg-config
+  ];
 
   CARGO_BUILD_RUSTDOCFLAGS = "--default-theme=ayu";
   RUSTC_VERSION = pkgs.lib.strings.removeSuffix "\n" (pkgs.lib.readFile ./rust-toolchain);

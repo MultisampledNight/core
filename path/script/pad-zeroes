@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 # pad-zeroes -- Pads zeroes to numerical prefixes of the given files, up to the longest numerical prefix, renaming them in place.
 
-function main(paths) @main
+function main(paths::Vector{String}) @main
     directories = map(dirname, paths)
     # Split into numerical prefix and the rest.
     names = match.(r"^(?<prefix>\d+)(?<rest>.*)$", map(basename, paths))

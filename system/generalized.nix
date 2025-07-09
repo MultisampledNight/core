@@ -850,11 +850,6 @@ in
                 cargoHash = "sha256-1ni8AZIwAz5R2Ejt9Fj5qmybvL4KZV/M3BMqQx4HFLU=";
               };
             })
-            (takeFromPr {
-              pr = 414294;
-              hash = "sha256-5Im2LMJqWWwkzcNKcV0tdKaH7y599nRH6gNBJpL0fVY=";
-              packages = [ "typstyle" ];
-            })
             (
               final: prev:
               optAttrs cfg.profileGuided {

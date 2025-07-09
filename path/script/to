@@ -7,6 +7,8 @@ if [[ ${#@} -lt 1 ]]; then
 	return 1
 fi
 
+target="$1"
+
 # android-specific stuff
 specify=()
 # zsh-specific syntax: $+ echoes 1 if var is set and 0 otherwise
@@ -14,7 +16,7 @@ if (( $+handle )); then
 	specify=(-s "$handle")
 fi
 
-case "$1" in
+case "$target" in
 	(adb)
 		adb $specify wait-for-device
 		connector=(adb $specify shell)
@@ -24,9 +26,14 @@ case "$1" in
 		connector=(ssh -i ~/.ssh/id_to_termux -p 8022 127.0.0.1)
 	;;
 	(*)
-		connector=(ssh "$1")
-		if ssh "$1" waypipe --version >/dev/null; then
-			connector=(waypipe $connector)
+		connector=(ssh "$target")
+		if ssh "$target" waypipe --version >/dev/null; then
+			connector=(
+				wp
+				--title-prefix "@$target "
+				--threads `ssh "$target" nproc --ignore=1`
+				$connector
+			)
 		fi
 	;;
 esac

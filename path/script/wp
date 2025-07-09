@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# --no-gpu is needed atm: some ioctl fails when trying to use dmabufs
+exec waypipe \
+	--video av1,hw \
+	--compress zstd=3 \
+	--no-gpu \
+	$@

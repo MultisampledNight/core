@@ -15,6 +15,8 @@ function batfmt() {
 
 props=`echo '
 	ro.{
+		board.platform,
+		hardware,
 		soc.{
 			manufacturer,
 			model
@@ -32,6 +34,7 @@ props=`echo '
 				model
 			}
 		},
+		system.build.date.utc,
 		serialno
 	}
 ' | tr -d '[:space:]'`
@@ -50,30 +53,33 @@ details=`sh "
 	dumpsys battery
 "`
 
-soc_manufacturer=`line 1`
-soc=`line 2`
-os_release=`line 3`
-sdk=`line 4`
-min_sdk=`line 5`
-security_patch=`line 6`
-abi=`line 7`
-manufacturer=`line 8`
-model=`line 9`
-serialno=`line 10`
+platform=`line 1`
+hardware=`line 2`
+soc_manufacturer=`line 3`
+soc=`line 4`
+os_release=`line 5`
+sdk=`line 6`
+min_sdk=`line 7`
+security_patch=`line 8`
+abi=`line 9`
+manufacturer=`line 10`
+model=`line 11`
+os_built_at="$(date --rfc-3339=seconds --date=@`line 12` --utc)"
+serialno=`line 13`
 
-uptime=`line 11`
+uptime=`line 14`
 
-freq_min=`line 12`
-freq_max=`line 13`
-nproc=`line 14`
-cpuload=`line 15`
+freq_min=`line 15`
+freq_max=`line 16`
+nproc=`line 17`
+cpuload=`line 18`
 
-battery=`echo "$details" | tail -n+16 | yq '.[]'`
+battery=`echo "$details" | tail -n+19 | yq '.[]'`
 
-begin "$manufacturer $model" `fade "$serialno"`
+begin "$manufacturer $model" `fade "$hardware"`
 
 part SOC \
-	"$soc" \
+	"$platform" "$soc" \
 	`fade "$soc_manufacturer"`
 
 part CPU \
@@ -112,7 +118,16 @@ part UPT \
 		| "\($d | floor)d \($h | floor)h \($m | round)min"
 	'`
 
+
 part OSY \
 	"Android $os_release" \
-	`fade sdk"$min_sdk":"$sdk" sec"$security_patch"`
+	`fade \
+		sdk"$min_sdk":"$sdk" \
+		sec"$security_patch" \
+		built"$os_built_at"`
+
+if [[ ! -z "${serial:-}" ]]; then
+	part SER \
+		"$serialno"
+fi
 

@@ -401,6 +401,12 @@ with import ../prelude args;
               Method = "GET";
             }
             {
+              Name = "postmarketOS Wiki";
+              Alias = "@pmosdoc";
+              URLTemplate = "https://wiki.postmarketos.org/index.php?search={searchTerms}&title=Special%3ASearch";
+              Method = "GET";
+            }
+            {
               Name = "Typst universe";
               Alias = "@typpkgs";
               URLTemplate = "https://typst.app/universe/search?q={searchTerms}";

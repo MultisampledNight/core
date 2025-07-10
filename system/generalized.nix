@@ -486,6 +486,8 @@ in
               tio
               traceroute
               tcpdump
+              mtr
+              iperf
               oniux
               fd
               ripgrep

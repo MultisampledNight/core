@@ -2,4 +2,4 @@
 # gfx-sw -- runs the given program on software opengl and vulkan
 set -euo pipefail
 
-exec gfx-sw-vk gfx-gl2vk "$@"
+exec gfx-sw-vk gfx-sw-gl "$@"

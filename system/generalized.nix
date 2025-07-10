@@ -489,6 +489,7 @@ in
               mtr
               iperf
               oniux
+              dtc
               fd
               ripgrep
               tree

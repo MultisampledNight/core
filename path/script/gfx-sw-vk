@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# gfx-sw-vk -- runs the given program on software vulkan
+set -euo pipefail
+
+# https://github.com/KhronosGroup/Vulkan-Loader/blob/main/docs/LoaderInterfaceArchitecture.md#active-environment-variables
+# surprisingly x86_64 even on arm platforms
+export VK_DRIVER_FILES="`nixpkgs mesa`/share/vulkan/icd.d/lvp_icd.x86_64.json"
+
+exec "$@"

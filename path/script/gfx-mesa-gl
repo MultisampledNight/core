@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# gfx-mesa-gl -- runs the given program on mesa
+set -euo pipefail
+
+# https://wiki.archlinux.org/title/OpenGL#OpenGL_over_Vulkan_(Zink)
+export __GLX_VENDOR_LIBRARY_NAME=mesa
+export __EGL_VENDOR_LIBRARY_FILENAMES="`nixpkgs mesa`/share/glvnd/egl_vendor.d/50_mesa.json"
+
+exec "$@"

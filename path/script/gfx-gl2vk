@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# gfx-gl2vk -- runs the given program with opengl translated to vulkan via mesa's zink
+set -euo pipefail
+
+export MESA_LOADER_DRIVER_OVERRIDE=zink
+export GALLIUM_DRIVER=zink
+export LIBGL_KOPPER_DRI2=1
+
+exec gfx-mesa-gl "$@"

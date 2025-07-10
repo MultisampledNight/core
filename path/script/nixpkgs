@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+exec nix-build '<nixpkgs>' --no-out-link -A "$@"

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# gfx-sw-gl -- runs the given program on software opengl
+set -euo pipefail
+
+export LIBGL_ALWAYS_SOFTWARE=true
+export GALLIUM_DRIVER=llvmpipe
+
+exec gfx-mesa-gl "$@"

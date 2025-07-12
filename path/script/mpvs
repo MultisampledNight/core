@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# mpvs -- mpv but somewhat script-friendly
+set -euo pipefail
+
+mpv \
+	--no-config \
+	--terminal=no \
+	--osc=no \
+	"$@"
+

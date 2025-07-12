@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# media-runtime -- prints the cumulative runtime of all given media files
+set -euo pipefail
+
+mpvs \
+	--merge-files \
+	--input-commands='run "echo" "${duration}",quit' \
+	"$@"
+

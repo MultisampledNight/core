@@ -509,6 +509,11 @@ with import ../prelude args;
               Method = "GET";
             }
             {
+              Name = "DigiKey";
+              Alias = "@digikey";
+              URLTemplate = "https://www.digikey.de/en/products/result?keywords={searchTerms}";
+            }
+            {
               Name = "Mrose";
               Alias = "@mrose";
               URLTemplate = "https://mrose.de/suche/?p3={searchTerms}";

@@ -129,6 +129,11 @@ alias gps='git push'
 alias gpsf='gps --force-with-lease'
 
 
+mkcd() {
+  mkdir -p -- "$1"
+  cd "$1"
+}
+
 man() {
   if [[ ! -n $1 ]]; then
 	echo "which manual page do you want?"

@@ -9,12 +9,12 @@ case "$1" in
 	# + in termux, install openssh, configure sshd
 	# + on this machine, generate ~/.ssh/id_to_termux ssh key
 	# + send the public ssh key to termux
-	# + launch sshd on termux
+	# + launch sshd on termux (maybe even sv-enable sshd)
 	#
 	# then spill over into the termux case via ;&
 	(termux) 
 		to "$1" <<REMOTE
-			pkg install --yes python git zsh fd ripgrep magic-wormhole-rs direnv difftastic
+			pkg install --yes python git git-lfs zsh fd ripgrep magic-wormhole-rs direnv difftastic termux-services neovim
 			chsh -s zsh
 REMOTE
 	;;

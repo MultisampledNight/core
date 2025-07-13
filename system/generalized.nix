@@ -474,6 +474,7 @@ in
               curl
               rsync
               rclone
+              socat
               yt-dlp
               magic-wormhole-rs
               dogdns

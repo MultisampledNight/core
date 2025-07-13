@@ -5,7 +5,7 @@ handle="$1"
 . adblib
 
 releases='https://archive.mozilla.org/pub/fenix/releases'
-abi=`device-abi "$handle"`
+export abi=`device-abi "$handle"`
 
 # slash is important: otherwise the webserver appears to think it's a file and 404s
 version=`curlj "$releases/" \

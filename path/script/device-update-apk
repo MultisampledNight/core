@@ -6,5 +6,5 @@ handle="$1"
 . adblib
 
 net-fetch-apk
-install-apk "$apk_stash/$package.apk"
+install-apk "$apk_stash/$abi/$package.apk"
 

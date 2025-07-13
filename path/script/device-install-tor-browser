@@ -12,7 +12,7 @@ mirror='https://dist.torproject.org/torbrowser/'
 # example device-abi outputs: arm64-v8a, armeabi-v7a
 # but the url wants aarch64 for arm64 and above while only wanting armv7 otherwise
 # hence split down
-arch=`device-abi "$handle" \
+export abi=`device-abi "$handle" \
 	| jq -Rr '
 		rtrimstr("a")
 		| split("-")
@@ -46,7 +46,7 @@ if ! gpg --list-key "$key"; then
 	net-fetch-key "$key" | gpg --import -
 fi
 
-cd "$apk_stash"
+cd "$apk_stash/$abi"
 curlc "$url.asc" -o "$signature"
 
 gpg --verify "$signature" "$apk"

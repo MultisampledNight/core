@@ -1,0 +1,6 @@
+#!/data/data/com.termux/files/usr/bin/sh
+
+# see https://github.com/termux/termux-boot
+termux-wake-lock
+source /data/data/com.termux/files/usr/etc/profile.d/start-services.sh
+

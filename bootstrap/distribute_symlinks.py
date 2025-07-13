@@ -46,11 +46,12 @@ def destinations():
     home_config = {
         ".cargo/config.toml": "cargo/config.toml",
         ".gitattributes": "git/gitattributes",
-        ".gitignore-global": "git/gitignore-global",
         ".gitconfig": "git/gitconfig",
+        ".gitignore-global": "git/gitignore-global",
         ".rgignore": "ripgrep/rgignore",
-        ".zshrc": "zsh/zshrc",
+        ".termux": "termux",
         ".zlogin": "zsh/zlogin",
+        ".zshrc": "zsh/zshrc",
     }
     # Anything else that belongs in ~ and is under $repo
     home = {

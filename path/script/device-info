@@ -32,10 +32,8 @@ props=`echo '
 		},
 		product.{
 			cpu.abi,
-			vendor.{
-				manufacturer,
-				model
-			}
+			vendor.manufacturer,
+			model
 		},
 		serialno
 	}

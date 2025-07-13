@@ -21,11 +21,14 @@ props=`echo '
 			manufacturer,
 			model
 		},
-		build.version.{
-			release,
-			sdk,
-			min_supported_target_sdk,
-			security_patch
+		build.{
+			date.utc,
+			version.{
+				release,
+				sdk,
+				min_supported_target_sdk,
+				security_patch
+			}
 		},
 		product.{
 			cpu.abi,
@@ -34,7 +37,6 @@ props=`echo '
 				model
 			}
 		},
-		system.build.date.utc,
 		serialno
 	}
 ' | tr -d '[:space:]'`
@@ -47,7 +49,8 @@ details=`sh "
 	cat /proc/uptime
 
 	cat /sys/bus/cpu/devices/cpu0/cpufreq/cpuinfo_{min,max}_freq
-	nproc
+	# more portable than nproc
+	echo /sys/bus/cpu/devices/cpu* | wc -w
 	dumpsys cpuinfo | head -n1
 
 	dumpsys battery
@@ -57,14 +60,14 @@ platform=`line 1`
 hardware=`line 2`
 soc_manufacturer=`line 3`
 soc=`line 4`
-os_release=`line 5`
-sdk=`line 6`
-min_sdk=`line 7`
-security_patch=`line 8`
-abi=`line 9`
-manufacturer=`line 10`
-model=`line 11`
-os_built_at="$(date --rfc-3339=seconds --date=@`line 12` --utc)"
+os_built_at="$(date --rfc-3339=seconds --date=@`line 5` --utc)"
+os_release=`line 6`
+sdk=`line 7`
+min_sdk=`line 8`
+security_patch=`line 9`
+abi=`line 10`
+manufacturer=`line 11`
+model=`line 12`
 serialno=`line 13`
 
 uptime=`line 14`

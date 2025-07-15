@@ -17,7 +17,16 @@ function main(paths::Vector{String}) @main
         end
         (prefix, rest) = name
 
-        prefix = lpad(prefix, longest, "0")
+        side = get(ENV, "SIDE", "left")
+        if side == "left"
+            pad = lpad
+        elseif side == "right"
+            pad = rpad
+        else
+            error("\$SIDE is $side, which is neither left or right. specify the side to pad zeroes at")
+        end
+
+        prefix = pad(prefix, longest, "0")
         target = joinpath(directory, prefix * rest)
 
         if source == target

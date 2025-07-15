@@ -1,2 +1,2 @@
-#!/usr/bin/env sh
-exec curl --header 'Accept: application/json' $@
+#!/usr/bin/env zsh
+exec curl --header 'Accept: application/json' --header 'Content-Type: application/json' "$@"

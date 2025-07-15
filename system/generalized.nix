@@ -888,7 +888,14 @@ in
           custom = import ./packages { pkgs = unstablePkgs; };
         })
         (final: prev: {
-          mpv = prev.mpv.override { scripts = with final.mpvScripts; [ mpris ]; };
+          mpv = prev.mpv.override {
+            scripts = with final.mpvScripts; [
+              mpris
+              (visualizer.overrideAttrs {
+                patches = [ ./packages/mpv/scripts/visualizer/config.patch ];
+              })
+            ];
+          };
           # https://github.com/nix-community/nix-bundle/pull/120
           # makes it runnable again (function was removed in nixpkgs)
           nix-bundle = prev.nix-bundle.overrideAttrs {

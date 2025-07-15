@@ -1,0 +1,30 @@
+diff --git a/visualizer.lua b/visualizer.lua
+index f70f743..4881247 100644
+--- a/visualizer.lua
++++ b/visualizer.lua
+@@ -7,7 +7,7 @@ local opts = {
+     -- novideo          enable visualization when no video
+     -- force            always enable visualization
+ 
+-    name = "showcqt",
++    name = "showspectrum",
+     -- off
+     -- showcqt
+     -- avectorscope
+@@ -15,14 +15,14 @@ local opts = {
+     -- showcqtbar
+     -- showwaves
+ 
+-    quality = "medium",
++    quality = "high",
+     -- verylow
+     -- low
+     -- medium
+     -- high
+     -- veryhigh
+ 
+-    height = 6,
++    height = 9,
+     -- [4 .. 12]
+ 
+     forcewindow = true,

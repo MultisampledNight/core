@@ -436,7 +436,7 @@ lspconfig.tinymist.setup {
   },
   offset_encoding = "utf-8",
 }
-lspconfig.nil_ls.setup {}
+lspconfig.nixd.setup {}
 lspconfig.jdtls.setup {}
 lspconfig.julials.setup {}
 vim.lsp.set_log_level("error")

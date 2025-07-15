@@ -75,7 +75,7 @@ in
 
             tinymist
             typos-lsp
-            nil
+            nixd
           ]
         ]
         [

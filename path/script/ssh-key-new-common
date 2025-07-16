@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+exec ssh-keygen -Z chacha20-poly1305@openssh.com -a 32 "$@"

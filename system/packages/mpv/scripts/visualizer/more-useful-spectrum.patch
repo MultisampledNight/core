@@ -1,0 +1,19 @@
+diff --git a/visualizer.lua b/visualizer.lua
+index 4881247..314520f 100644
+--- a/visualizer.lua
++++ b/visualizer.lua
+@@ -201,10 +201,12 @@ local function get_visualizer(name, quality, vtrack)
+ 
+ 
+     elseif name == "showspectrum" then
+-        return "[aid1] asplit [ao]," ..
++        return ("[aid1] asplit [ao]," ..
+             "showspectrum       =" ..
+                 "size           =" .. w .. "x" .. h .. ":" ..
+-                "win_func       = blackman [vo]"
++                "slide          = scroll:" .. -- right-hand window edge is always current
++                "scale          = log:" .. -- intensity itself
++                "win_func       = blackman [vo]")
+ 
+ 
+     elseif name == "showcqtbar" then

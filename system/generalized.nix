@@ -259,6 +259,12 @@ in
 
       kernelParams = optionals hasNv [ "nvidia-drm.fbdev=1" ];
       blacklistedKernelModules = optionals (!cfg.camera) [ "uvcvideo" ];
+
+      # https://docs.kernel.org/admin-guide/sysctl
+      kernel.sysctl = {
+        "vm.swappiness" = 175;
+        "vm.watermark_scale_factor" = 125;
+      };
     };
 
     console.colors = [
@@ -803,6 +809,11 @@ in
         authfail_message = " ${error} %d time(s) incorrect";
       };
 
+    zramSwap = {
+      enable = true;
+      memoryPercent = 90;
+    };
+
     virtualisation = {
       vmVariant = {
         virtualisation.resolution = {
@@ -892,7 +903,10 @@ in
             scripts = with final.mpvScripts; [
               mpris
               (visualizer.overrideAttrs {
-                patches = [ ./packages/mpv/scripts/visualizer/config.patch ];
+                patches = map (sub: ./packages/mpv/scripts/visualizer/${sub}) [
+                  "config.patch"
+                  "more-useful-spectrum.patch"
+                ];
               })
             ];
           };

@@ -102,7 +102,7 @@ def install_one(
 
     if only_user and not is_user(name):
         if verbose:
-            print(f"Skipping {name} due to it being")
+            print(f"Skipping {name} due to running in user-only mode")
         return
     target = Path(abspath(repo / target))
 

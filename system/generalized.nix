@@ -517,6 +517,7 @@ in
               fbida
               hyperfine
               nix-bundle
+              apktool
               # i had to look that up manually in the nixpkgs source tree under
               # <nixpkgs/pkgs/development/libraries/aspell/dictionaries.nix>
               # this function is not documented anywhere.
@@ -545,9 +546,15 @@ in
             [ xclip ]
           ]
           [
-            cfg.graphical
+            cfg.wayland
             [
               wf-recorder
+              wl-mirror
+            ]
+          ]
+          [
+            cfg.graphical
+            [
               oxipng
               qalculate-gtk
               glib

@@ -28,9 +28,10 @@ to "$1" <<REMOTE
 
 	git clone https://github.com/MultisampledNight/core.git || true
 	cd core
-	git pull
+	git pull || true
 
-	python3 ./bootstrap/distribute_symlinks.py --only-user
+	python3 ./bootstrap/distribute_symlinks.py --only-user --verbose
+
 	echo "PROMPT='$PROMPT'" > ~/.privaterc
 	echo "RPROMPT='$RPROMPT'" >> ~/.privaterc
 REMOTE

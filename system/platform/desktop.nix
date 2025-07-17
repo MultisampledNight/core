@@ -365,6 +365,12 @@ with import ../prelude args;
               Method = "GET";
             }
             {
+              Name = "Arch manual pages";
+              Alias = "@man";
+              URLTemplate = "https://man.archlinux.org/search?q={searchTerms}&go=Go";
+              Method = "GET";
+            }
+            {
               Name = "Python stdlib documentation";
               Alias = "@pydoc";
               URLTemplate = "https://docs.python.org/3/search.html?q={searchTerms}";

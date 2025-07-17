@@ -698,8 +698,30 @@ in
     };
 
     # the default is hourly for some reason
-    systemd.timers.fwupd-refresh.timerConfig = {
-      OnCalendar = "weekly";
+    systemd = {
+      timers.fwupd-refresh.timerConfig = {
+        OnCalendar = "weekly";
+      };
+      tmpfiles.settings = {
+        "kerberos" =
+          let
+            user-dir = {
+              "d" = {
+                mode = "700";
+                user = "multisn8";
+                group = "users";
+              };
+            };
+          in
+          {
+            # TODO: do this cleaner for every normal user
+            "/home/multisn8/zero" = user-dir;
+            "/home/multisn8/zero/state" = user-dir;
+            "/home/multisn8/zero/state/local" = user-dir;
+            "/home/multisn8/zero/state/local/krb5" = user-dir;
+            "/home/multisn8/zero/state/local/krb5/ccache" = user-dir;
+          };
+      };
     };
 
     xdg = {
@@ -797,17 +819,39 @@ in
       style = "adwaita-dark";
     };
 
-    security.sudo.extraConfig =
-      with term;
-      toSudoers {
-        # see sudoers(5)
-        passwd_timeout = 0;
-        timestamp_type = "global";
-
-        passprompt = "${indent}${query} auth for %u${cha 8}";
-        badpass_message = "${indent}${error} wrong password";
-        authfail_message = " ${error} %d time(s) incorrect";
+    security = {
+      krb5 = {
+        enable = true;
+        settings.libdefaults = {
+          default_ccache_name = "DIR:/home/%{username}/zero/state/local/krb5/ccache";
+          # do not use very weak ciphers
+          default_tgs_enctypes = concatStrings (
+            intersperse " " [
+              "aes256-cts"
+              "aes256-cts-hmac-sha1-96"
+              "aes256-cts-hmac-sha384-192"
+              "aes256-sha1"
+              "aes256-sha2"
+            ]
+          );
+          dns_lookup_kdc = true;
+          forwardable = true;
+        };
       };
+      pam.krb5.enable = false;
+
+      sudo.extraConfig =
+        with term;
+        toSudoers {
+          # see sudoers(5)
+          passwd_timeout = 0;
+          timestamp_type = "global";
+
+          passprompt = "${indent}${query} auth for %u${cha 8}";
+          badpass_message = "${indent}${error} wrong password";
+          authfail_message = " ${error} %d time(s) incorrect";
+        };
+    };
 
     zramSwap = {
       enable = true;
@@ -910,6 +954,7 @@ in
               })
             ];
           };
+          openssh = prev.openssh_gssapi;
           # https://github.com/nix-community/nix-bundle/pull/120
           # makes it runnable again (function was removed in nixpkgs)
           nix-bundle = prev.nix-bundle.overrideAttrs {

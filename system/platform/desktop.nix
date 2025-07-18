@@ -413,6 +413,12 @@ with import ../prelude args;
               Method = "GET";
             }
             {
+              Name = "MDN Web Docs";
+              Alias = "@webdoc";
+              URLTemplate = "https://developer.mozilla.org/en-US/search?q={searchTerms}";
+              Method = "GET";
+            }
+            {
               Name = "Typst universe";
               Alias = "@typpkgs";
               URLTemplate = "https://typst.app/universe/search?q={searchTerms}";

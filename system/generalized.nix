@@ -505,7 +505,7 @@ in
               mpv
               jq
               yq
-              htmlq
+              custom.hq
               unzip
               zip
               sqlite-interactive

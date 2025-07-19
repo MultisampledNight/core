@@ -70,5 +70,10 @@ mkcd() {
   cd "$1"
 }
 
+mkpushd() {
+  mkdir -p -- "$1"
+  pushd "$1"
+}
+
 # common paths i feel like i use all the time
 . initenv

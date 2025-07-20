@@ -1,2 +1,2 @@
-#!/usr/bin/env sh
-exec curl --compressed $@
+#!/usr/bin/env zsh
+exec curl --compressed "$@"

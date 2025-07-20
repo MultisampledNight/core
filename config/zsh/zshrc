@@ -128,12 +128,17 @@ alias grc='gr --continue'
 alias gra='gr --abort'
 alias gp='git pull'
 alias gps='git push'
+alias gpst='gps --tags'
 alias gpsf='gps --force-with-lease'
 
 
 mkcd() {
   mkdir -p -- "$1"
   cd "$1"
+}
+gpsa() {
+  gps "$@"
+  gpst "$@"
 }
 
 man() {

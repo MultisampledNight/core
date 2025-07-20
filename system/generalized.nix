@@ -548,6 +548,7 @@ in
           [
             cfg.wayland
             [
+              wayvnc
               wf-recorder
               wl-mirror
             ]

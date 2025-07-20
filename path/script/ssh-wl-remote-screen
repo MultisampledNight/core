@@ -6,6 +6,9 @@ set -euo pipefail
 # https://superuser.com/questions/1434779/using-a-tablet-as-a-second-monitor-with-wayland#1652951
 # https://www.reddit.com/r/swaywm/comments/k1zl41/thank_you_devs_free_ipad_repurposed_as_a_second/
 
+# note: scale of remote compositor needs to be 1
+# otherwise it's weirdly blurry
+
 target="$1"
 output='HEADLESS-1'
 port='8001'
@@ -20,20 +23,22 @@ fi
 # local side; vnc server
 wayvnc \
 	--output="$output" \
-	--max-fps=60 \
-	--gpu \
-	::1 \
+	--max-fps=30 \
+	127.0.0.1 \
 	"$port" \
 	&
 
 # remote side; vnc client (tunneled via SSH)
-ssh \
-	-R "[::1]:$port" \
-	"$target" \
-	<<REMOTE
-WAYLAND_DISPLAY=wayland-1 remmina \
-	-k -c \
-	"vnc://[::1]:$port" \
+ssh -R "$port:127.0.0.1:$port" "$target" <<REMOTE
+export WAYLAND_DISPLAY=wayland-1
+
+remmina \
+	--no-tray-icon \
+	--disable-toolbar \
+	--enable-fullscreen \
+	--enable-extra-hardening \
+	-c \
+	"vnc://127.0.0.1:$port"
 REMOTE
 
 pkill wayvnc

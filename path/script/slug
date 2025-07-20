@@ -7,7 +7,7 @@ import re
 def slug(src: str) -> str:
     # split into "semantic groups"
     # simple/trivial
-    punctuation = r"[\s\n_-]"
+    punctuation = r"[\s\n\\/,.'\"_-]"
     # lookbehind/lookahead causing a zero-length match between camelCase parts
     # this is NOT unicode-aware: only ascii is matched, unfortunately
     camelcase = r"(?<=[a-z](?=[A-Z]))"
@@ -17,7 +17,7 @@ def slug(src: str) -> str:
     # (empty strings are false-ish)
     parts = filter(bool, parts)
 
-    return "-".join(parts)
+    return "-".join(parts).lower()
 
 
 def main():

@@ -439,6 +439,7 @@ lspconfig.tinymist.setup {
 lspconfig.nixd.setup {}
 lspconfig.jdtls.setup {}
 lspconfig.julials.setup {}
+lspconfig.basedpyright.setup {}
 vim.lsp.set_log_level("error")
 
 require("trouble").setup({

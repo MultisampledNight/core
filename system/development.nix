@@ -76,6 +76,8 @@ in
             tinymist
             typos-lsp
             nixd
+
+            basedpyright
           ]
         ]
         [

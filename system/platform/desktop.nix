@@ -219,7 +219,7 @@ with import ../prelude args;
 
     firefox = {
       enable = true;
-      package = pkgs.firefox-esr;
+      package = pkgs.firefox-esr-140;
       # https://mozilla.github.io/policy-templates/
       policies = {
         DownloadDirectory = "\${home}/media/downloads";

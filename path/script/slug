@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+# slug -- transforms stdin into kebab case suitable for slug names
+import sys
+import re
+
+
+def slug(src: str) -> str:
+    # split into "semantic groups"
+    # simple/trivial
+    punctuation = r"[\s\n_-]"
+    # lookbehind/lookahead causing a zero-length match between camelCase parts
+    # this is NOT unicode-aware: only ascii is matched, unfortunately
+    camelcase = r"(?<=[a-z](?=[A-Z]))"
+
+    parts = re.split(f"{punctuation}|{camelcase}", src, re.MULTILINE)
+    # may have empty parts due to differing delimiters being mixed; remove them
+    # (empty strings are false-ish)
+    parts = filter(bool, parts)
+
+    return "-".join(parts)
+
+
+def main():
+    src = sys.stdin.read()
+    sys.stdout.write(slug(src))
+
+
+if __name__ == "__main__":
+    main()

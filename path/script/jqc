@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# jq but as condition. returns 0 if the given jq script returns true, otherwise false
+set -euo pipefail
+
+[[ "$(jq "$@")" == "true" ]]

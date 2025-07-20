@@ -595,7 +595,10 @@ in
           ]
           [
             cfg.graphical
-            [ alacritty ]
+            [
+              alacritty
+              remmina
+            ]
           ]
         ])
       ];

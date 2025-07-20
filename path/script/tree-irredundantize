@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# tree-irrendundantize -- removes all parts in file and directory names that are already in the full path
+set -euo pipefail
+
+# small o is important: subdirectories before parent directories,
+# otherwise the list would be out-of-date by the time we got there
+
+for dir in **/(od); do
+	pushd "$dir"
+	
+	for part in ${(ps./.)dir}; do
+		if [[ "$part" =~ [[:digit:]]+ ]]; then
+			# skip number-only part -- chances are it's only for alphabetical sorting
+			continue
+		fi
+
+		rename --no-overwrite -- "$part" '' *
+	done
+
+	popd
+done

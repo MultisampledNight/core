@@ -46,7 +46,7 @@ wait
 
 begin 'png -> pdf'
 
-# (on) tells zsh to sort the glob by number
+# (n) tells zsh to sort the glob by number
 pdfunite \
 	inv/*.pdf(n) \
 	"$inverted"

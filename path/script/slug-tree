@@ -3,5 +3,5 @@ set -euo pipefail
 
 for obj in **/*; do
 	tgt="$(dirname -- "$obj")/$(echo "$(basename -- "$obj")" | slug)"
-	mv "$obj" "$tgt"
+	if [[ "$obj" != "$tgt" ]]; mv "$obj" "$tgt"
 done

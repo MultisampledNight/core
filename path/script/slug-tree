@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+for obj in **/*; do
+	tgt="$(dirname -- "$obj")/$(echo "$(basename -- "$obj")" | slug)"
+	mv "$obj" "$tgt"
+done

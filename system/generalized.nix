@@ -906,19 +906,10 @@ in
           };
 
           overlays = [
-            (final: prev: {
-              # updating so we can customize the short animation length
-              # the weird double-override is needed due to how the vendoring is implemented
-              # https://nixos.wiki/wiki/Rust#Using_overrideArgs_with_Rust_Packages
-              neovide = overrideRust prev.neovide {
-                src = pkgs.fetchFromGitHub {
-                  owner = "neovide";
-                  repo = "neovide";
-                  rev = "627956990b4d85a2a98a13e0c50da2155d15cd72";
-                  hash = "sha256-WwLEL6GyLLPbGEJrpSRLTJr+CqevZZ5MBZNUbXLWn3I=";
-                };
-                cargoHash = "sha256-1ni8AZIwAz5R2Ejt9Fj5qmybvL4KZV/M3BMqQx4HFLU=";
-              };
+            (takeFromPr {
+              pr = 426936;
+              hash = "sha256-6IJCHugtOryg88+pb4d+OLpF3MxYTnjlmvy9VJnPlZw=";
+              packages = ["neovide"];
             })
             (
               final: prev:

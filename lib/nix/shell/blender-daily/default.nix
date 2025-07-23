@@ -12,6 +12,7 @@ pkgs.mkShell {
       libGL
       wayland
       fontconfig
+      libdecor
     ]
     ++ (with xorg; [
       libXext

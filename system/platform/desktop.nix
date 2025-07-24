@@ -694,7 +694,6 @@ with import ../prelude args;
                 "locale"
               ];
             };
-            "addon@darkreader.org" = addon "darkreader";
             "uBlock0@raymondhill.net" = addon "ublock-origin";
             "jid1-BoFifL9Vbdl2zQ@jetpack" = addon "decentraleyes";
           };

@@ -297,6 +297,8 @@ with import ../prelude args;
 
               "Julia docs" = "https://docs.julialang.org/en/v1/";
               "Julia LinearAlgebra" = "https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/";
+
+              "Blender" = "https://www.blender.org/";
             };
 
         DontCheckDefaultBrowser = true;

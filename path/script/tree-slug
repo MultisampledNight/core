@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -euo pipefail
 
-for obj in **/*; do
+for obj in **/*(od); do
 	tgt="$(dirname -- "$obj")/$(echo "$(basename -- "$obj")" | slug)"
 	if [[ "$obj" != "$tgt" ]]; mv "$obj" "$tgt"
 done

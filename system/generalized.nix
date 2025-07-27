@@ -508,6 +508,7 @@ in
               custom.hq
               unzip
               zip
+              ncdu
               sqlite-interactive
               btop
               sysstat

@@ -14,7 +14,7 @@ output='HEADLESS-1'
 port='8001'
 
 if ! swaymsg -t get_outputs |
-	jqc "map(.name) | contains([\"$output\"])";
+	jq-cond "map(.name) | contains([\"$output\"])";
 then
 	# in the source code, argv to the command is not used
 	swaymsg create_output

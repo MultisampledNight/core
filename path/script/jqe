@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Shorthand for a non-file jq input.
+set -euo pipefail
+
+input="$1"
+shift
+echo "$shift" | jq "$@"

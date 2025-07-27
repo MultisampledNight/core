@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# recode-video -- arguments are source target, re-encodes to av1 with opus
+# recode-video [source] [target] -- re-encodes to av1 with opus
 set -eu
 
 # use libsvtav1: really damn fast and good configurability

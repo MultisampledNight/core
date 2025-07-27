@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# recode-audio [source] [target] -- recodes to opus
+set -euo pipefail
+
+ffmpeg \
+	-hwaccel auto \
+	-i "$1" \
+	-f opus \
+	-acodec libopus \
+	"$2"

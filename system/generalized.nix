@@ -929,8 +929,8 @@ in
               ];
             })
             (final: prev: {
-              blender = prev.blender.overrideAttrs (pAttr: {
-                patches = pAttr.patches ++ [
+              blender = prev.blender.overrideAttrs (old: {
+                patches = old.patches or [] ++ [
                   # https://projects.blender.org/blender/blender/issues/119901
                   ./packages/blender/openxr-wayland.patch
                 ];

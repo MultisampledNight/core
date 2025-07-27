@@ -4,4 +4,4 @@ set -euo pipefail
 
 input="$1"
 shift
-echo "$shift" | jq "$@"
+echo "$input" | jq "$@"

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-exec curl \
+exec net-fetch \
 	--header 'Accept: application/json' \
 	--header 'Content-Type: application/json' \
 	"$@"

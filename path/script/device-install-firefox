@@ -8,7 +8,7 @@ releases='https://archive.mozilla.org/pub/fenix/releases'
 export abi=`device-abi "$handle"`
 
 # slash is important: otherwise the webserver appears to think it's a file and 404s
-version=`curlj "$releases/" \
+version=`net-fetch-json "$releases/" \
 	| jq '.prefixes | map(rtrimstr("/"))' \
 	| version-filter-stable \
 	| version-newest \

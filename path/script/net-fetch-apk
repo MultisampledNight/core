@@ -8,5 +8,5 @@ apk="$package.apk"
 
 mkcd "$apk_stash"
 rm -f "$apk"
-curlc -Lo "$apk" "$url"
+net-fetch -o "$apk" "$url"
 

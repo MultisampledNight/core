@@ -4,6 +4,8 @@ set -euo pipefail
 
 mpv \
 	--no-config \
+	--ao=null \
+	--vo=null \
 	--terminal=no \
 	--osc=no \
 	"$@"

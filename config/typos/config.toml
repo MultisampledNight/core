@@ -1,3 +1,7 @@
+[default.extend-identifiers]
+GTIN = "GTIN"
+GTINs = "GTINs"
+
 [default.extend-words]
 # value being eq to key means that it's always valid
 

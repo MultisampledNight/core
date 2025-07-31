@@ -295,6 +295,9 @@ with import ../prelude args;
               "Rust performance book" = "https://nnethercote.github.io/perf-book/title-page.html";
               "Rust releases" = "https://releases.rs/";
 
+              "The Little Book of Rust Macros" = "https://lukaswirth.dev/tlborm/";
+              "The Rust Programming Language Book" = "https://doc.rust-lang.org/stable/book/";
+
               "Julia docs" = "https://docs.julialang.org/en/v1/";
               "Julia LinearAlgebra" = "https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/";
 

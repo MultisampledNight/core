@@ -4,7 +4,6 @@
   fetchFromGitHub,
   rustPlatform,
   libxkbcommon,
-  enableWayland ? stdenv.isLinux,
   wayland,
 }:
 

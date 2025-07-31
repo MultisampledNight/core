@@ -47,7 +47,24 @@ ssl-version = "tlsv1.3"
 [net]
 retry = 2
 
+# https://doc.rust-lang.org/cargo/reference/unstable.html#gc
+[cache.global-clean]
+max-crate-age = "2 years"
+max-index-age = "1 year"
+max-git-db-age = "2 year"
 
+
+# https://doc.rust-lang.org/cargo/reference/unstable.html
 [unstable]
+# periodically clean download cache
 gc = true
+# allow e.g. cranelift as backend
 codegen-backend = true
+# add new --breaking flag to `cargo update`
+unstable-options = true
+# allow using cargo as shebang interpreter
+script = true
+# use gitoxide instead of git2 for git deps
+gitoxide = true
+# only ever do shallow clones of git repos
+git = true

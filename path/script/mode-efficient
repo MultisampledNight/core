@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+# energy saving mode -- limit to 2 cores at 0.8 GHz
+set -euo pipefail
+
+. util
+
+base='/sys/devices/system/cpu'
+
+cores_left=2
+last="$(cat "$base/possible" | cut -d'-' -f2)"
+# the cpufreq is configured in kHz
+freq="$(echo "$(( 0.8 * 1000 ** 2 ))" | cut -d'.' -f1)"
+
+last_online="$(( $cores_left - 1 ))"
+first_offline="$cores_left"
+online=( {0..$last_online} )
+offline=( {$first_offline..$last} )
+
+begin disabling cpus "$offline"
+for idx in $offline; do
+	part "cpu $idx"
+	sudo chcpu --disable "$idx" || true
+done
+
+begin setting frequency for "$online"
+for idx in $online; do
+	part "cpu $idx"
+	sudo chcpu --enable "$idx" || true
+	echo "$freq" | sudo tee "$base/cpu$idx/cpufreq/scaling_max_freq"
+done

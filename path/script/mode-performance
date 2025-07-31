@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# default mode -- everything at full power
+set -euo pipefail
+
+. util
+
+base='/sys/devices/system/cpu'
+
+last="$(cat "$base/possible" | cut -d'-' -f2)"
+
+begin enabling all cpus + restoring all maximum frequencies
+for idx in {0..$last}; do
+	part "cpu $idx"
+	sudo chcpu --enable "$idx" || true
+	cat "$base/cpu$idx/cpufreq/cpuinfo_max_freq" \
+		| sudo tee "$base/cpu$idx/cpufreq/scaling_max_freq"
+done

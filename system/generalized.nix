@@ -485,6 +485,7 @@ in
               magic-wormhole-rs
               dogdns
               gptfdisk
+              f2fs-tools
               nvme-cli
               efibootmgr
               smartmontools

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# energy saving mode -- limit to 2 cores at 0.8 GHz
+# energy saving mode -- limit to 2 cores at 1.25 GHz
 set -euo pipefail
 
 . util
@@ -9,7 +9,7 @@ base='/sys/devices/system/cpu'
 cores_left=2
 last="$(cat "$base/possible" | cut -d'-' -f2)"
 # the cpufreq is configured in kHz
-freq="$(echo "$(( 0.8 * 1000 ** 2 ))" | cut -d'.' -f1)"
+freq="$(echo "$(( 1.25 * 1000 ** 2 ))" | cut -d'.' -f1)"
 
 last_online="$(( $cores_left - 1 ))"
 first_offline="$cores_left"

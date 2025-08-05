@@ -1,3 +1,3 @@
 [machines]
-destined = "hdmi + dp2 + edp:2/bottom,right"
+destined = "hdmi + edp:2/bottom"
 overloaded = "hdmi + dp1/right,bottom + dp2 + headless @2256x1504 :2 /bottom,left"

@@ -23,7 +23,7 @@ case "$target" in
 	;;
 	(termux)
 		adb $specify forward tcp:8022 tcp:8022
-		connector=(ssh -i ~/.ssh/id_to_termux -p 8022 127.0.0.1)
+		connector=(ssh termux)
 	;;
 	(*)
 		connector=(ssh "$target")

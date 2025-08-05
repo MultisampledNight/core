@@ -1,3 +1,7 @@
+> [!CAUTION]
+> This repository has migrated to Codeberg!
+> Please see https://codeberg.org/MultisampledNight/core.
+
 # You are approaching CORE
 
 Or in other words, welcome to my configs!
